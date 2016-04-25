@@ -3,6 +3,7 @@ import statistics
 import json
 import re
 import pdb
+import math
 
 def random_cluster_mapping(item_count, cluster_count):
 	mapping = {}
@@ -84,8 +85,11 @@ class ClusteringComperator():
 		self.semisame_ij_count = 0
 		self.semisame_ji_count = 0
 		self.unsame_pair_count = 0
-		for node_a in self.base_set:
-			for node_b in self.base_set:
+		base_list = list(self.base_set)
+		for a, node_a in enumerate(base_list):
+			for b, node_b in enumerate(base_list):
+				if a == b:
+					break
 				both_i = self._clustering_i.mapping[node_a] == self._clustering_i.mapping[node_b]
 				both_j = self._clustering_j.mapping[node_a] == self._clustering_j.mapping[node_b]
 				if both_i and both_j:
@@ -98,6 +102,7 @@ class ClusteringComperator():
 					self.unsame_pair_count += 1
 				else:
 					raise Exception('impossible same-pair alignment')
+		self.count_of_pairs = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count + self.unsame_pair_count
 
 	def save(self, name):
 		with open('%s.confusion_matrix.csv' % name, 'w') as matrix:
@@ -112,5 +117,23 @@ class ClusteringComperator():
 			count.write('unsame; %d\n' % self.unsame_pair_count)
 			count.write('base set size; %d\n' % self.base_set_size)
 
+	def dump(self):
+		print('comperation of clusterings')
+		print(' | Rand index = %f' % self.rand_index())
+		print(' | Fowlkes–Mallows index = %f' % self.fowlkes_mallows_index())
+		print(' | Jaccard index = %f' % self.jaccard_index())
+
+	def rand_index(self):
+		numerator = 2 * (self.same_pair_count + self.unsame_pair_count)
+		nominator = self.base_set_size * (self.base_set_size - 1)
+		return numerator / nominator
+
+	def fowlkes_mallows_index(self):
+		nominator = math.sqrt((self.same_pair_count + self.semisame_ij_count) * (self.same_pair_count + self.semisame_ij_count))
+		return self.same_pair_count / nominator
+
+	def jaccard_index(self):
+		nominator = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count
+		return self.same_pair_count / nominator
 
 print("coverage_cluster.clustering was loaded.")

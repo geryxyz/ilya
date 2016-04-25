@@ -12,12 +12,12 @@ def _prefix_of(name, level=0):
 	return '/'.join(prefix.split('/')[:(-2 - level)])
 
 class CoverageBasedData(object):
-	def __init__(self, path_to_dump):
+	def __init__(self, path_to_dump, drop_uncovered=False):
 		self._soda_dump = path_to_dump
 		self.graph = nx.Graph()
-		self._init_graph(path_to_dump)
+		self._init_graph(path_to_dump, drop_uncovered=drop_uncovered)
 
-	def _init_graph(self, file_path):
+	def _init_graph(self, file_path, drop_uncovered=False):
 		with open(file_path, 'r') as matrix:
 			header = next(matrix).strip()
 			code_elements = header.split(';')
@@ -32,6 +32,13 @@ class CoverageBasedData(object):
 					self.graph.add_node(code_node, domain='code', name=code_name)
 					if int(connection) > 0:
 						self.graph.add_edge(code_node, test_node)
+		if drop_uncovered:
+			drop_count = {'test': 0, 'code': 0}
+			for node in self.graph.nodes():
+				if not nx.edges(self.graph, node):
+					drop_count[self.graph.node[node]['domain']] += 1
+					self.graph.remove_node(node)
+			print("dropping %d uncovered code elements and %d useless tests" % (drop_count['code'], drop_count['test']))
 		print("%d node was loaded" % len(self.graph.nodes()))
 
 	def package_based_clustering(self, level=0, label='declared_cluster'):
