@@ -1,4 +1,5 @@
 from clustering import *
+import subprocess as sp #https://docs.python.org/3.4/library/subprocess.html
 import networkx as nx
 import community
 import re
@@ -31,7 +32,31 @@ class CoverageBasedData(object):
 	def __init__(self, path_to_dump, drop_uncovered=False):
 		self._soda_dump = path_to_dump
 		self.graph = nx.Graph()
-		self._init_graph(path_to_dump, drop_uncovered=drop_uncovered)
+		self._create_edge_list(path_to_dump)
+		#self._init_graph(path_to_dump, drop_uncovered=drop_uncovered)
+
+	def _create_edge_list(self, file_path):
+		base_name = os.path.join(os.path.dirname(file_path), os.path.splitext(os.path.basename(file_path))[0])
+		names = {}
+		self.edge_list_path = '%s.edges.csv' % base_name
+		with open(file_path, 'r') as matrix, open(self.edge_list_path, 'w') as edge_list:
+			header = next(matrix).strip()
+			code_elements = header.split(';')[1:]
+			for test_index, line in enumerate(matrix):
+				parts = line.strip().split(';')
+				test_name = parts[0]
+				for code_index, connection in enumerate(parts[1:]):
+					code_name = code_elements[code_index]
+					test_node = test_index + len(code_elements)
+					code_node = code_index
+					names[test_node] = test_name
+					names[code_node] = code_name
+					if int(connection) > 0:
+						edge_list.write('%d %d\n' % (code_node, test_node))
+		self.name_mapping_path = '%s.names.csv' % base_name
+		with open(self.name_mapping_path, 'w') as name_mapping:
+			for node, name in names.items():
+				name_mapping.write('%d;%s\n' % (node, name))
 
 	def _init_graph(self, file_path, drop_uncovered=False):
 		with open(file_path, 'r') as matrix:
@@ -68,9 +93,14 @@ class CoverageBasedData(object):
 		return Clustering(mapping, name, key, self.graph)
 
 	def community_based_clustering(self, name, key='community_cluster'):
-		mapping = community.best_partition(self.graph)
-		for node, community_name in mapping.items():
-			self.graph.node[node][key] = community_name
+		base_name = os.path.join(os.path.dirname(self._soda_dump), os.path.splitext(os.path.basename(self._soda_dump))[0])
+		bin_edge_list_path = '%s.edges.bin' % base_name
+		sp.call('./convert -i %s -o %s' % (self.edge_list_path, bin_edge_list_path), shell=True)
+		tree_path = '%s.tree' % base_name
+		sp.call('./louvain -v -l -1 %s > %s' % (bin_edge_list_path, tree_path), shell=True)
+		self.community_map_path = '%s.map.csv' % base_name
+		sp.call('./hierarchy -m %s > %s' % (tree_path, self.community_map_path), shell=True)
+		pdb.set_trace()
 		return Clustering(mapping, name, key, self.graph)
 
 	def save(self, name, clusterings=[], similarity_depth=None):
