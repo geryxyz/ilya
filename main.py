@@ -10,9 +10,10 @@ filename = sys.argv[1]
 outputname = filename[:-4]
 name = splitext(basename(filename))[0]
 
-coverage = CoverageBasedData(filename, drop_uncovered=True)
+coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=False)
 detected_clustering = coverage.community_based_clustering(name='%s-detected' % name)
 declared_clustering = coverage.package_based_clustering(name='%s-declared' % name)
+pdb.set_trace()
 comperation_dec_det = declared_clustering.compare_to(detected_clustering)
 comperation_det_dec = comperation_dec_det.reverse()
 

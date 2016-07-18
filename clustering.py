@@ -39,12 +39,12 @@ def _mapping_to_clustering(mapping):
 	return clusters
 
 class Clustering(object):
-	def __init__(self, mapping, name, key, graph=None):
+	def __init__(self, mapping, names, name, key):
+		self.names = names
 		self.name = name
 		self.mapping = mapping
 		self.clusters = _mapping_to_clustering(mapping)
 		self.base_set = {k for k in mapping}
-		self._graph = graph
 		self._init_size_metrics()
 		self.key = key
 

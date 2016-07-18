@@ -29,20 +29,26 @@ def _longest_substr(data):
 	return substr
 
 class CoverageBasedData(object):
-	def __init__(self, path_to_dump, drop_uncovered=False):
+	def __init__(self, path_to_dump, drop_uncovered=False, regenerate_edge_list=True):
 		self._soda_dump = path_to_dump
 		self.graph = nx.Graph()
-		self._create_edge_list(path_to_dump)
+		self._create_edge_list(path_to_dump, regenerate_edge_list=regenerate_edge_list)
 		#self._init_graph(path_to_dump, drop_uncovered=drop_uncovered)
 
-	def _create_edge_list(self, file_path):
+	def _create_edge_list(self, file_path, regenerate_edge_list=True):
 		base_name = os.path.join(os.path.dirname(file_path), os.path.splitext(os.path.basename(file_path))[0])
-		names = {}
 		self.edge_list_path = '%s.edges.csv' % base_name
+		self.name_mapping_path = '%s.names.csv' % base_name
+		if not regenerate_edge_list and os.path.isfile(self.edge_list_path) and os.path.isfile(self.name_mapping_path):
+			return
+		names = {}
+		count_lines = sum(1 for line in open(file_path))
 		with open(file_path, 'r') as matrix, open(self.edge_list_path, 'w') as edge_list:
 			header = next(matrix).strip()
 			code_elements = header.split(';')[1:]
+			len_of_code = len(code_elements)
 			for test_index, line in enumerate(matrix):
+				print("converting matrix to edges, done: %.4f" % (test_index / count_lines))
 				parts = line.strip().split(';')
 				test_name = parts[0]
 				for code_index, connection in enumerate(parts[1:]):
@@ -53,7 +59,6 @@ class CoverageBasedData(object):
 					names[code_node] = code_name
 					if int(connection) > 0:
 						edge_list.write('%d %d\n' % (code_node, test_node))
-		self.name_mapping_path = '%s.names.csv' % base_name
 		with open(self.name_mapping_path, 'w') as name_mapping:
 			for node, name in names.items():
 				name_mapping.write('%d;%s\n' % (node, name))
@@ -86,11 +91,15 @@ class CoverageBasedData(object):
 
 	def package_based_clustering(self, name, level=0, key='declared_cluster'):
 		mapping = {}
-		for node in self.graph.node:
-			prefix = _prefix_of(self.graph.node[node]['name'], level=level)
-			mapping[node] = prefix
-			self.graph.node[node][key] = prefix
-		return Clustering(mapping, name, key, self.graph)
+		names = {}
+		with open(self.name_mapping_path, 'r') as names_file:
+			for line in names_file:
+				parts = line.strip().split(';')
+				node = parts[0]
+				name_of_node = parts[1]
+				mapping[node] = _prefix_of(name_of_node, level=level)
+				names[node] = name_of_node
+		return Clustering(mapping, names, name, key)
 
 	def community_based_clustering(self, name, key='community_cluster'):
 		base_name = os.path.join(os.path.dirname(self._soda_dump), os.path.splitext(os.path.basename(self._soda_dump))[0])
@@ -100,8 +109,19 @@ class CoverageBasedData(object):
 		sp.call('./louvain -v -l -1 %s > %s' % (bin_edge_list_path, tree_path), shell=True)
 		self.community_map_path = '%s.map.csv' % base_name
 		sp.call('./hierarchy -m %s > %s' % (tree_path, self.community_map_path), shell=True)
-		pdb.set_trace()
-		return Clustering(mapping, name, key, self.graph)
+		mapping = {}
+		with open(self.community_map_path, 'r') as mapping_file:
+			for line in mapping_file:
+				parts = line.strip().split(' ')
+				mapping[parts[0]] = parts[1]
+		names = {}
+		with open(self.name_mapping_path, 'r') as names_file:
+			for line in names_file:
+				parts = line.strip().split(';')
+				node = parts[0]
+				name_of_node = parts[1]
+				names[node] = name_of_node
+		return Clustering(mapping, names, name, key)
 
 	def save(self, name, clusterings=[], similarity_depth=None):
 		dir = os.path.join(os.path.dirname(name), '%s-graphs' % os.path.splitext(os.path.basename(name))[0])
