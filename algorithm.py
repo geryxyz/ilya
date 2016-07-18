@@ -8,14 +8,27 @@ import statistics
 import pdb
 import shutil
 import re
+import glob2
 
 def _prefix_of(name, level=0):
-	unified_name = name.replace('.', '/')
+	unified_name = name.replace('.', '/').replace('::', '/')
 	match = re.search(r'(?P<prefix>[^(]+)', unified_name)
 	prefix = 'unknown'
 	if match:
 		prefix = match.group('prefix')
 	return '/'.join(prefix.split('/')[:(-2 - level)])
+
+def _label_of(name, labels_dir, level=0):
+	paths = glob2.glob(os.path.join(labels_dir,'**/*.csv'))
+	for label_path in paths:
+		with open(label_path, 'r') as label_file:
+			for line in label_file:
+				parts = line.strip().split(';')
+				if parts[0] == name:
+					print("Using label '%s' for '%s'" % (parts[1], parts[0]))
+					return parts[1]
+	else:
+		return _prefix_of(name, level)
 
 def _longest_substr(data):
 	substr = ''
@@ -89,7 +102,7 @@ class CoverageBasedData(object):
 		self._most_common = _longest_substr([name for name in names if not name.startswith('/')])
 		print("%d node was loaded" % len(self.graph.nodes()))
 
-	def package_based_clustering(self, name, level=0, key='declared_cluster'):
+	def package_based_clustering(self, name, labels_dir=None, level=0, key='declared_cluster'):
 		mapping = {}
 		names = {}
 		with open(self.name_mapping_path, 'r') as names_file:
@@ -97,7 +110,10 @@ class CoverageBasedData(object):
 				parts = line.strip().split(';')
 				node = parts[0]
 				name_of_node = parts[1]
-				mapping[node] = _prefix_of(name_of_node, level=level)
+				if labels_dir:
+					mapping[node] = _label_of(name_of_node, labels_dir, level=level)
+				else:
+					mapping[node] = _prefix_of(name_of_node, level=level)
 				names[node] = name_of_node
 		return Clustering(mapping, names, name, key)
 
