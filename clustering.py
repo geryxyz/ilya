@@ -81,9 +81,9 @@ class Clustering(object):
 		return True
 
 	def compare_to(self, other):
-		return ClusteringComperator(self, other)
+		return ClusteringComparator(self, other)
 
-class ClusteringComperator():
+class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
 		if not clustering_i.compatible_with(clustering_j):
 			raise Exception('tring to compare incompatible clusters')
@@ -130,7 +130,7 @@ class ClusteringComperator():
 		self.count_of_pairs = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count + self.unsame_pair_count
 
 	def reverse(self):
-		return ClusteringComperator(self._clustering_j, self._clustering_i)
+		return ClusteringComparator(self._clustering_j, self._clustering_i)
 
 	def save(self, name):
 		dir = os.path.join(os.path.dirname(name), '%s --- %s' % (self._clustering_i.name, self._clustering_j.name))
@@ -181,7 +181,7 @@ class ClusteringComperator():
 					diff.write('hashes:   %s - %s ; %s - %s\n\n' % (hash_it(self._clustering_j.mapping[pair[0]]), hash_it(self._clustering_j.mapping[pair[1]]), hash_it(self._clustering_i.mapping[pair[0]]), hash_it(self._clustering_i.mapping[pair[1]])))
 
 	def dump(self):
-		print('[Comperation] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
+		print('[Comparison] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
 		print(' |  Chi Squared coefficient = %f' % self.chi_squared_coefficient())
 		print(' |  Rand index = %f' % self.rand_index())
 		print(' |  Fowlkes–Mallows index = %f' % self.fowlkes_mallows_index())
