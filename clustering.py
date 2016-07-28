@@ -39,8 +39,8 @@ def _mapping_to_clustering(mapping):
 	return clusters
 
 class Clustering(object):
-	def __init__(self, mapping, names, name, key):
-		self.names = names
+	def __init__(self, mapping, name, key, data):
+		self.data = data
 		self.name = name
 		self.mapping = mapping
 		self.clusters = _mapping_to_clustering(mapping)
@@ -55,21 +55,17 @@ class Clustering(object):
 			self.size_of[i] = len(cluster)
 
 	def name_of(self, node):
-		if self._graph:
-			return self._graph.node[node]['name']
+		return self.data[node].get('name', 'noname')
 
 	def domain_of(self, node):
-		if self._graph:
-			return self._graph.node[node]['domain']
+		return self.data[node].get('domain', 'unknown')
 
-	def save(self, name, filter='.*'):
+	def save(self, name):
 		with open('%s.clusters.txt' % name, 'w') as clusters_output, open('%s.mapping.txt' % name, 'w') as mapping_output:
 			for key in self.clusters:
 				clusters_output.write('%s:\n' % key)
 				for node in self.clusters[key]:
 					name = node
-					if self._graph:
-						name = json.dumps({k: v for k, v in self._graph.node[node].items() if re.search(filter, k)})
 					clusters_output.write('%s\n' % name)
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
@@ -246,7 +242,7 @@ def f_measuere(a, b):
 		return 0
 	return (2 * rij * pij) / (rij + pij)
 
-def snail_coefficient(a, b):
+def inclusion_coefficient(a, b):
 	return len(a & b) / len(a)
 
 print("coverage_cluster.clustering was loaded.")

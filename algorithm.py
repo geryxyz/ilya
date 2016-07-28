@@ -9,6 +9,7 @@ import pdb
 import shutil
 import re
 import glob2
+import json
 
 def _prefix_of(name, level=0):
 	unified_name = name.replace('.', '/').replace('::', '/')
@@ -46,15 +47,18 @@ class CoverageBasedData(object):
 		self._soda_dump = path_to_dump
 		self.graph = nx.Graph()
 		self._create_edge_list(path_to_dump, regenerate_edge_list=regenerate_edge_list)
-		#self._init_graph(path_to_dump, drop_uncovered=drop_uncovered)
+		all_names = [datum['name'] for _, datum in self.data.items()]
+		self._most_common = _longest_substr(all_names)
 
 	def _create_edge_list(self, file_path, regenerate_edge_list=True):
 		base_name = os.path.join(os.path.dirname(file_path), os.path.splitext(os.path.basename(file_path))[0])
 		self.edge_list_path = '%s.edges.csv' % base_name
-		self.name_mapping_path = '%s.names.csv' % base_name
-		if not regenerate_edge_list and os.path.isfile(self.edge_list_path) and os.path.isfile(self.name_mapping_path):
+		self.data_mapping_path = '%s.data.csv' % base_name
+		if not regenerate_edge_list and os.path.isfile(self.edge_list_path) and os.path.isfile(self.data_mapping_path):
+			with open(self.data_mapping_path, 'r') as data_mapping:
+				self.data = dict([json.loads(line) for line in data_mapping])
 			return
-		names = {}
+		self.data = {}
 		count_lines = sum(1 for line in open(file_path))
 		with open(file_path, 'r') as matrix, open(self.edge_list_path, 'w') as edge_list:
 			header = next(matrix).strip()
@@ -68,54 +72,29 @@ class CoverageBasedData(object):
 					code_name = code_elements[code_index]
 					test_node = test_index + len(code_elements)
 					code_node = code_index
-					names[test_node] = test_name
-					names[code_node] = code_name
+					if test_node not in self.data:
+						self.data[str(test_node)] = {}
+					if code_node not in self.data:
+						self.data[str(code_node)] = {}
+					self.data[str(test_node)]['name'] = test_name
+					self.data[str(code_node)]['name'] = code_name
+					self.data[str(test_node)]['domain'] = 'test'
+					self.data[str(code_node)]['domain'] = 'code'
 					if int(connection) > 0:
 						edge_list.write('%d %d\n' % (code_node, test_node))
-		with open(self.name_mapping_path, 'w') as name_mapping:
-			for node, name in names.items():
-				name_mapping.write('%d;%s\n' % (node, name))
-
-	def _init_graph(self, file_path, drop_uncovered=False):
-		with open(file_path, 'r') as matrix:
-			header = next(matrix).strip()
-			code_elements = header.split(';')[1:]
-			for test_index, line in enumerate(matrix):
-				parts = line.strip().split(';')
-				test_name = parts[0]
-				for code_index, connection in enumerate(parts[1:]):
-					code_name = code_elements[code_index]
-					test_node = test_index + len(code_elements)
-					code_node = code_index
-					self.graph.add_node(test_node, domain='test', name=test_name)
-					self.graph.add_node(code_node, domain='code', name=code_name)
-					if int(connection) > 0:
-						self.graph.add_edge(code_node, test_node, type='tested by')
-		if drop_uncovered:
-			drop_count = {'test': 0, 'code': 0}
-			for node in self.graph.nodes():
-				if not nx.edges(self.graph, node):
-					drop_count[self.graph.node[node]['domain']] += 1
-					self.graph.remove_node(node)
-			print("dropping %d uncovered code elements and %d useless tests" % (drop_count['code'], drop_count['test']))
-		names = [data['name'].replace('.', '/') for node, data in self.graph.nodes(data=True)]
-		self._most_common = _longest_substr([name for name in names if not name.startswith('/')])
-		print("%d node was loaded" % len(self.graph.nodes()))
+		with open(self.data_mapping_path, 'w') as data_mapping:
+			for entry in self.data.items():
+				data_mapping.write('%s\n' % json.dumps(entry))
 
 	def package_based_clustering(self, name, labels_dir=None, level=0, key='declared_cluster'):
 		mapping = {}
-		names = {}
-		with open(self.name_mapping_path, 'r') as names_file:
-			for line in names_file:
-				parts = line.strip().split(';')
-				node = parts[0]
-				name_of_node = parts[1]
-				if labels_dir:
-					mapping[node] = _label_of(name_of_node, labels_dir, level=level)
-				else:
-					mapping[node] = _prefix_of(name_of_node, level=level)
-				names[node] = name_of_node
-		return Clustering(mapping, names, name, key)
+		for node, data in self.data.items():
+			name_of_node = data.get('name', 'noname')
+			if labels_dir:
+				mapping[str(node)] = _label_of(name_of_node, labels_dir, level=level)
+			else:
+				mapping[str(node)] = _prefix_of(name_of_node, level=level)
+		return Clustering(mapping, name, key, self.data)
 
 	def community_based_clustering(self, name, key='community_cluster'):
 		base_name = os.path.join(os.path.dirname(self._soda_dump), os.path.splitext(os.path.basename(self._soda_dump))[0])
@@ -130,47 +109,27 @@ class CoverageBasedData(object):
 			for line in mapping_file:
 				parts = line.strip().split(' ')
 				mapping[parts[0]] = parts[1]
-		names = {}
-		with open(self.name_mapping_path, 'r') as names_file:
-			for line in names_file:
-				parts = line.strip().split(';')
-				node = parts[0]
-				name_of_node = parts[1]
-				names[node] = name_of_node
-		return Clustering(mapping, names, name, key)
+		return Clustering(mapping, name, key, self.data)
 
-	def save(self, name, clusterings=[], similarity_depth=None):
+	def save(self, name, clusterings=[], similarity_constrain=lambda v: v):
 		dir = os.path.join(os.path.dirname(name), '%s-graphs' % os.path.splitext(os.path.basename(name))[0])
 		if os.path.isdir(dir):
 			shutil.rmtree(dir)
 		os.makedirs(dir)
-		nx.write_graphml(self.graph, os.path.join(dir, 'whole.graphml'))
-		self._save_components(dir)
-		self._save_blockmodels(dir, clusterings)
-		self.block_models = {}
-		self.block_models['jaccard'] = self._save_merged_model(dir, clusterings, similarity_name='jaccard', similarity=jaccard_similarity_coefficient, similarity_depth=similarity_depth)
-		self.block_models['f-measure'] = self._save_merged_model(dir, clusterings, similarity_name='f-measure', similarity=f_measuere, similarity_depth=similarity_depth)
-		self.block_models['snail'] = self._save_merged_model(dir, clusterings, similarity_name='snail', similarity=snail_coefficient, similarity_depth=similarity_depth)
 		self.similarity_models = {}
-		self.similarity_models['jaccard'] = self._save_merged_model(dir, clusterings, similarity_name='jaccard', similarity=jaccard_similarity_coefficient, drop_inter_cluster_edges=True, similarity_depth=similarity_depth)
-		self.similarity_models['f-measure'] = self._save_merged_model(dir, clusterings, similarity_name='f-measure', similarity=f_measuere, drop_inter_cluster_edges=True, similarity_depth=similarity_depth)
-		self.similarity_models['snail'] = self._save_merged_model(dir, clusterings, similarity_name='snail', similarity=snail_coefficient, drop_inter_cluster_edges=True, similarity_depth=similarity_depth)
+		self.similarity_models['jaccard'] = self._create_similarity_map(dir, clusterings, similarity_name='J', similarity=jaccard_similarity_coefficient, constrain=similarity_constrain)
+		self.similarity_models['f-measure'] = self._create_similarity_map(dir, clusterings, similarity_name='F', similarity=f_measuere, constrain=similarity_constrain)
+		self.similarity_models['inclusion'] = self._create_similarity_map(dir, clusterings, similarity_name='I', similarity=inclusion_coefficient, constrain=similarity_constrain)
 
-	def _save_components(self, dir):
-		comps = list(nx.connected_component_subgraphs(self.graph))
-		print("%d connected component subgraphs was detected" % len(comps))
-		for i, comp in enumerate(comps):
-			nx.write_graphml(comp, os.path.join(dir, 'connected-component-%d.graphml' % i))
-
-	def _split_names_to_parts(self, sub_graph, domain):
-		names = [data['name'].replace('.', '/').replace(self._most_common, '') for node, data in sub_graph.nodes(data=True) if data['domain'] == domain]
+	def _split_names_to_parts(self, name_of_nodes):
+		names = [name.replace('.', '/').replace(self._most_common, '') for name in name_of_nodes]
 		common = _longest_substr(names)
 		names = [n.replace(common, '') for n in names]
 		parted = [[pp for pp in [re.sub(r'\W', '', p) for p in re.sub( r'([A-Z]|\W)', r' \1', n).split()] if not (pp == '' or re.search(r'([tT]est|Lorg)', pp))] for n in names]
 		return parted
 
-	def _most_common_parts(self, sub_graph, domain, count=10):
-		names_parts = self._split_names_to_parts(sub_graph, domain)
+	def _most_common_parts(self, name_of_nodes, count=10):
+		names_parts = self._split_names_to_parts(name_of_nodes)
 		counts = {}
 		for name in names_parts:
 			checked = set()
@@ -180,27 +139,35 @@ class CoverageBasedData(object):
 		sorted_counts = [part[0] for part in sorted(counts.items(), key=lambda x: x[1], reverse=True)]
 		return sorted_counts[:count]
 
-	def _suggest_name(self, sub_graph):
-		test_names = [data['name'].replace('.', '/').replace(self._most_common, '*') for node, data in sub_graph.nodes(data=True) if data['domain'] == 'test']
-		code_names = [data['name'].replace('.', '/').replace(self._most_common, '*') for node, data in sub_graph.nodes(data=True) if data['domain'] == 'code']
-		test_suggested_name = _longest_substr(test_names)
-		code_suggested_name = _longest_substr(code_names)
-		code_summary = '\n'.join(chunks_of(' '.join(self._most_common_parts(sub_graph, 'code')), 40))
-		test_summary = '\n'.join(chunks_of(' '.join(self._most_common_parts(sub_graph, 'test')), 40))
-		return 'code "%s"\nalso: %s etc.\ntested by\ntest "%s"\nalso: %s etc.\ncontaining %d codes, %d tests' % (code_suggested_name, code_summary, test_suggested_name, test_summary, len(code_names), len(test_names))
+	def _suggest_name(self, test_names, code_names):
+		_test_names = [name.replace('.', '/').replace(self._most_common, '*') for name in test_names]
+		_code_names = [name.replace('.', '/').replace(self._most_common, '*') for name in code_names]
+		test_suggested_name = _longest_substr(_test_names)
+		code_suggested_name = _longest_substr(_code_names)
+		code_summary = '\n'.join(chunks_of(' '.join(self._most_common_parts(_code_names)), 40))
+		test_summary = '\n'.join(chunks_of(' '.join(self._most_common_parts(_test_names)), 40))
+		return 'code "%s"\nalso: %s etc.\ntested by\ntest "%s"\nalso: %s etc.\ncontaining %d codes, %d tests' % (code_suggested_name, code_summary, test_suggested_name, test_summary, len(_code_names), len(_test_names))
 
-	def _save_blockmodels(self, dir, clusterings):
-		for clustering in clusterings:
-			model = nx.blockmodel(self.graph, clustering.clusters.values())
-			for block in model.nodes():
-				model.node[block]['cluster'] = block
-				sub_graph = model.node[block]['graph']
-				key = sub_graph.nodes(data=True)[0][1][clustering.key]
-				model.node[block]['key'] = str(key)
-				model.node[block]['suggested_name'] = self._suggest_name(sub_graph)
-				nx.write_graphml(model.node[block]['graph'], os.path.join(dir, 'block-%s-%s.graphml' % (hash_it(key), clustering.name)))
-				del model.node[block]['graph']
-			nx.write_graphml(model, os.path.join(dir, 'blockmodel-%s.graphml' % clustering.name))
+	def _create_similarity_map(self, dir, clusterings, similarity_name=None, similarity=lambda a, b: 0, constrain=lambda v: v):
+		merged_model = nx.DiGraph()
+		global_cluster_index = 0
+		for clustering_index, clustering in enumerate(clusterings):
+			for cluster, content in clustering.clusters.items():
+				code_names = [clustering.name_of(node) for node in content if clustering.domain_of(node) == 'code']
+				test_names = [clustering.name_of(node) for node in content if clustering.domain_of(node) == 'test']
+				suggested_name = self._suggest_name(test_names=test_names, code_names=code_names)
+				merged_model.add_node(global_cluster_index, id=cluster, clustering=clustering.key, node_count=len(content), suggested_name=suggested_name)
+				global_cluster_index += 1
+		for cluster_i, data_i in merged_model.nodes(data=True):
+			for cluster_j, data_j in merged_model.nodes(data=True):
+				if data_i['clustering'] != data_j['clustering'] and cluster_i != cluster_j:
+					content_i = [c.clusters[str(data_i['id'])] for c in clusterings if c.key == data_i['clustering']][0]
+					content_j = [c.clusters[str(data_j['id'])] for c in clusterings if c.key == data_j['clustering']][0]
+					similarity_value = similarity(content_i, content_j)
+					if constrain(similarity_value):
+						merged_model.add_edge(cluster_i, cluster_j, similarity=similarity_value, label='%s = %.2f' % (similarity_name, similarity_value))
+		nx.write_graphml(merged_model, os.path.join(dir,'similarity.model_%s.graphml' % similarity_name))
+
 
 	def _save_merged_model(self, dir, clusterings, similarity_name=None, similarity=lambda a, b: 0, similarity_depth=None, drop_inter_cluster_edges=False):
 		merged_model = nx.DiGraph()
