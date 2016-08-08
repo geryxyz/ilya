@@ -167,46 +167,6 @@ class CoverageBasedData(object):
 					if constrain(similarity_value):
 						merged_model.add_edge(cluster_i, cluster_j, similarity=similarity_value, label='%s = %.2f' % (similarity_name, similarity_value))
 		nx.write_graphml(merged_model, os.path.join(dir,'similarity.model_%s.graphml' % similarity_name))
-
-
-	def _save_merged_model(self, dir, clusterings, similarity_name=None, similarity=lambda a, b: 0, similarity_depth=None, drop_inter_cluster_edges=False):
-		merged_model = nx.DiGraph()
-		for clustering in clusterings:
-			model = nx.blockmodel(self.graph, clustering.clusters.values())
-			for block in model.nodes():
-				model.node[block]['original-id'] = block
-				model.node[block]['clustering'] = clustering.key
-				sub_graph = model.node[block]['graph']
-				model.node[block]['key'] = str(sub_graph.nodes(data=True)[0][1][clustering.key])
-				model.node[block]['suggested_name'] = self._suggest_name(sub_graph)
-			merged_model = nx.disjoint_union(merged_model, model)
-		if drop_inter_cluster_edges:
-			merged_model.remove_edges_from(merged_model.edges())
-		if similarity_name:
-			for block_i in merged_model:
-				candidates = []
-				for block_j in merged_model:
-					if block_i != block_j and merged_model.node[block_i]['clustering'] != merged_model.node[block_j]['clustering']:
-						graph_i = merged_model.node[block_i]['graph']
-						graph_j = merged_model.node[block_j]['graph']
-						names_i = set([data['name'] for _, data in graph_i.nodes(data=True)])
-						names_j = set([data['name'] for _, data in graph_j.nodes(data=True)])
-						current_similarity = similarity(names_i, names_j)
-						if current_similarity > 0:
-							candidates.append((current_similarity, block_j))
-				merged_model.node[block_i]['max_similarity'] = max(candidates, key=lambda x: x[0])[0]
-				merged_model.node[block_i]['median_similarity'] = statistics.median([c[0] for c in candidates])
-				merged_model.node[block_i]['average_similarity'] = statistics.mean([c[0] for c in candidates])
-				for value, block in sorted(candidates, key=lambda x: x[0], reverse=True)[:similarity_depth]:
-					merged_model.add_edge(block_i, block, type='suggested_identity')
-					merged_model[block_i][block]['similarity'] = value
-					merged_model[block_i][block]['label'] = '%s:\n%.4f' % (similarity_name, value)
-		for block in merged_model:
-			del merged_model.node[block]['graph']
-		if drop_inter_cluster_edges:
-			nx.write_graphml(merged_model, os.path.join(dir, 'similarity.model_%s.graphml' % similarity_name))
-		else:
-			nx.write_graphml(merged_model, os.path.join(dir, 'block.model_%s.graphml' % similarity_name))
 		return merged_model
 
 print("coverage_cluster.algorithm was loaded.")
