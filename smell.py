@@ -18,17 +18,19 @@ class Sniffer(object):
 		count = 0
 		for node, data in self.graphs['jaccard'].nodes(data=True):
 			if data['clustering'] == clustering.key:
-				if len(self.graphs['jaccard'].out_edges(node, data=True)) == 1 and data['max_similarity'] == 1:
+				out_edges = self.graphs['jaccard'].out_edges(node, data=True)
+				if len(out_edges) == 1 and out_edges[0][2]['similarity'] == 1:
 					count += 1
 		return count
 
 	def detect_clean_cut(self, base_clustering, derived_clustering):
 		count = 0
-		for node, node_data in self.graphs['snail'].nodes(data=True):
+		for node, node_data in self.graphs['inclusion'].nodes(data=True):
 			if node_data['clustering'] == base_clustering.key:
-				if len(self.graphs['snail'].out_edges(node, data=True)) > 1 and node_data['max_similarity'] < 1:
-					for source, target, edge_data in self.graphs['snail'].in_edges(node, data=True):
-						if self.graphs['snail'].node[source]['clustering'] == derived_clustering.key:
+				out_edges = self.graphs['inclusion'].out_edges(node, data=True)
+				if len(out_edges) > 1 and out_edges[0][2]['similarity'] < 1:
+					for source, target, edge_data in self.graphs['inclusion'].in_edges(node, data=True):
+						if self.graphs['inclusion'].node[source]['clustering'] == derived_clustering.key:
 							if edge_data['similarity'] < 1:
 								break
 					else:
@@ -37,11 +39,12 @@ class Sniffer(object):
 
 	def detect_cut(self, base_clustering, derived_clustering, threshold=1):
 		count = 0
-		for node, node_data in self.graphs['snail'].nodes(data=True):
+		for node, node_data in self.graphs['inclusion'].nodes(data=True):
 			if node_data['clustering'] == base_clustering.key:
-				if len(self.graphs['snail'].out_edges(node, data=True)) > 1 and node_data['max_similarity'] < 1:
-					for source, target, edge_data in self.graphs['snail'].in_edges(node, data=True):
-						if self.graphs['snail'].node[source]['clustering'] == derived_clustering.key:
+				out_edges = self.graphs['inclusion'].out_edges(node, data=True)
+				if len(out_edges) > 1 and out_edges[0][2]['similarity'] < 1:
+					for source, target, edge_data in self.graphs['inclusion'].in_edges(node, data=True):
+						if self.graphs['inclusion'].node[source]['clustering'] == derived_clustering.key:
 							if edge_data['similarity'] <= threshold:
 								count += 1
 								break

@@ -39,12 +39,12 @@ def _mapping_to_clustering(mapping):
 	return clusters
 
 class Clustering(object):
-	def __init__(self, mapping, name, key, graph=None):
+	def __init__(self, mapping, name, key, data):
+		self.data = data
 		self.name = name
 		self.mapping = mapping
 		self.clusters = _mapping_to_clustering(mapping)
 		self.base_set = {k for k in mapping}
-		self._graph = graph
 		self._init_size_metrics()
 		self.key = key
 
@@ -55,21 +55,17 @@ class Clustering(object):
 			self.size_of[i] = len(cluster)
 
 	def name_of(self, node):
-		if self._graph:
-			return self._graph.node[node]['name']
+		return self.data[node].get('name', 'noname')
 
 	def domain_of(self, node):
-		if self._graph:
-			return self._graph.node[node]['domain']
+		return self.data[node].get('domain', 'unknown')
 
-	def save(self, name, filter='.*'):
+	def save(self, name):
 		with open('%s.clusters.txt' % name, 'w') as clusters_output, open('%s.mapping.txt' % name, 'w') as mapping_output:
 			for key in self.clusters:
 				clusters_output.write('%s:\n' % key)
 				for node in self.clusters[key]:
 					name = node
-					if self._graph:
-						name = json.dumps({k: v for k, v in self._graph.node[node].items() if re.search(filter, k)})
 					clusters_output.write('%s\n' % name)
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
@@ -81,9 +77,9 @@ class Clustering(object):
 		return True
 
 	def compare_to(self, other):
-		return ClusteringComperator(self, other)
+		return ClusteringComparator(self, other)
 
-class ClusteringComperator():
+class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
 		if not clustering_i.compatible_with(clustering_j):
 			raise Exception('tring to compare incompatible clusters')
@@ -130,7 +126,7 @@ class ClusteringComperator():
 		self.count_of_pairs = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count + self.unsame_pair_count
 
 	def reverse(self):
-		return ClusteringComperator(self._clustering_j, self._clustering_i)
+		return ClusteringComparator(self._clustering_j, self._clustering_i)
 
 	def save(self, name):
 		dir = os.path.join(os.path.dirname(name), '%s --- %s' % (self._clustering_i.name, self._clustering_j.name))
@@ -181,7 +177,7 @@ class ClusteringComperator():
 					diff.write('hashes:   %s - %s ; %s - %s\n\n' % (hash_it(self._clustering_j.mapping[pair[0]]), hash_it(self._clustering_j.mapping[pair[1]]), hash_it(self._clustering_i.mapping[pair[0]]), hash_it(self._clustering_i.mapping[pair[1]])))
 
 	def dump(self):
-		print('[Comperation] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
+		print('[Comparison] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
 		print(' |  Chi Squared coefficient = %f' % self.chi_squared_coefficient())
 		print(' |  Rand index = %f' % self.rand_index())
 		print(' |  Fowlkes–Mallows index = %f' % self.fowlkes_mallows_index())
@@ -246,7 +242,7 @@ def f_measuere(a, b):
 		return 0
 	return (2 * rij * pij) / (rij + pij)
 
-def snail_coefficient(a, b):
+def inclusion_coefficient(a, b):
 	return len(a & b) / len(a)
 
 print("coverage_cluster.clustering was loaded.")

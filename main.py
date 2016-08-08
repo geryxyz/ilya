@@ -7,23 +7,24 @@ from os.path import basename, splitext
 import networkx as nx
 
 filename = sys.argv[1]
+labels_dir = sys.argv[2]
 outputname = filename[:-4]
 name = splitext(basename(filename))[0]
 
-coverage = CoverageBasedData(filename, drop_uncovered=True)
+coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=False)
 detected_clustering = coverage.community_based_clustering(name='%s-detected' % name)
-declared_clustering = coverage.package_based_clustering(name='%s-declared' % name)
-comperation_dec_det = declared_clustering.compare_to(detected_clustering)
-comperation_det_dec = comperation_dec_det.reverse()
+declared_clustering = coverage.package_based_clustering(name='%s-declared' % name, labels_dir=labels_dir)
+comparison_dec_det = declared_clustering.compare_to(detected_clustering)
+comparison_det_dec = comparison_dec_det.reverse()
 
-comperation_dec_det.dump()
-comperation_det_dec.dump()
+comparison_dec_det.dump()
+comparison_det_dec.dump()
 
-coverage.save(outputname, clusterings=[detected_clustering, declared_clustering], similarity_depth=None)
+coverage.save(outputname, clusterings=[detected_clustering, declared_clustering], similarity_constrain=lambda v: v > 0)
 detected_clustering.save('%s_detected' % outputname)
 declared_clustering.save('%s_declared' % outputname)
-comperation_dec_det.save(outputname)
-comperation_det_dec.save(outputname)
+comparison_dec_det.save(outputname)
+comparison_det_dec.save(outputname)
 print("Measurement saved.")
 
 sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering)
