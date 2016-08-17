@@ -45,7 +45,6 @@ def _longest_substr(data):
 class CoverageBasedData(object):
 	def __init__(self, path_to_dump, drop_uncovered=False, regenerate_edge_list=True):
 		self._soda_dump = path_to_dump
-		self.graph = nx.Graph()
 		self._create_edge_list(path_to_dump, regenerate_edge_list=regenerate_edge_list)
 		all_names = [datum['name'] for _, datum in self.data.items()]
 		self._most_common = _longest_substr(all_names)
@@ -64,24 +63,31 @@ class CoverageBasedData(object):
 			header = next(matrix).strip()
 			code_elements = header.split(';')[1:]
 			len_of_code = len(code_elements)
+			global_node_index = 0
+			seen_test_names = []
+			seen_code_names = []
 			for test_index, line in enumerate(matrix):
 				print("converting matrix to edges, done: %.4f" % (test_index / count_lines))
 				parts = line.strip().split(';')
 				test_name = parts[0]
+				test_node = global_node_index
 				for code_index, connection in enumerate(parts[1:]):
 					code_name = code_elements[code_index]
-					test_node = test_index + len(code_elements)
-					code_node = code_index
-					if test_node not in self.data:
-						self.data[str(test_node)] = {}
-					if code_node not in self.data:
-						self.data[str(code_node)] = {}
-					self.data[str(test_node)]['name'] = test_name
-					self.data[str(code_node)]['name'] = code_name
-					self.data[str(test_node)]['domain'] = 'test'
-					self.data[str(code_node)]['domain'] = 'code'
+					code_node = global_node_index
 					if int(connection) > 0:
 						edge_list.write('%d %d\n' % (code_node, test_node))
+						if test_name not in seen_test_names:
+							seen_test_names.append(test_name)
+							self.data[global_node_index] = {}
+							self.data[global_node_index]['name'] = test_name
+							self.data[global_node_index]['domain'] = 'test'
+							global_node_index += 1
+						if code_name not in seen_code_names:
+							seen_code_names.append(code_name)
+							self.data[global_node_index] = {}
+							self.data[global_node_index]['name'] = code_name
+							self.data[global_node_index]['domain'] = 'code'
+							global_node_index += 1
 		with open(self.data_mapping_path, 'w') as data_mapping:
 			for entry in self.data.items():
 				data_mapping.write('%s\n' % json.dumps(entry))

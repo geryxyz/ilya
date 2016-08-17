@@ -11,7 +11,7 @@ labels_dir = sys.argv[2]
 outputname = filename[:-4]
 name = splitext(basename(filename))[0]
 
-coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=False)
+coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=True)
 detected_clustering = coverage.community_based_clustering(name='%s-detected' % name)
 declared_clustering = coverage.package_based_clustering(name='%s-declared' % name, labels_dir=labels_dir)
 comparison_dec_det = declared_clustering.compare_to(detected_clustering)

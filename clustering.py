@@ -73,6 +73,7 @@ class Clustering(object):
 	def compatible_with(self, other):
 		for node in self.base_set:
 			if node not in other.base_set:
+				pdb.set_trace()
 				return False
 		return True
 
@@ -87,6 +88,7 @@ class ClusteringComparator():
 		self._clustering_j = clustering_j
 		self.base_set = clustering_i.base_set | clustering_j.base_set
 		self.base_set_size = len(self.base_set)
+		pdb.set_trace()
 		self._init_confusion_matrix()
 		self._init_same_pairs()
 
