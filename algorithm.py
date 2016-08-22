@@ -62,32 +62,33 @@ class CoverageBasedData(object):
 		with open(file_path, 'r') as matrix, open(self.edge_list_path, 'w') as edge_list:
 			header = next(matrix).strip()
 			code_elements = header.split(';')[1:]
-			len_of_code = len(code_elements)
 			global_node_index = 0
-			seen_test_names = []
-			seen_code_names = []
+			code_map = {}
+			test_map = {}
 			for test_index, line in enumerate(matrix):
 				print("converting matrix to edges, done: %.4f" % (test_index / count_lines))
 				parts = line.strip().split(';')
 				test_name = parts[0]
-				test_node = global_node_index
 				for code_index, connection in enumerate(parts[1:]):
 					code_name = code_elements[code_index]
-					code_node = global_node_index
 					if int(connection) > 0:
-						edge_list.write('%d %d\n' % (code_node, test_node))
-						if test_name not in seen_test_names:
-							seen_test_names.append(test_name)
-							self.data[global_node_index] = {}
-							self.data[global_node_index]['name'] = test_name
-							self.data[global_node_index]['domain'] = 'test'
+						if code_index not in code_map:
+							code_map[code_index] = global_node_index
 							global_node_index += 1
-						if code_name not in seen_code_names:
-							seen_code_names.append(code_name)
-							self.data[global_node_index] = {}
-							self.data[global_node_index]['name'] = code_name
-							self.data[global_node_index]['domain'] = 'code'
+						if test_index not in test_map:
+							test_map[test_index] = global_node_index
 							global_node_index += 1
+						current_code_node = code_map[code_index]
+						current_test_node = test_map[test_index]
+						if current_test_node not in self.data:
+							self.data[current_test_node] = {}
+						self.data[current_test_node]['name'] = test_name
+						self.data[current_test_node]['domain'] = 'test'
+						if current_code_node not in self.data:
+							self.data[current_code_node] = {}
+						self.data[current_code_node]['name'] = code_name
+						self.data[current_code_node]['domain'] = 'code'
+						edge_list.write('%d %d\n' % (current_code_node, current_test_node))
 		with open(self.data_mapping_path, 'w') as data_mapping:
 			for entry in self.data.items():
 				data_mapping.write('%s\n' % json.dumps(entry))
