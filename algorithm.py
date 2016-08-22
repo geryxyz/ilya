@@ -62,7 +62,7 @@ class CoverageBasedData(object):
 		with open(file_path, 'r') as matrix, open(self.edge_list_path, 'w') as edge_list:
 			header = next(matrix).strip()
 			code_elements = header.split(';')[1:]
-			global_node_index = 0
+			global_node_index = '0'
 			code_map = {}
 			test_map = {}
 			for test_index, line in enumerate(matrix):
@@ -74,10 +74,10 @@ class CoverageBasedData(object):
 					if int(connection) > 0:
 						if code_index not in code_map:
 							code_map[code_index] = global_node_index
-							global_node_index += 1
+							global_node_index = str(int(global_node_index)+1)
 						if test_index not in test_map:
 							test_map[test_index] = global_node_index
-							global_node_index += 1
+							global_node_index = str(int(global_node_index)+1)
 						current_code_node = code_map[code_index]
 						current_test_node = test_map[test_index]
 						if current_test_node not in self.data:
@@ -88,7 +88,7 @@ class CoverageBasedData(object):
 							self.data[current_code_node] = {}
 						self.data[current_code_node]['name'] = code_name
 						self.data[current_code_node]['domain'] = 'code'
-						edge_list.write('%d %d\n' % (current_code_node, current_test_node))
+						edge_list.write('%s %s\n' % (current_code_node, current_test_node))
 		with open(self.data_mapping_path, 'w') as data_mapping:
 			for entry in self.data.items():
 				data_mapping.write('%s\n' % json.dumps(entry))
