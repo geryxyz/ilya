@@ -83,7 +83,7 @@ class Clustering(object):
 class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
 		if not clustering_i.compatible_with(clustering_j):
-			raise Exception('tring to compare incompatible clusters')
+			raise Exception('trying to compare incompatible clusters')
 		self._clustering_i = clustering_i
 		self._clustering_j = clustering_j
 		self.base_set = clustering_i.base_set | clustering_j.base_set
@@ -99,31 +99,49 @@ class ClusteringComparator():
 				self.confusion_matrix[i][j] = len(cluster_i & cluster_j)
 
 	def _init_same_pairs(self):
-		self.same_pair = []
+		#self.same_pair = []
+		self.same_pair_count = 0
 		self.semisame_ij = []
+		self.semisame_ij_count = 0
 		self.semisame_ji = []
-		self.unsame_pair = []
+		self.semisame_ji_count = 0
+		#self.unsame_pair = []
+		self.unsame_pair_count = 0
 		base_list = list(self.base_set)
+		i = 0
+		ps = pc = 5
+		n = sum(x for x in range(self.base_set_size))
+		print("base set size = %d\npairs = %d" % (self.base_set_size, n))
 		for a, node_a in enumerate(base_list):
 			for b, node_b in enumerate(base_list):
+				i += 1
+				p = int(i/n*100)
+				if p > 0 and p % pc == 0:
+					print("%3d%% :: same = %d, ij = %d, ji = %d, unsame = %d" % (p, self.same_pair_count, self.semisame_ij_count, self.semisame_ji_count, self.unsame_pair_count))
+					pc += ps
 				if a == b:
 					break
 				both_i = self._clustering_i.mapping[node_a] == self._clustering_i.mapping[node_b]
 				both_j = self._clustering_j.mapping[node_a] == self._clustering_j.mapping[node_b]
 				if both_i and both_j:
-					self.same_pair.append((node_a, node_b))
+					#self.same_pair.append((node_a, node_b))
+					self.same_pair_count += 1
 				elif both_i and not both_j:
-					self.semisame_ij.append((node_a, node_b))
+					#self.semisame_ij.append((node_a, node_b))
+					self.semisame_ij_count += 1
 				elif not both_i and both_j:
-					self.semisame_ji.append((node_a, node_b))
+					#self.semisame_ji.append((node_a, node_b))
+					self.semisame_ji_count += 1
 				elif not both_i and not both_j:
-					self.unsame_pair.append((node_a, node_b))
+					#self.unsame_pair.append((node_a, node_b))
+					self.unsame_pair_count += 1
 				else:
 					raise Exception('impossible same-pair alignment')
-		self.same_pair_count = len(self.same_pair)
-		self.semisame_ij_count = len(self.semisame_ij)
-		self.semisame_ji_count = len(self.semisame_ji)
-		self.unsame_pair_count = len(self.unsame_pair)
+
+		#self.same_pair_count = len(self.same_pair)
+		#self.semisame_ij_count = len(self.semisame_ij)
+		#self.semisame_ji_count = len(self.semisame_ji)
+		#self.unsame_pair_count = len(self.unsame_pair)
 		self.count_of_pairs = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count + self.unsame_pair_count
 
 	def reverse(self):
@@ -137,7 +155,7 @@ class ClusteringComparator():
 		self._save_confusion_matrix(dir)
 		self._save_pair_counts(dir)
 		self._save_metrics(dir)
-		self._save_bad_pairs(dir)
+		#self._save_bad_pairs(dir)
 
 	def _save_confusion_matrix(self, dir):
 		with open(os.path.join(dir, 'confusion_matrix.csv'), 'w') as matrix:
@@ -181,7 +199,7 @@ class ClusteringComparator():
 		print('[Comparison] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
 		print(' |  Chi Squared coefficient = %f' % self.chi_squared_coefficient())
 		print(' |  Rand index = %f' % self.rand_index())
-		print(' |  Fowlkes–Mallows index = %f' % self.fowlkes_mallows_index())
+		print(' |  Fowlkes-Mallows index = %f' % self.fowlkes_mallows_index())
 		print(' |  Jaccard index = %f' % self.jaccard_index())
 		print(' |  Mirkin metric = %f' % self.mirkin_metric())
 		print(' |  F-measure = %f' % self.f_measure())
