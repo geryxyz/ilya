@@ -19,15 +19,23 @@ def _prefix_of(name, level=0):
 		prefix = match.group('prefix')
 	return '/'.join(prefix.split('/')[:(-2 - level)])
 
-def _label_of(name, labels_dir, level=0):
-	paths = glob2.glob(os.path.join(labels_dir,'**/*.csv'))
-	for label_path in paths:
-		with open(label_path, 'r') as label_file:
+def _load_labels(labels_dir):
+	labels = {}
+	paths = glob2.glob(os.path.join(labels_dir, '**/*.csv'))
+
+	for labels_csv_path in paths:
+		with open(labels_csv_path, 'r') as label_file:
 			for line in label_file:
 				parts = line.strip().split(';')
-				if parts[0] == name:
-					print("Using label '%s' for '%s'" % (parts[2], parts[0]))
-					return parts[2]
+				labels[parts[0]] = parts[2]
+
+	return labels
+
+def _label_of(name, labels, level=0):
+	if name in labels:
+		label = labels[name]
+		print("Using label '%s' for '%s'" % (label, name))
+		return label
 	else:
 		return _prefix_of(name, level)
 
@@ -111,12 +119,17 @@ class CoverageBasedData(object):
 
 	def package_based_clustering(self, name, labels_dir=None, level=0, key='declared_cluster'):
 		mapping = {}
+
+		if labels_dir:
+			labels = _load_labels(labels_dir)
+
 		for node, data in self.data.items():
 			name_of_node = data.get('name', 'noname')
-			if labels_dir:
-				mapping[str(node)] = _label_of(name_of_node, labels_dir, level=level)
+			if labels:
+				mapping[str(node)] = _label_of(name_of_node, labels, level=level)
 			else:
 				mapping[str(node)] = _prefix_of(name_of_node, level=level)
+
 		return Clustering(mapping, name, key, self.data)
 
 	def community_based_clustering(self, name, key='community_cluster', regenerate_external_data=False):
