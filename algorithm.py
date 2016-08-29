@@ -26,8 +26,8 @@ def _label_of(name, labels_dir, level=0):
 			for line in label_file:
 				parts = line.strip().split(';')
 				if parts[0] == name:
-					print("Using label '%s' for '%s'" % (parts[1], parts[0]))
-					return parts[1]
+					print("Using label '%s' for '%s'" % (parts[2], parts[0]))
+					return parts[2]
 	else:
 		return _prefix_of(name, level)
 
