@@ -31,13 +31,20 @@ def _load_labels(labels_dir):
 
 	return labels
 
-def _label_of(name, labels, level=0):
+def _label_of(name, labels, level=0, fallback=None):
 	if name in labels:
 		label = labels[name]
 		print("Using label '%s' for '%s'" % (label, name))
 		return label
 	else:
-		return _prefix_of(name, level)
+		if fallback:
+			if isinstance(fallback, str):
+				print("Using fallback label '%s' for '%s'" % (fallback, name))
+				return fallback
+			else:
+				raise Exception("The 'fallback' attribute must be a string.")
+		else:
+			return _prefix_of(name, level)
 
 def _longest_substr(data):
 	substr = ''
@@ -126,7 +133,7 @@ class CoverageBasedData(object):
 		for node, data in self.data.items():
 			name_of_node = data.get('name', 'noname')
 			if labels:
-				mapping[str(node)] = _label_of(name_of_node, labels, level=level)
+				mapping[str(node)] = _label_of(name_of_node, labels, level=level, fallback="unknown")
 			else:
 				mapping[str(node)] = _prefix_of(name_of_node, level=level)
 
