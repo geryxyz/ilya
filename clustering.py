@@ -80,6 +80,30 @@ class Clustering(object):
 	def compare_to(self, other):
 		return ClusteringComparator(self, other)
 
+	def clustering_metrics(self, edge_list_path):
+		print("Clustering metrics (cluster_id : value)")
+		good_edges = dict()
+		bad_edges = dict()
+		for cluster_id ,y in self.clusters.items():
+			good_edges[cluster_id] = 0
+			bad_edges[cluster_id] = 0
+
+		with open(edge_list_path, 'r') as edge_list:
+			for one_edge in edge_list.readlines():
+				from_edge = one_edge.split(" ")[0]
+				to_edge = one_edge.split(" ")[1].split("\n")[0]
+				for cluster_id, edge_set in self.clusters.items():
+					if str(from_edge) in edge_set:
+						if str(to_edge) in self.clusters[cluster_id]:
+							good_edges[cluster_id] = good_edges[cluster_id] + 1
+						else:
+							bad_edges[cluster_id] = bad_edges[cluster_id] + 1
+
+		for cluster_id, good_edges_count in good_edges.items():
+			sum_edges = good_edges_count + bad_edges[cluster_id]
+			metrics_value = good_edges_count / sum_edges
+			print("cluster id: "+str(cluster_id)+"\tvalue: "+str(metrics_value))
+
 class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
 		if not clustering_i.compatible_with(clustering_j):
