@@ -13,7 +13,7 @@ name = splitext(basename(filename))[0]
 
 coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=True)
 detected_clustering = coverage.community_based_clustering(name='%s-detected' % name)
-detected_clustering.clustering_metrics(coverage.edge_list_path)
+detected_clustering.clustering_metrics(coverage.edge_list_path, outputname)
 declared_clustering = coverage.package_based_clustering(name='%s-declared' % name, labels_dir=labels_dir)
 comparison_dec_det = declared_clustering.compare_to(detected_clustering)
 comparison_det_dec = comparison_dec_det.reverse()
