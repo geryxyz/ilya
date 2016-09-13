@@ -80,10 +80,11 @@ class Clustering(object):
 	def compare_to(self, other):
 		return ClusteringComparator(self, other)
 
-	def clustering_metrics(self, edge_list_path):
-		print("Clustering metrics (cluster_id : value)")
+	def clustering_metrics(self, edge_list_path, outputname):
 		good_edges = dict()
 		bad_edges = dict()
+		global_good_edges = 0
+		global_bad_edges = 0
 		for cluster_id ,y in self.clusters.items():
 			good_edges[cluster_id] = 0
 			bad_edges[cluster_id] = 0
@@ -96,13 +97,19 @@ class Clustering(object):
 					if str(from_edge) in edge_set:
 						if str(to_edge) in self.clusters[cluster_id]:
 							good_edges[cluster_id] = good_edges[cluster_id] + 1
+							global_good_edges = global_good_edges + 1
 						else:
 							bad_edges[cluster_id] = bad_edges[cluster_id] + 1
+							global_bad_edges = global_bad_edges + 1
+		
+		with open('%s.C-confidence.csv' % outputname, 'w') as confidence:		
+			confidence.write("Global confidence: "+str(global_good_edges/(global_good_edges+global_bad_edges))+"\n")
+			confidence.write("Clusters confidence (cluster_id : value)\n")
+			for cluster_id, good_edges_count in good_edges.items():
+				sum_edges = good_edges_count + bad_edges[cluster_id]
+				metrics_value = good_edges_count / sum_edges
+				confidence.write("cluster id: "+str(cluster_id)+"\t;value: "+str(metrics_value)+"\n")
 
-		for cluster_id, good_edges_count in good_edges.items():
-			sum_edges = good_edges_count + bad_edges[cluster_id]
-			metrics_value = good_edges_count / sum_edges
-			print("cluster id: "+str(cluster_id)+"\tvalue: "+str(metrics_value))
 
 class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
