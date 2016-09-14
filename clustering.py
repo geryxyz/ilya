@@ -69,8 +69,8 @@ class Clustering(object):
 	def domain_of(self, node):
 		return self.data[node].get('domain', 'unknown')
 
-	def save(self, name):
-		with open('%s.clusters.txt' % name, 'w') as clusters_output, open('%s.mapping.txt' % name, 'w') as mapping_output:
+	def save(self, filename):
+		with open('%s.clusters.txt' % filename, 'w') as clusters_output, open('%s.mapping.txt' % filename, 'w') as mapping_output:
 			for key in self.clusters:
 				clusters_output.write('%s:\n' % key)
 				for node in self.clusters[key]:
@@ -79,10 +79,10 @@ class Clustering(object):
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
 
-		with open('%s.confidence.csv' % name, 'w') as confidence_output:
+		with open('%s.confidence.csv' % filename, 'w') as confidence_output:
 			confidence_output.write("Cluster;Confidence\n")
-			for cluster_id, confidence in self.confidence:
-				confidence_output.write("%s;%f" % (cluster_id, confidence))
+			for cluster_id, confidence in self.confidence.items():
+				confidence_output.write("%s;%f\n" % (cluster_id, confidence))
 
 	def compatible_with(self, other):
 		for node in self.base_set:
@@ -98,8 +98,9 @@ class Clustering(object):
 		if self.key != 'community_cluster':
 			raise Exception("Trying to calculate C-confidence on a not community-based clustering")
 
-		good_edges = dict()
-		bad_edges = dict()
+		self.confidence = dict()
+		good_edges = {k: 0 for k in self.clusters.keys()}
+		bad_edges = {k: 0 for k in self.clusters.keys()}
 
 		with open(edge_list_path, 'r') as edge_list_file:
 			for line in edge_list_file:
@@ -110,8 +111,8 @@ class Clustering(object):
 				to_edge = parts[1]
 
 				for cluster_id, edge_set in self.clusters.items():
-					if str(from_edge) in edge_set:
-						if str(to_edge) in self.clusters[cluster_id]:
+					if from_edge in edge_set:
+						if to_edge in self.clusters[cluster_id]:
 							good_edges[cluster_id] = good_edges.get(cluster_id, 0) + 1
 							good_edges['global'] = good_edges.get('global', 0) + 1
 						else:
@@ -178,6 +179,10 @@ class Clustering(object):
 			)
 			results.append(r)
 
+		gn = sum([r.called_methods_in_cluster for r in results])
+		gm = sum([r.called_methods for r in results]) - sum([r.called_methods_in_cluster for r in results])
+		gc = gn / gm if gm > 0 else 0
+
 		global_result = Result(
 			cluster='global',
 			tests_in_cluster=sum([r.tests_in_cluster for r in results]),
@@ -185,15 +190,13 @@ class Clustering(object):
 			methods_in_cluster=sum([r.methods_in_cluster for r in results]),
 			called_methods=sum([r.called_methods for r in results]),
 			called_methods_nm=sum([r.called_methods_nm for r in results]),
-			called_methods_in_cluster=sum([r.called_methods_in_cluster for r in results]),
+			called_methods_in_cluster=gn,
+			confidence=gc
 		)
-
-		gn = global_result.called_methods_in_cluster
-		gm = global_result.called_methods - global_result.called_methods_nm
-		global_result.confidence = gn / gm if gm > 0 else 0
 
 		results.append(global_result)
 
+		self.confidence = dict()
 		for r in results:
 			self.confidence[r.cluster] = r.confidence
 

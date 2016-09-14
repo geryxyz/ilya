@@ -9,8 +9,9 @@ import networkx as nx
 coverage_file = sys.argv[1]
 labels_dir = sys.argv[2]
 direct_calls_file = sys.argv[3]
-p_treshold = float(sys.argv[4])
-c_treshold = float(sys.argv[5])
+test_type = sys.argv[4]
+p_treshold = float(sys.argv[5])
+c_treshold = float(sys.argv[6])
 outputname = coverage_file[:-4]
 name = splitext(basename(coverage_file))[0]
 
@@ -44,5 +45,5 @@ print("Saving declared clusters...")
 declared_clustering.save('%s_declared' % outputname)
 print("Measurement saved.")
 
-sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering, p_treshold, c_treshold)
+sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering, test_type, p_treshold, c_treshold)
 sniffer.save(outputname)
