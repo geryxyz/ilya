@@ -6,19 +6,24 @@ from smell import *
 from os.path import basename, splitext
 import networkx as nx
 
-filename = sys.argv[1]
+coverage_file = sys.argv[1]
 labels_dir = sys.argv[2]
-outputname = filename[:-4]
-name = splitext(basename(filename))[0]
+direct_calls_file = sys.argv[3]
+p_treshold = float(sys.argv[4])
+c_treshold = float(sys.argv[5])
+outputname = coverage_file[:-4]
+name = splitext(basename(coverage_file))[0]
 
 print("Processing coverage based data...")
-coverage = CoverageBasedData(filename, drop_uncovered=True, regenerate_edge_list=False)
+coverage = CoverageBasedData(coverage_file, drop_uncovered=True, regenerate_edge_list=False)
 print("Creating community based clusters...")
 detected_clustering = coverage.community_based_clustering(name='%s-detected' % name, regenerate_external_data=False)
-print("Calculating clustering metrics...")
-detected_clustering.clustering_metrics(coverage.edge_list_path, outputname)
+print("Calculating confidence...")
+detected_clustering.calculate_c_confidence(coverage.edge_list_path)
 print("Creating package based clusters...")
 declared_clustering = coverage.package_based_clustering(name='%s-declared' % name, labels_dir=labels_dir)
+print("Calculating confidence...")
+declared_clustering.calculate_p_confidence(direct_calls_file)
 print("Comparing declared to detected...")
 comparison_dec_det = declared_clustering.compare_to(detected_clustering)
 print("Comparing detected to declared...")
@@ -39,5 +44,5 @@ print("Saving declared clusters...")
 declared_clustering.save('%s_declared' % outputname)
 print("Measurement saved.")
 
-sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering)
+sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering, p_treshold, c_treshold)
 sniffer.save(outputname)

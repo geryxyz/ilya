@@ -1,12 +1,21 @@
-import random
-import statistics
-import json
-import re
-import pdb
+import collections
+import hashlib
 import math
 import os
+import pdb
+import random
 import shutil
-import hashlib
+
+
+Result = collections.namedtuple('Result', 'cluster '
+                                          'tests_in_cluster '
+                                          'tests_in_cluster_nm '
+                                          'methods_in_cluster '
+                                          'called_methods '
+                                          'called_methods_nm '
+                                          'called_methods_in_cluster '
+                                          'confidence')
+
 
 def chunks_of(l, n):
 	"""Yield successive n-sized chunks from l."""
@@ -70,6 +79,11 @@ class Clustering(object):
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
 
+		with open('%s.confidence.csv' % name, 'w') as confidence_output:
+			confidence_output.write("Cluster;Confidence\n")
+			for cluster_id, confidence in self.confidence:
+				confidence_output.write("%s;%f" % (cluster_id, confidence))
+
 	def compatible_with(self, other):
 		for node in self.base_set:
 			if node not in other.base_set:
@@ -80,35 +94,111 @@ class Clustering(object):
 	def compare_to(self, other):
 		return ClusteringComparator(self, other)
 
-	def clustering_metrics(self, edge_list_path, outputname):
+	def calculate_c_confidence(self, edge_list_path):
+		if self.key != 'community_cluster':
+			raise Exception("Trying to calculate C-confidence on a not community-based clustering")
+
 		good_edges = dict()
 		bad_edges = dict()
-		global_good_edges = 0
-		global_bad_edges = 0
-		for cluster_id ,y in self.clusters.items():
-			good_edges[cluster_id] = 0
-			bad_edges[cluster_id] = 0
 
-		with open(edge_list_path, 'r') as edge_list:
-			for one_edge in edge_list.readlines():
-				from_edge = one_edge.split(" ")[0]
-				to_edge = one_edge.split(" ")[1].split("\n")[0]
+		with open(edge_list_path, 'r') as edge_list_file:
+			for line in edge_list_file:
+				parts = line.strip().split(' ')
+				assert len(parts) == 2
+
+				from_edge = parts[0]
+				to_edge = parts[1]
+
 				for cluster_id, edge_set in self.clusters.items():
 					if str(from_edge) in edge_set:
 						if str(to_edge) in self.clusters[cluster_id]:
-							good_edges[cluster_id] = good_edges[cluster_id] + 1
-							global_good_edges = global_good_edges + 1
+							good_edges[cluster_id] = good_edges.get(cluster_id, 0) + 1
+							good_edges['global'] = good_edges.get('global', 0) + 1
 						else:
-							bad_edges[cluster_id] = bad_edges[cluster_id] + 1
-							global_bad_edges = global_bad_edges + 1
+							bad_edges[cluster_id] = bad_edges.get(cluster_id, 0) + 1
+							bad_edges['global'] = bad_edges.get('global', 0) + 1
 
-		with open('%s.C-confidence.csv' % outputname, 'w') as confidence:
-			confidence.write("Global confidence: "+str(global_good_edges/(global_good_edges+global_bad_edges))+"\n")
-			confidence.write("Clusters confidence (cluster_id : value)\n")
-			for cluster_id, good_edges_count in good_edges.items():
-				sum_edges = good_edges_count + bad_edges[cluster_id]
-				metrics_value = good_edges_count / sum_edges
-				confidence.write("cluster id: "+str(cluster_id)+"\t;value: "+str(metrics_value)+"\n")
+		for cluster_id, num_good_edges in good_edges.items():
+			num_all_edges = num_good_edges + bad_edges[cluster_id]
+			confidence = num_good_edges / num_all_edges if num_all_edges > 0 else 0
+			self.confidence[cluster_id] = confidence
+
+	def calculate_p_confidence(self, direct_calls_path):
+		if self.key != 'declared_cluster':
+			raise Exception("Trying to calculate P-confidence on a not package-based clustering")
+
+		methods = set([item['name'] for _, item in self.data.items() if item['domain'] == 'code'])
+
+		direct_calls = dict()
+
+		with open(direct_calls_path, 'r') as direct_calls_file:
+			for line in direct_calls_file:
+				parts = line.strip().split(';')
+				assert len(parts) == 2
+
+				test = parts[0]
+				method = parts[1]
+
+				if not test in direct_calls:
+					direct_calls[test] = set()
+
+				direct_calls[test].add(method)
+
+		results = list()
+
+		for cluster, members in self.clusters.items():
+			tests_in_cluster = set([self.data[m]['name'] for m in members if self.data[m]['domain'] == 'test'])
+			methods_in_cluster = set([self.data[m]['name'] for m in members if self.data[m]['domain'] == 'code'])
+
+			called_methods = set()
+			tests_not_matched = set()
+
+			for test in tests_in_cluster:
+				if test in direct_calls:
+					called_methods |= direct_calls[test]
+				else:
+					tests_not_matched.add(test)
+
+			matched_called_methods = called_methods & methods
+			called_in_cluster = matched_called_methods & methods_in_cluster
+
+			n = len(called_in_cluster)
+			m = len(matched_called_methods)
+			c = n / m if m > 0 else 0
+
+			r = Result(
+				cluster=cluster,
+				tests_in_cluster=len(tests_in_cluster),
+				tests_in_cluster_nm=len(tests_not_matched),
+				methods_in_cluster=len(methods_in_cluster),
+				called_methods=len(called_methods),
+				called_methods_nm=len(called_methods) - m,
+				called_methods_in_cluster=n,
+				confidence=c
+			)
+			results.append(r)
+
+		global_result = Result(
+			cluster='global',
+			tests_in_cluster=sum([r.tests_in_cluster for r in results]),
+			tests_in_cluster_nm=sum([r.tests_in_cluster_nm for r in results]),
+			methods_in_cluster=sum([r.methods_in_cluster for r in results]),
+			called_methods=sum([r.called_methods for r in results]),
+			called_methods_nm=sum([r.called_methods_nm for r in results]),
+			called_methods_in_cluster=sum([r.called_methods_in_cluster for r in results]),
+		)
+
+		gn = global_result.called_methods_in_cluster
+		gm = global_result.called_methods - global_result.called_methods_nm
+		global_result.confidence = gn / gm if gm > 0 else 0
+
+		results.append(global_result)
+
+		for r in results:
+			self.confidence[r.cluster] = r.confidence
+
+	def get_confidence(self, cluster):
+		return self.confidence.get(cluster, 0)
 
 
 class ClusteringComparator():
