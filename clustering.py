@@ -1,12 +1,21 @@
-import random
-import statistics
-import json
-import re
-import pdb
+import collections
+import hashlib
 import math
 import os
+import pdb
+import random
 import shutil
-import hashlib
+
+
+Result = collections.namedtuple('Result', 'cluster '
+                                          'tests_in_cluster '
+                                          'tests_in_cluster_nm '
+                                          'methods_in_cluster '
+                                          'called_methods '
+                                          'called_methods_nm '
+                                          'called_methods_in_cluster '
+                                          'confidence')
+
 
 def chunks_of(l, n):
 	"""Yield successive n-sized chunks from l."""
@@ -60,8 +69,8 @@ class Clustering(object):
 	def domain_of(self, node):
 		return self.data[node].get('domain', 'unknown')
 
-	def save(self, name):
-		with open('%s.clusters.txt' % name, 'w') as clusters_output, open('%s.mapping.txt' % name, 'w') as mapping_output:
+	def save(self, filename):
+		with open('%s.clusters.txt' % filename, 'w') as clusters_output, open('%s.mapping.txt' % filename, 'w') as mapping_output:
 			for key in self.clusters:
 				clusters_output.write('%s:\n' % key)
 				for node in self.clusters[key]:
@@ -69,6 +78,11 @@ class Clustering(object):
 					clusters_output.write('%s\n' % name)
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
+
+		with open('%s.confidence.csv' % filename, 'w') as confidence_output:
+			confidence_output.write("Cluster;Confidence\n")
+			for cluster_id, confidence in self.confidence.items():
+				confidence_output.write("%s;%f\n" % (cluster_id, confidence))
 
 	def compatible_with(self, other):
 		for node in self.base_set:
@@ -80,41 +94,120 @@ class Clustering(object):
 	def compare_to(self, other):
 		return ClusteringComparator(self, other)
 
-	def clustering_metrics(self, edge_list_path, outputname):
-		good_edges = dict()
-		bad_edges = dict()
-		global_good_edges = 0
-		global_bad_edges = 0
-		for cluster_id ,y in self.clusters.items():
-			good_edges[cluster_id] = 0
-			bad_edges[cluster_id] = 0
+	def calculate_c_confidence(self, edge_list_path):
+		if self.key != 'community_cluster':
+			raise Exception("Trying to calculate C-confidence on a not community-based clustering")
 
-		with open(edge_list_path, 'r') as edge_list:
-			for one_edge in edge_list.readlines():
-				from_edge = one_edge.split(" ")[0]
-				to_edge = one_edge.split(" ")[1].split("\n")[0]
+		self.confidence = dict()
+		good_edges = {k: 0 for k in self.clusters.keys()}
+		bad_edges = {k: 0 for k in self.clusters.keys()}
+
+		with open(edge_list_path, 'r') as edge_list_file:
+			for line in edge_list_file:
+				parts = line.strip().split(' ')
+				assert len(parts) == 2
+
+				from_edge = parts[0]
+				to_edge = parts[1]
+
 				for cluster_id, edge_set in self.clusters.items():
-					if str(from_edge) in edge_set:
-						if str(to_edge) in self.clusters[cluster_id]:
-							good_edges[cluster_id] = good_edges[cluster_id] + 1
-							global_good_edges = global_good_edges + 1
+					if from_edge in edge_set:
+						if to_edge in self.clusters[cluster_id]:
+							good_edges[cluster_id] = good_edges.get(cluster_id, 0) + 1
+							good_edges['global'] = good_edges.get('global', 0) + 1
 						else:
-							bad_edges[cluster_id] = bad_edges[cluster_id] + 1
-							global_bad_edges = global_bad_edges + 1
-		
-		with open('%s.C-confidence.csv' % outputname, 'w') as confidence:		
-			confidence.write("Global confidence: "+str(global_good_edges/(global_good_edges+global_bad_edges))+"\n")
-			confidence.write("Clusters confidence (cluster_id : value)\n")
-			for cluster_id, good_edges_count in good_edges.items():
-				sum_edges = good_edges_count + bad_edges[cluster_id]
-				metrics_value = good_edges_count / sum_edges
-				confidence.write("cluster id: "+str(cluster_id)+"\t;value: "+str(metrics_value)+"\n")
+							bad_edges[cluster_id] = bad_edges.get(cluster_id, 0) + 1
+							bad_edges['global'] = bad_edges.get('global', 0) + 1
+
+		for cluster_id, num_good_edges in good_edges.items():
+			num_all_edges = num_good_edges + bad_edges[cluster_id]
+			confidence = num_good_edges / num_all_edges if num_all_edges > 0 else 0
+			self.confidence[cluster_id] = confidence
+
+	def calculate_p_confidence(self, direct_calls_path):
+		if self.key != 'declared_cluster':
+			raise Exception("Trying to calculate P-confidence on a not package-based clustering")
+
+		methods = set([item['name'] for _, item in self.data.items() if item['domain'] == 'code'])
+
+		direct_calls = dict()
+
+		with open(direct_calls_path, 'r') as direct_calls_file:
+			for line in direct_calls_file:
+				parts = line.strip().split(';')
+				assert len(parts) == 2
+
+				test = parts[0]
+				method = parts[1]
+
+				if not test in direct_calls:
+					direct_calls[test] = set()
+
+				direct_calls[test].add(method)
+
+		results = list()
+
+		for cluster, members in self.clusters.items():
+			tests_in_cluster = set([self.data[m]['name'] for m in members if self.data[m]['domain'] == 'test'])
+			methods_in_cluster = set([self.data[m]['name'] for m in members if self.data[m]['domain'] == 'code'])
+
+			called_methods = set()
+			tests_not_matched = set()
+
+			for test in tests_in_cluster:
+				if test in direct_calls:
+					called_methods |= direct_calls[test]
+				else:
+					tests_not_matched.add(test)
+
+			matched_called_methods = called_methods & methods
+			called_in_cluster = matched_called_methods & methods_in_cluster
+
+			n = len(called_in_cluster)
+			m = len(matched_called_methods)
+			c = n / m if m > 0 else 0
+
+			r = Result(
+				cluster=cluster,
+				tests_in_cluster=len(tests_in_cluster),
+				tests_in_cluster_nm=len(tests_not_matched),
+				methods_in_cluster=len(methods_in_cluster),
+				called_methods=len(called_methods),
+				called_methods_nm=len(called_methods) - m,
+				called_methods_in_cluster=n,
+				confidence=c
+			)
+			results.append(r)
+
+		gn = sum([r.called_methods_in_cluster for r in results])
+		gm = sum([r.called_methods for r in results]) - sum([r.called_methods_in_cluster for r in results])
+		gc = gn / gm if gm > 0 else 0
+
+		global_result = Result(
+			cluster='global',
+			tests_in_cluster=sum([r.tests_in_cluster for r in results]),
+			tests_in_cluster_nm=sum([r.tests_in_cluster_nm for r in results]),
+			methods_in_cluster=sum([r.methods_in_cluster for r in results]),
+			called_methods=sum([r.called_methods for r in results]),
+			called_methods_nm=sum([r.called_methods_nm for r in results]),
+			called_methods_in_cluster=gn,
+			confidence=gc
+		)
+
+		results.append(global_result)
+
+		self.confidence = dict()
+		for r in results:
+			self.confidence[r.cluster] = r.confidence
+
+	def get_confidence(self, cluster):
+		return self.confidence.get(cluster, 0)
 
 
 class ClusteringComparator():
 	def __init__(self, clustering_i, clustering_j):
 		if not clustering_i.compatible_with(clustering_j):
-			raise Exception('tring to compare incompatible clusters')
+			raise Exception('trying to compare incompatible clusters')
 		self._clustering_i = clustering_i
 		self._clustering_j = clustering_j
 		self.base_set = clustering_i.base_set | clustering_j.base_set
@@ -130,31 +223,49 @@ class ClusteringComparator():
 				self.confusion_matrix[i][j] = len(cluster_i & cluster_j)
 
 	def _init_same_pairs(self):
-		self.same_pair = []
+		#self.same_pair = []
+		self.same_pair_count = 0
 		self.semisame_ij = []
+		self.semisame_ij_count = 0
 		self.semisame_ji = []
-		self.unsame_pair = []
+		self.semisame_ji_count = 0
+		#self.unsame_pair = []
+		self.unsame_pair_count = 0
 		base_list = list(self.base_set)
+		i = 0
+		ps = pc = 5
+		n = sum(x for x in range(self.base_set_size))
+		print("base set size = %d\npairs = %d" % (self.base_set_size, n))
 		for a, node_a in enumerate(base_list):
 			for b, node_b in enumerate(base_list):
+				i += 1
+				p = int(i/n*100)
+				if p > 0 and p % pc == 0:
+					print("%3d%% :: same = %d, ij = %d, ji = %d, unsame = %d" % (p, self.same_pair_count, self.semisame_ij_count, self.semisame_ji_count, self.unsame_pair_count))
+					pc += ps
 				if a == b:
 					break
 				both_i = self._clustering_i.mapping[node_a] == self._clustering_i.mapping[node_b]
 				both_j = self._clustering_j.mapping[node_a] == self._clustering_j.mapping[node_b]
 				if both_i and both_j:
-					self.same_pair.append((node_a, node_b))
+					#self.same_pair.append((node_a, node_b))
+					self.same_pair_count += 1
 				elif both_i and not both_j:
-					self.semisame_ij.append((node_a, node_b))
+					#self.semisame_ij.append((node_a, node_b))
+					self.semisame_ij_count += 1
 				elif not both_i and both_j:
-					self.semisame_ji.append((node_a, node_b))
+					#self.semisame_ji.append((node_a, node_b))
+					self.semisame_ji_count += 1
 				elif not both_i and not both_j:
-					self.unsame_pair.append((node_a, node_b))
+					#self.unsame_pair.append((node_a, node_b))
+					self.unsame_pair_count += 1
 				else:
 					raise Exception('impossible same-pair alignment')
-		self.same_pair_count = len(self.same_pair)
-		self.semisame_ij_count = len(self.semisame_ij)
-		self.semisame_ji_count = len(self.semisame_ji)
-		self.unsame_pair_count = len(self.unsame_pair)
+
+		#self.same_pair_count = len(self.same_pair)
+		#self.semisame_ij_count = len(self.semisame_ij)
+		#self.semisame_ji_count = len(self.semisame_ji)
+		#self.unsame_pair_count = len(self.unsame_pair)
 		self.count_of_pairs = self.same_pair_count + self.semisame_ij_count + self.semisame_ji_count + self.unsame_pair_count
 
 	def reverse(self):
@@ -168,7 +279,7 @@ class ClusteringComparator():
 		self._save_confusion_matrix(dir)
 		self._save_pair_counts(dir)
 		self._save_metrics(dir)
-		self._save_bad_pairs(dir)
+		#self._save_bad_pairs(dir)
 
 	def _save_confusion_matrix(self, dir):
 		with open(os.path.join(dir, 'confusion_matrix.csv'), 'w') as matrix:
@@ -212,7 +323,7 @@ class ClusteringComparator():
 		print('[Comparison] %s ---> %s' % (self._clustering_i.name, self._clustering_j.name))
 		print(' |  Chi Squared coefficient = %f' % self.chi_squared_coefficient())
 		print(' |  Rand index = %f' % self.rand_index())
-		print(' |  Fowlkes–Mallows index = %f' % self.fowlkes_mallows_index())
+		print(' |  Fowlkes-Mallows index = %f' % self.fowlkes_mallows_index())
 		print(' |  Jaccard index = %f' % self.jaccard_index())
 		print(' |  Mirkin metric = %f' % self.mirkin_metric())
 		print(' |  F-measure = %f' % self.f_measure())

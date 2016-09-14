@@ -11,10 +11,13 @@ def unirange(start, stop, step):
 		yield r
 
 class Sniffer(object):
-	def __init__(self, graphs, base_clustering, derived_clustering, resolution=list(unirange(0, 1, .05))):
+	def __init__(self, graphs, base_clustering, derived_clustering, test_type, base_conf_limit, derived_conf_limit, resolution=list(unirange(0, 1, .05))):
 		self.graphs = graphs
 		self.base_clustering = base_clustering
 		self.derived_clustering = derived_clustering
+		self.test_type = test_type
+		self.base_conf_limit = base_conf_limit
+		self.derived_conf_limit = derived_conf_limit
 		self.detect(base_clustering, derived_clustering, resolution=list(unirange(0, 1, .05)))
 
 	def detect_alter_ego(self, clustering):
@@ -80,44 +83,191 @@ class Sniffer(object):
 		for node_id, node_data in self.graphs['jaccard'].nodes(data=True):
 			if node_data['id'] == cluster_id:
 				node = node_id
-		histogramm = {}
+				break
+
+		histogram = {}
 		for source, target, edge_data in self.graphs['jaccard'].out_edges(node, data=True):
 			count_of_parts = len(self.graphs['jaccard'].out_edges(target, data=True))
-			histogramm[count_of_parts] = histogramm.get(count_of_parts, 0) + 1
-		for i in range(max(histogramm.keys())):
-			histogramm[i] = histogramm.get(i, 0)
-		return [v for k, v in sorted(histogramm.items(), key=lambda x: x[0])][1:]
+			histogram[count_of_parts] = histogram.get(count_of_parts, 0) + 1
+		for i in range(max(histogram.keys())):
+			histogram[i] = histogram.get(i, 0)
+
+		return [v for k, v in sorted(histogram.items(), key=lambda x: x[0])][1:]
 
 	def detect_chimera_vector(self, clustering):
-		histogramms = {}
+		histograms = {}
 		for node, node_data in self.graphs['jaccard'].nodes(data=True):
 			if node_data['clustering'] == clustering.key:
-				histogramms[node_data['id']] = self.chimera_vector_of(node_data['id'])
-		return histogramms
+				histograms[node_data['id']] = self.chimera_vector_of(node_data['id'])
+
+		return histograms
 
 	def check_chimera_vector(self, vector):
-		if vector[0] > 1:
-			for i in vector:
+		def check_tail(vector):
+			for i in vector[1:]:
 				if i > 0:
 					return '+'
 			return '-'
-		return ' '
 
-	def check_cluster(self, cluster_id, base_conf, derived_conf, base_conf_limit, derived_conf_limit):
+		tail = check_tail(vector)
+
+		if vector[0] > 1:
+			if tail == '+':
+				return '+'
+			else:
+				return '-'
+		elif vector[0] == 1 and tail == '-':
+			return '1'
+		else:
+			return ' '
+
+	def check_cluster(self, cluster_id):
+		def check_p(cluster='global'):
+			c = self.base_clustering.get_confidence(cluster)
+			return c > self.base_conf_limit
+
+		def check_c(cluster='global'):
+			c = self.derived_clustering.get_confidence(cluster)
+			return c > self.derived_conf_limit
+
 		node = None
 		data = None
+
 		for node_id, node_data in self.graphs['jaccard'].nodes(data=True):
 			if node_data['id'] == cluster_id:
 				node = node_id
 				data = node_data
-		if data['clustering'] == self.base_clustering.key:
-			rule_vector = self.check_chimera_vector(self.chimera_vector_of(cluster_id))
-			if rule_vector == '-':
-				if base_conf > base_conf_limit:
-					if derived_histogrammsi
+				break
+
+		if node is None or data is None:
+			raise Exception("Cluster (%s) cannot be found in the graph" % cluster_id)
+
+		vector = self.chimera_vector_of(cluster_id)
+		rule_vector = self.check_chimera_vector(vector)
+
+		if self.test_type == 'unit':
+			if rule_vector == '1':
+				return (False, rule_vector)
+			else:
+				if data['clustering'] == self.base_clustering.key: # P cluster
+					if rule_vector == '-':
+						if check_p():
+							if check_c(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+						else:
+							if check_c(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+					elif rule_vector == '+':
+						if check_p():
+							if check_c(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								return (True, rule_vector)
+						else:
+							if check_c(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+				elif data['clustering'] == self.derived_clustering.key: # C cluster
+					if rule_vector == '-':
+						if check_c():
+							if check_p(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+						else:
+							if check_p(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+					elif rule_vector == '+':
+						if check_c():
+							if check_p(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								return (True, rule_vector)
+						else:
+							if check_p(): #TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
 				else:
-			elif rule_vector == '+':
+					raise Exception("Unexpected clustering key (%s)" % data['clustering'])
+		elif self.test_type == 'integration':
+			if rule_vector == '1':
+				pass
+			else:
+				if data['clustering'] == self.base_clustering.key:  # P cluster
+					if rule_vector == '-':
+						if check_p():
+							if check_c():  # TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+						else:
+							if check_c():  # TODO check neighbours separately
+								return (True, rule_vector)
+							else:
+								pass
+					elif rule_vector == '+':
+						if check_p():
+							if check_c():  # TODO check neighbours separately
+								return (False, rule_vector)
+							else:
+								pass
+						else:
+							if check_c():  # TODO check neighbours separately
+								pass
+							else:
+								pass
+				elif data[
+					'clustering'] == self.derived_clustering.key:  # C cluster
+					if rule_vector == '-':
+						if check_c():
+							if check_p():  # TODO check neighbours separately
+								return (False, rule_vector)
+							else:
+								pass
+						else:
+							if check_p():  # TODO check neighbours separately
+								pass
+							else:
+								pass
+					elif rule_vector == '+':
+						if check_c():
+							if check_p():  # TODO check neighbours separately
+								pass
+							else:
+								pass
+						else:
+							if check_p():  # TODO check neighbours separately
+								pass
+							else:
+								pass
+				else:
+					raise Exception(
+						"Unexpected clustering key (%s)" % data['clustering'])
 		else:
+			raise Exception("Unexpected test type (%s)" % self.test_type)
+
+		return None
+
+	def detect_smells(self):
+		smells = []
+
+		for node_id, node_data in self.graphs['jaccard'].nodes(data=True):
+			cluster_id = node_data['id']
+			result = self.check_cluster(cluster_id)
+
+			if not (result is None):
+				if result[0]:
+					smells.append((cluster_id, result[1]))
+
+		return smells
 
 	def detect(self, base_clustering, derived_clustering, resolution=list(unirange(0, 1, .05))):
 		self.alter_ego_count = self.detect_alter_ego(base_clustering)
@@ -126,8 +276,10 @@ class Sniffer(object):
 		print("%d clean cut was detected" % self.clean_cut_count)
 		self.cut_distribution = self.detect_cut_distribution(base_clustering, derived_clustering, resolution)
 		self.chimera_distribution = self.detect_chimera_distribution(derived_clustering)
-		self.base_historgramms = self.detect_chimera_vector(base_clustering)
-		self.derived_histogramms = self.detect_chimera_vector(derived_clustering)
+		self.base_histograms = self.detect_chimera_vector(base_clustering)
+		self.derived_histograms = self.detect_chimera_vector(derived_clustering)
+		self.smells = self.detect_smells()
+		print("%d smells were detected" % len(self.smells))
 
 	def save(self, outputname):
 		with open('%s.smells-count.csv' % outputname, 'w') as smells_count:
@@ -138,9 +290,14 @@ class Sniffer(object):
 			smells_count.write("\n")
 			smells_count.write("parts; chimeras\n")
 			smells_count.write("\n".join(['%f; %d' % (p, count) for p, count in sorted(self.chimera_distribution.items())]))
+			smells_count.write("\n")
+			smells_count.write("cluster; smell\n")
+			smells_count.write("\n".join("%s; %s" % s for s in self.smells))
 		with open('%s.base.chimeras-vector.txt' % outputname, 'w') as chimeras_vector:
-			for cluster, histogramm in self.base_historgramms.items():
-				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogramm)))
+			for cluster, histogram in self.base_histograms.items():
+				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
 		with open('%s.derived.chimeras-vector.txt' % outputname, 'w') as chimeras_vector:
-			for cluster, histogramm in self.derived_histogramms.items():
-				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogramm)))
+			for cluster, histogram in self.derived_histograms.items():
+				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
+
+print("coverage_cluster.smell was loaded.")
