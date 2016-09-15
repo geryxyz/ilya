@@ -1,17 +1,26 @@
+import argparse
 import sys
-import pdb
-from algorithm import *
-from clustering import *
-from smell import *
 from os.path import basename, splitext
-import networkx as nx
 
-coverage_file = sys.argv[1]
-labels_dir = sys.argv[2]
-direct_calls_file = sys.argv[3]
-test_type = sys.argv[4]
-p_treshold = float(sys.argv[5])
-c_treshold = float(sys.argv[6])
+from algorithm import *
+from smell import *
+
+parser = argparse.ArgumentParser(description = 'ILYA Test Clustering')
+parser.add_argument('-c', '--coverage', required = True, help = 'the SoDA coverage csv file')
+parser.add_argument('-l', '--labels', default = 'fake-dir', help = 'the directory of the test and code label files')
+parser.add_argument('-d', '--direct', required = True, help = 'the JDT based direct call data file')
+parser.add_argument('-t', '--type', choices = ['unit', 'integration'], default = 'unit', help = 'type of the test suite')
+parser.add_argument('--pt', type = float, default = 0.0, help = 'P-confidence threshold')
+parser.add_argument('--ct', type = float, default = 0.0, help = 'C-confidence threshold')
+args = parser.parse_args()
+
+coverage_file = args.coverage
+labels_dir = args.labels
+direct_calls_file = args.direct
+test_type = args.type
+p_threshold = args.pt
+c_threshold = args.ct
+
 outputname = coverage_file[:-4]
 name = splitext(basename(coverage_file))[0]
 
@@ -45,5 +54,5 @@ print("Saving declared clusters...")
 declared_clustering.save('%s_declared' % outputname)
 print("Measurement saved.")
 
-sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering, test_type, p_treshold, c_treshold)
+sniffer = Sniffer(coverage.similarity_models, declared_clustering, detected_clustering, test_type, p_threshold, c_threshold)
 sniffer.save(outputname)
