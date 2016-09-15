@@ -144,15 +144,15 @@ class CoverageBasedData(object):
 
 		bin_edge_list_path = '%s.edges.bin' % base_name
 		if regenerate_external_data or not os.path.isfile(bin_edge_list_path):
-			sp.call('convert -i %s -o %s' % (self.edge_list_path, bin_edge_list_path), shell=True)
+			sp.call('./convert -i %s -o %s' % (self.edge_list_path, bin_edge_list_path), shell=True)
 
 		tree_path = '%s.tree' % base_name
 		if regenerate_external_data or not os.path.isfile(tree_path):
-			sp.call('louvain -v -l -1 %s > %s' % (bin_edge_list_path, tree_path), shell=True)
+			sp.call('./louvain -v -l -1 %s > %s' % (bin_edge_list_path, tree_path), shell=True)
 
 		self.community_map_path = '%s.map.csv' % base_name
 		if regenerate_external_data or not os.path.isfile(self.community_map_path):
-			sp.call('hierarchy -m %s > %s' % (tree_path, self.community_map_path), shell=True)
+			sp.call('./hierarchy -m %s > %s' % (tree_path, self.community_map_path), shell=True)
 
 		mapping = {}
 		with open(self.community_map_path, 'r') as mapping_file:
