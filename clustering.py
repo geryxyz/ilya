@@ -180,7 +180,7 @@ class Clustering(object):
 			results.append(r)
 
 		gn = sum([r.called_methods_in_cluster for r in results])
-		gm = sum([r.called_methods for r in results]) - sum([r.called_methods_in_cluster for r in results])
+		gm = sum([r.called_methods for r in results]) - sum([r.called_methods_nm for r in results])
 		gc = gn / gm if gm > 0 else 0
 
 		global_result = Result(
