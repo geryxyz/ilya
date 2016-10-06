@@ -111,13 +111,15 @@ class Sniffer(object):
 
 		tail = check_tail(vector)
 
-		if vector[0] > 1:
-			if tail == '+':
-				return '+'
-			else:
+		if tail == '+':
+			return '+'
+		elif tail == '-':
+			if vector[0] > 1:
 				return '-'
-		elif vector[0] == 1 and tail == '-':
-			return '1'
+			elif vector[0] == 1:
+				return '1'
+			else:
+				raise Exception("Unexpected standalone cluster");
 		else:
 			return ' '
 
@@ -152,46 +154,46 @@ class Sniffer(object):
 				if data['clustering'] == self.base_clustering.key: # P cluster
 					if rule_vector == '-':
 						if check_p():
-							if check_c(): #TODO check neighbours separately
+							if check_c(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
 						else:
-							if check_c(): #TODO check neighbours separately
+							if check_c(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
 					elif rule_vector == '+':
 						if check_p():
-							if check_c(): #TODO check neighbours separately
+							if check_c(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								return (True, rule_vector)
 						else:
-							if check_c(): #TODO check neighbours separately
+							if check_c(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
 				elif data['clustering'] == self.derived_clustering.key: # C cluster
 					if rule_vector == '-':
 						if check_c():
-							if check_p(): #TODO check neighbours separately
+							if check_p(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
 						else:
-							if check_p(): #TODO check neighbours separately
+							if check_p(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
 					elif rule_vector == '+':
 						if check_c():
-							if check_p(): #TODO check neighbours separately
+							if check_p(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								return (True, rule_vector)
 						else:
-							if check_p(): #TODO check neighbours separately
+							if check_p(): # TODO check neighbours separately
 								return (True, rule_vector)
 							else:
 								pass
@@ -224,8 +226,7 @@ class Sniffer(object):
 								pass
 							else:
 								pass
-				elif data[
-					'clustering'] == self.derived_clustering.key:  # C cluster
+				elif data['clustering'] == self.derived_clustering.key:  # C cluster
 					if rule_vector == '-':
 						if check_c():
 							if check_p():  # TODO check neighbours separately
@@ -249,8 +250,7 @@ class Sniffer(object):
 							else:
 								pass
 				else:
-					raise Exception(
-						"Unexpected clustering key (%s)" % data['clustering'])
+					raise Exception("Unexpected clustering key (%s)" % data['clustering'])
 		else:
 			raise Exception("Unexpected test type (%s)" % self.test_type)
 
@@ -264,8 +264,7 @@ class Sniffer(object):
 			result = self.check_cluster(cluster_id)
 
 			if not (result is None):
-				if result[0]:
-					smells.append((cluster_id, result[1]))
+				smells.append((cluster_id,) + (result))
 
 		return smells
 
@@ -291,7 +290,7 @@ class Sniffer(object):
 			smells_count.write("parts; chimeras\n")
 			smells_count.write("\n".join(['%f; %d' % (p, count) for p, count in sorted(self.chimera_distribution.items())]))
 			smells_count.write("\n")
-			smells_count.write("cluster; smell\n")
+			smells_count.write("cluster; is_smell; pattern\n")
 			smells_count.write("\n".join("%s; %s" % s for s in self.smells))
 		with open('%s.base.chimeras-vector.txt' % outputname, 'w') as chimeras_vector:
 			for cluster, histogram in self.base_histograms.items():
