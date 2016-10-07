@@ -112,7 +112,10 @@ class Sniffer(object):
 		tail = check_tail(vector)
 
 		if tail == '+':
-			return '+'
+			if sum(vector) == 1:
+				return ' '
+			else:
+				return '+'
 		elif tail == '-':
 			if vector[0] > 1:
 				return '-'
@@ -291,7 +294,7 @@ class Sniffer(object):
 			smells_count.write("\n".join(['%f; %d' % (p, count) for p, count in sorted(self.chimera_distribution.items())]))
 			smells_count.write("\n")
 			smells_count.write("cluster; is_smell; pattern\n")
-			smells_count.write("\n".join("%s; %s" % s for s in self.smells))
+			smells_count.write("\n".join("%s; %s; %s" % s for s in self.smells))
 		with open('%s.base.chimeras-vector.txt' % outputname, 'w') as chimeras_vector:
 			for cluster, histogram in self.base_histograms.items():
 				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
