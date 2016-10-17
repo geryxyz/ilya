@@ -102,29 +102,27 @@ class Sniffer(object):
 
 		return histograms
 
-	def check_chimera_vector(self, vector):
-		def check_tail(vector):
-			for i in vector[1:]:
-				if i > 0:
-					return '+'
-			return '-'
+	def detect_pattern(self, vector):
+		head = vector[0]
+		tail = sum(vector[1:])
 
-		tail = check_tail(vector)
-
-		if tail == '+':
-			if sum(vector) == 1:
-				return ' '
+		if head == 0:
+			if tail == 1:
+				return '-1'
 			else:
 				return '+'
-		elif tail == '-':
-			if vector[0] > 1:
-				return '-'
-			elif vector[0] == 1:
+		elif head == 1:
+			if tail == 0:
 				return '1'
 			else:
-				raise Exception("Unexpected standalone cluster");
+				return '+'
+		elif head > 1:
+			if tail == 0:
+				return '-'
+			else:
+				return '+'
 		else:
-			return ' '
+			raise Exception("Unexpected vector data: head is negative")
 
 	def check_cluster(self, cluster_id):
 		def check_p(cluster='global'):
@@ -134,6 +132,14 @@ class Sniffer(object):
 		def check_c(cluster='global'):
 			c = self.derived_clustering.get_confidence(cluster)
 			return c > self.derived_conf_limit
+
+		def make_result(clustering_type, pattern, conf_e, conf_n, is_smell):
+			type = clustering_type
+			type += pattern
+			type += 'Y' if conf_e else 'N'
+			type += 'Y' if conf_n else 'N'
+
+			return (is_smell, pattern, type)
 
 		node = None
 		data = None
@@ -148,112 +154,130 @@ class Sniffer(object):
 			raise Exception("Cluster (%s) cannot be found in the graph" % cluster_id)
 
 		vector = self.chimera_vector_of(cluster_id)
-		rule_vector = self.check_chimera_vector(vector)
+		pattern = self.detect_pattern(vector)
+		if data['clustering'] == self.base_clustering.key:
+			clustering_type = 'P'
+		elif data['clustering'] == self.derived_clustering.key:
+			clustering_type = 'C'
+		else:
+			raise Exception("Unexpected clustering key (%s)" % data['clustering'])
 
 		if self.test_type == 'unit':
-			if rule_vector == '1':
-				return (False, rule_vector)
+			if pattern == '1':
+				return make_result(clustering_type, pattern, True, True, False)
 			else:
-				if data['clustering'] == self.base_clustering.key: # P cluster
-					if rule_vector == '-':
-						if check_p():
-							if check_c(): # TODO check neighbours separately
-								return (True, rule_vector)
+				if clustering_type == 'P':
+					ce = check_p()
+					cn = check_c() # TODO check neighbours separately
+
+					if pattern == '-':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
 						else:
-							if check_c(): # TODO check neighbours separately
-								return (True, rule_vector)
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
-					elif rule_vector == '+':
-						if check_p():
-							if check_c(): # TODO check neighbours separately
-								return (True, rule_vector)
+					elif pattern == '+':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
-								return (True, rule_vector)
+								return make_result(clustering_type, pattern, ce, cn, True)
 						else:
-							if check_c(): # TODO check neighbours separately
-								return (True, rule_vector)
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
-				elif data['clustering'] == self.derived_clustering.key: # C cluster
-					if rule_vector == '-':
-						if check_c():
-							if check_p(): # TODO check neighbours separately
-								return (True, rule_vector)
+				elif clustering_type == 'C':
+					ce = check_c()
+					cn = check_p() # TODO check neighbours separately
+
+					if pattern == '-':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
 						else:
-							if check_p(): # TODO check neighbours separately
-								return (True, rule_vector)
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
-					elif rule_vector == '+':
-						if check_c():
-							if check_p(): # TODO check neighbours separately
-								return (True, rule_vector)
+					elif pattern == '+':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
-								return (True, rule_vector)
+								return make_result(clustering_type, pattern, ce, cn, True)
 						else:
-							if check_p(): # TODO check neighbours separately
-								return (True, rule_vector)
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
 				else:
-					raise Exception("Unexpected clustering key (%s)" % data['clustering'])
+					assert False
 		elif self.test_type == 'integration':
-			if rule_vector == '1':
+			if pattern == '1':
 				pass
 			else:
-				if data['clustering'] == self.base_clustering.key:  # P cluster
-					if rule_vector == '-':
-						if check_p():
-							if check_c():  # TODO check neighbours separately
-								return (True, rule_vector)
+				if clustering_type == 'P':
+					ce = check_p()
+					cn = check_c() # TODO check neighbours separately
+
+					if pattern == '-':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
 						else:
-							if check_c():  # TODO check neighbours separately
-								return (True, rule_vector)
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, True)
 							else:
 								pass
-					elif rule_vector == '+':
-						if check_p():
-							if check_c():  # TODO check neighbours separately
-								return (False, rule_vector)
-							else:
-								pass
-						else:
-							if check_c():  # TODO check neighbours separately
-								pass
-							else:
-								pass
-				elif data['clustering'] == self.derived_clustering.key:  # C cluster
-					if rule_vector == '-':
-						if check_c():
-							if check_p():  # TODO check neighbours separately
-								return (False, rule_vector)
+					elif pattern == '+':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, False)
 							else:
 								pass
 						else:
-							if check_p():  # TODO check neighbours separately
+							if cn:
 								pass
 							else:
 								pass
-					elif rule_vector == '+':
-						if check_c():
-							if check_p():  # TODO check neighbours separately
+				elif clustering_type == 'C':
+					ce = check_c()
+					cn = check_p() # TODO check neighbours separately
+
+					if pattern == '-':
+						if ce:
+							if cn:
+								return make_result(clustering_type, pattern, ce, cn, False)
+							else:
+								pass
+						else:
+							if cn:
+								pass
+							else:
+								pass
+					elif pattern == '+':
+						if ce:
+							if cn:
 								pass
 							else:
 								pass
 						else:
-							if check_p():  # TODO check neighbours separately
+							if cn:
 								pass
 							else:
 								pass
 				else:
-					raise Exception("Unexpected clustering key (%s)" % data['clustering'])
+					assert False
 		else:
 			raise Exception("Unexpected test type (%s)" % self.test_type)
 
@@ -281,7 +305,7 @@ class Sniffer(object):
 		self.base_histograms = self.detect_chimera_vector(base_clustering)
 		self.derived_histograms = self.detect_chimera_vector(derived_clustering)
 		self.smells = self.detect_smells()
-		print("%d smells were detected" % len(self.smells))
+		print("%d smells were detected" % len([s for s in self.smells if s[1]]))
 
 	def save(self, outputname):
 		with open('%s.smells-count.csv' % outputname, 'w') as smells_count:
@@ -293,8 +317,8 @@ class Sniffer(object):
 			smells_count.write("parts; chimeras\n")
 			smells_count.write("\n".join(['%f; %d' % (p, count) for p, count in sorted(self.chimera_distribution.items())]))
 			smells_count.write("\n")
-			smells_count.write("cluster; is_smell; pattern\n")
-			smells_count.write("\n".join("%s; %s; %s" % s for s in self.smells))
+			smells_count.write("cluster; is_smell; pattern; type\n")
+			smells_count.write("\n".join("%s; %s; %s; %s" % s for s in self.smells))
 		with open('%s.base.chimeras-vector.txt' % outputname, 'w') as chimeras_vector:
 			for cluster, histogram in self.base_histograms.items():
 				chimeras_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
