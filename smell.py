@@ -165,6 +165,8 @@ class Sniffer(object):
 		if self.test_type == 'unit':
 			if pattern == '1':
 				return make_result(clustering_type, pattern, True, True, False)
+			elif pattern == '-1':
+				return make_result(clustering_type, pattern, True, True, False)
 			else:
 				if clustering_type == 'P':
 					ce = check_p()
@@ -222,6 +224,8 @@ class Sniffer(object):
 					assert False
 		elif self.test_type == 'integration':
 			if pattern == '1':
+				pass
+			if pattern == '-1':
 				pass
 			else:
 				if clustering_type == 'P':
