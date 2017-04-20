@@ -56,6 +56,7 @@ class Clustering(object):
 		self.base_set = {k for k in mapping}
 		self._init_size_metrics()
 		self.key = key
+		self.confidence = None
 
 	def _init_size_metrics(self):
 		self.base_set_size = len(self.base_set)
@@ -79,10 +80,11 @@ class Clustering(object):
 					mapping_output.write('%s; %s\n' % (name, key))
 				clusters_output.write('\n')
 
-		with open('%s.confidence.csv' % filename, 'w') as confidence_output:
-			confidence_output.write("Cluster;Confidence\n")
-			for cluster_id, confidence in self.confidence.items():
-				confidence_output.write("%s;%f\n" % (cluster_id, confidence))
+		if self.confidence:
+			with open('%s.confidence.csv' % filename, 'w') as confidence_output:
+				confidence_output.write("Cluster;Confidence\n")
+				for cluster_id, confidence in self.confidence.items():
+					confidence_output.write("%s;%f\n" % (cluster_id, confidence))
 
 	def compatible_with(self, other):
 		for node in self.base_set:

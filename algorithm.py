@@ -127,6 +127,7 @@ class CoverageBasedData(object):
 	def package_based_clustering(self, name, labels_dir=None, level=0, key='declared_cluster'):
 		mapping = {}
 
+		labels = None
 		if labels_dir:
 			labels = _load_labels(labels_dir)
 
