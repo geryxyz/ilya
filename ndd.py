@@ -7,8 +7,11 @@ from scipy.spatial.distance import euclidean, cityblock
 from fastdtw import fastdtw
 import subprocess as sp #https://docs.python.org/3.4/library/subprocess.html
 import copy
+import svgwrite
+import cairosvg
 
 from clustering import *
+from snowflake import *
 
 class NDDClustering(Clustering):
 	def save(self, filename):
@@ -16,11 +19,17 @@ class NDDClustering(Clustering):
 		with open('%s.vectors.clusters.csv' % filename, 'w') as vectors:
 			for key in self.clusters:
 				vectors.write("in %s\n" % key)
+				ndds = []
 				for id in self.clusters[key]:
+					ndd = self.data[int(id)].get('vector', [])
 					vectors.write('%s;' % self.name_of(int(id)))
-					vectors.write(';'.join([str(x) for x in self.data[int(id)].get('vector', [])]))
+					vectors.write(';'.join([str(x) for x in ndd]))
 					vectors.write('\n')
+					ndds.append(ndd)
 				vectors.write('\n')
+				draw_animated_circles(ndds, '%s_%s.ndd.gif' % (filename, key.replace('/', '_')))
+				draw_blended_circles(ndds, '%s_%s.ndd.gif' % (filename, key.replace('/', '_')))
+
 
 class NDDDetector(object):
 	def __init__(self, graphs, base_clustering, derived_clustering, key):
@@ -64,8 +73,16 @@ class NDDDetector(object):
 
 	def distance_matrix(self, measure):
 		print("Measure distances with DTW using %s" % str(measure))
+		i = 0
+		ps = pc = 5
+		n = len(self.histograms)
 		distances = {}
 		for key_a, a in self.histograms.items():
+			i += 1
+			p = int(i/n*100)
+			if p > 0 and p % pc == 0:
+				print("%3d%%" % p)
+				pc += ps
 			distances[key_a] = {}
 			a_array = numpy.array([[i, v] for i, v in enumerate(a)])
 			for key_b, b in self.histograms.items():
@@ -126,7 +143,7 @@ class NDDDetector(object):
 
 		return NDDClustering(mapping, "NDD of %s" % self.key , self.key, self.data)
 
-	def save(self, outputname, measure=cityblock):
+	def save(self, outputname, measure=cityblock, scale_factor=100):
 		with open('%s.base.ndd-vector.txt' % outputname, 'w') as ndd_vector:
 			for cluster, histogram in self.base_histograms.items():
 				ndd_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
@@ -137,6 +154,7 @@ class NDDDetector(object):
 			for cluster, histogram in self.histograms.items():
 				ndd_vector.write('%s; %s\n' % (cluster, json.dumps(histogram)))
 		nx.write_graphml(self.distance_graph(measure), '%s.ndd-distances.graphml' % outputname)
+		draw_multi_circles(self.histograms.values(), '%s.ndd.gif' % outputname)
 
 	def merge_with(self, *others):
 		clone = copy.deepcopy(self)

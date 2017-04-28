@@ -60,4 +60,3 @@ for coverage_file in coverage_files:
 print("%d coverage matrix was analyzed." % len(detectors))
 
 master_detector = detectors[0].merge_with(*detectors)
-pdb.set_trace()
