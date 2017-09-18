@@ -66,25 +66,50 @@ def draw_circle(vector, total_count=None, move_to=None, scale=1):
 	del draw
 	return image
 
-def draw_animated_circles(vectors, filename):
+def draw_animated_circles(vectors, filename, is_equ=True):
 	total_count = max(map(sum, vectors))
+	if is_equ:
+		total_count = None
 	images = []
-	for vector in vectors:
+	print("Composing animation...\n")
+	for i, vector in enumerate(sorted(vectors, key=sum)):
+		print("\033[F%3d%%" % int((i/len(vectors))*100))
 		images.append(draw_circle(vector, total_count=total_count, scale=350))
 	images[0].save(filename, format='GIF', save_all=True, append_images=images[1:], duration=500)
 
-def draw_blended_circles(vectors, filename):
+def draw_blended_circles(vectors, filename, is_equ=True):
 	total_count = max(map(sum, vectors))
-	peek = draw_circle(vectors[0], total_count=total_count, scale=350)
+	if is_equ:
+		total_count = None
+	peek = draw_circle(list(vectors)[0], total_count=total_count, scale=350)
 	combined = Image.new('L', peek.size, color='white')
 	images = []
-	for vector in vectors:
+	for vector in sorted(vectors, key=sum):
 		images.append(draw_circle(vector, total_count=total_count, scale=350))
-	for x in peek.width:
-		for y in peek.height:
-			pixel = sum([image.getpixel((x, y)) for image in images]) / len(images)
+	print("Combining images...\n")
+	for x in range(peek.width):
+		for y in range(peek.height):
+			print("\033[Fx = %3d%% y = %3d%%" % (int((x/peek.width)*100), int((y/peek.height)*100)))
+			pixel = int(sum([image.getpixel((x, y)) for image in images]) / len(images))
 			combined.putpixel((x,y), pixel)
-	images[0].save(filename, format='GIF', save_all=True, append_images=images[1:], duration=500)
+	combined.save(filename, format='PNG')
+
+def draw_layed_circles(vectors, filename, is_equ=True):
+	total_count = max(map(sum, vectors))
+	if is_equ:
+		total_count = None
+	images = []
+	for vector in sorted(vectors, key=sum):
+		images.append(draw_circle(vector, total_count=total_count, scale=350))
+	count = int(math.sqrt(len(images)) + 1)
+	combined = Image.new('L', (images[0].width * count, images[0].height * count), color='white')
+	print("Creating side-by-side images...\n")
+	for i, image in enumerate(images):
+		print("\033[F%3d%%" % int((i/len(images))*100))
+		x = i % count
+		y = int(i / count)
+		combined.paste(image, box=(x * image.width, y * image.height))
+	combined.save(filename, format='PNG')
 
 if __name__ == '__main__':
 	draw_circle([2, 1, 2], total_count=6, scale=1000).save('test.png')

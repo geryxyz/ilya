@@ -45,7 +45,7 @@ for coverage_file in coverage_files:
 	declared_clustering.save('%s_declared' % outputname)
 	print("Measurement saved.")
 
-	measure = cityblock
+	measure = euclidean
 	detector = NDDDetector(coverage.similarity_models, declared_clustering, detected_clustering, name)
 	detectors.append(detector)
 	print("Clustering NDDs...")
