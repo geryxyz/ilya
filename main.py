@@ -8,15 +8,14 @@ from smell import *
 parser = argparse.ArgumentParser(description = 'ILYA Test Clustering')
 parser.add_argument('-c', '--coverage', required = True, help = 'the SoDA coverage csv file')
 parser.add_argument('-l', '--labels', default = 'fake-dir', help = 'the directory of the test and code label files')
-parser.add_argument('-d', '--direct', required = True, help = 'the JDT based direct call data file')
+parser.add_argument('-d', '--direct', help = 'the JDT based direct call data file')
 parser.add_argument('-t', '--type', choices = ['unit', 'integration'], default = 'unit', help = 'type of the test suite')
-parser.add_argument('--pt', type = float, default = 0.0, help = 'P-confidence threshold')
-parser.add_argument('--ct', type = float, default = 0.0, help = 'C-confidence threshold')
+parser.add_argument('--pt', type = float, default = float('-inf'), help = 'P-confidence threshold')
+parser.add_argument('--ct', type = float, default = float('-inf'), help = 'C-confidence threshold')
 args = parser.parse_args()
 
 coverage_file = args.coverage
 labels_dir = args.labels
-direct_calls_file = args.direct
 test_type = args.type
 p_threshold = args.pt
 c_threshold = args.ct
@@ -32,8 +31,9 @@ print("Calculating confidence...")
 detected_clustering.calculate_c_confidence(coverage.edge_list_path)
 print("Creating package based clusters...")
 declared_clustering = coverage.package_based_clustering(name='%s-declared' % name, labels_dir=labels_dir)
-print("Calculating confidence...")
-declared_clustering.calculate_p_confidence(direct_calls_file)
+if args.direct:
+	print("Calculating confidence...")
+	declared_clustering.calculate_p_confidence(args.direct)
 print("Comparing declared to detected...")
 comparison_dec_det = declared_clustering.compare_to(detected_clustering)
 print("Comparing detected to declared...")

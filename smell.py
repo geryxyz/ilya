@@ -24,7 +24,7 @@ class Sniffer(object):
 		count = 0
 		for node, data in self.graphs['jaccard'].nodes(data=True):
 			if data['clustering'] == clustering.key:
-				out_edges = self.graphs['jaccard'].out_edges(node, data=True)
+				out_edges = list(self.graphs['jaccard'].out_edges(node, data=True))
 				if len(out_edges) == 1 and out_edges[0][2]['similarity'] == 1:
 					count += 1
 		return count
@@ -33,7 +33,7 @@ class Sniffer(object):
 		count = 0
 		for node, node_data in self.graphs['inclusion'].nodes(data=True):
 			if node_data['clustering'] == base_clustering.key:
-				out_edges = self.graphs['inclusion'].out_edges(node, data=True)
+				out_edges = list(self.graphs['inclusion'].out_edges(node, data=True))
 				if len(out_edges) > 1 and out_edges[0][2]['similarity'] < 1:
 					for source, target, edge_data in self.graphs['inclusion'].in_edges(node, data=True):
 						if self.graphs['inclusion'].node[source]['clustering'] == derived_clustering.key:
@@ -47,7 +47,7 @@ class Sniffer(object):
 		count = 0
 		for node, node_data in self.graphs['inclusion'].nodes(data=True):
 			if node_data['clustering'] == base_clustering.key:
-				out_edges = self.graphs['inclusion'].out_edges(node, data=True)
+				out_edges = list(self.graphs['inclusion'].out_edges(node, data=True))
 				if len(out_edges) > 1 and out_edges[0][2]['similarity'] < 1:
 					for source, target, edge_data in self.graphs['inclusion'].in_edges(node, data=True):
 						if self.graphs['inclusion'].node[source]['clustering'] == derived_clustering.key:
@@ -69,7 +69,7 @@ class Sniffer(object):
 		counts = {}
 		for node, node_data in self.graphs['jaccard'].nodes(data=True):
 			if node_data['clustering'] == clustering.key:
-				count_of_parts = len(self.graphs['jaccard'].out_edges(node, data=True))
+				count_of_parts = len(list(self.graphs['jaccard'].out_edges(node, data=True)))
 				if count_of_parts > 1:
 					counts[count_of_parts] = counts.get(count_of_parts, 0) + 1
 		for i in range(max(counts.keys())):
@@ -86,8 +86,8 @@ class Sniffer(object):
 				break
 
 		histogram = {}
-		for source, target, edge_data in self.graphs['jaccard'].out_edges(node, data=True):
-			count_of_parts = len(self.graphs['jaccard'].out_edges(target, data=True))
+		for source, target, edge_data in list(self.graphs['jaccard'].out_edges(node, data=True)):
+			count_of_parts = len(list(self.graphs['jaccard'].out_edges(target, data=True)))
 			histogram[count_of_parts] = histogram.get(count_of_parts, 0) + 1
 		for i in range(max(histogram.keys())):
 			histogram[i] = histogram.get(i, 0)
