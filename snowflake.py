@@ -1,6 +1,6 @@
 import math
 import pdb
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def frange(start, end=None, inc=None):
 	"A range function, that does accept float increments..."
@@ -99,16 +99,23 @@ def draw_layed_circles(vectors, filename, is_equ=True):
 	if is_equ:
 		total_count = None
 	images = []
-	for vector in sorted(vectors, key=sum):
+	#sorting = lambda v: len(v) - (1 / (sum(v) + 1))
+	max_max = max(map(max, vectors))
+	sorting = lambda v: ''.join([str(e).rjust(int(math.log10(max_max) + 2), '0') for e in v])
+	for vector in sorted(vectors, key=sorting):
 		images.append(draw_circle(vector, total_count=total_count, scale=350))
+		print(sorting(vector))
 	count = int(math.sqrt(len(images)) + 1)
 	combined = Image.new('L', (images[0].width * count, images[0].height * count), color='white')
+	draw = ImageDraw.Draw(combined)
+	font = ImageFont.truetype(font='Pillow/Tests/fonts/FreeMono.ttf', size=35)
 	print("Creating side-by-side images...\n")
 	for i, image in enumerate(images):
 		print("\033[F%3d%%" % int((i/len(images))*100))
 		x = i % count
 		y = int(i / count)
 		combined.paste(image, box=(x * image.width, y * image.height))
+		draw.text((x * image.width + image.width / 2, y * image.height + image.height / 2), '%d;%d (%d)' % (x,y,i), font=font)
 	combined.save(filename, format='PNG')
 
 if __name__ == '__main__':

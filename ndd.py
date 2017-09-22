@@ -7,8 +7,6 @@ from scipy.spatial.distance import euclidean, cityblock
 from fastdtw import fastdtw
 import subprocess as sp #https://docs.python.org/3.4/library/subprocess.html
 import copy
-import svgwrite
-import cairosvg
 import os
 import re
 
