@@ -1,0 +1,265 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 17,
+      "label": "3d-raytrace.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:313:1"
+    },
+    {
+      "id": 19,
+      "label": "3d-raytrace.js[3d-raytrace.js:405:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:405:1"
+    },
+    {
+      "id": 20,
+      "label": "3d-raytrace.js[3d-raytrace.js:26:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:26:1"
+    },
+    {
+      "id": 21,
+      "label": "3d-raytrace.js[3d-raytrace.js:125:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:125:1"
+    },
+    {
+      "id": 22,
+      "label": "3d-raytrace.js[3d-raytrace.js:181:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:181:1"
+    },
+    {
+      "id": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:261:1"
+    },
+    {
+      "id": 24,
+      "label": "3d-raytrace.js[3d-raytrace.js:305:27]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:305:27"
+    },
+    {
+      "id": 25,
+      "label": "3d-raytrace.js[3d-raytrace.js:71:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:71:1"
+    },
+    {
+      "id": 26,
+      "label": "3d-raytrace.js[3d-raytrace.js:87:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:87:1"
+    },
+    {
+      "id": 27,
+      "label": "3d-raytrace.js[3d-raytrace.js:94:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:94:1"
+    },
+    {
+      "id": 28,
+      "label": "3d-raytrace.js[3d-raytrace.js:79:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:79:1"
+    },
+    {
+      "id": 29,
+      "label": "3d-raytrace.js[3d-raytrace.js:45:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:45:1"
+    },
+    {
+      "id": 30,
+      "label": "3d-raytrace.js[3d-raytrace.js:59:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:59:1"
+    },
+    {
+      "id": 31,
+      "label": "3d-raytrace.js[3d-raytrace.js:107:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:107:1"
+    },
+    {
+      "id": 32,
+      "label": "3d-raytrace.js[3d-raytrace.js:99:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:99:1"
+    },
+    {
+      "id": 33,
+      "label": "3d-raytrace.js[3d-raytrace.js:34:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:34:1"
+    },
+    {
+      "id": 34,
+      "label": "3d-raytrace.js[3d-raytrace.js:292:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:292:1"
+    },
+    {
+      "id": 35,
+      "label": "3d-raytrace.js[3d-raytrace.js:283:36]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-raytrace.js:283:36"
+    },
+    {
+      "id": 36,
+      "label": "3d-raytrace.js[3d-raytrace.js:83:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:83:1"
+    },
+    {
+      "id": 37,
+      "label": "3d-raytrace.js[3d-raytrace.js:38:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-raytrace.js:38:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 18,
+      "source": 17,
+      "label": "3d-raytrace.js[toplevel:1:1] -> 3d-raytrace.js[3d-raytrace.js:313:1]"
+    },
+    {
+      "target": 19,
+      "source": 17,
+      "label": "3d-raytrace.js[toplevel:1:1] -> 3d-raytrace.js[3d-raytrace.js:405:1]"
+    },
+    {
+      "target": 20,
+      "source": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1] -> 3d-raytrace.js[3d-raytrace.js:26:1]"
+    },
+    {
+      "target": 21,
+      "source": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1] -> 3d-raytrace.js[3d-raytrace.js:125:1]"
+    },
+    {
+      "target": 22,
+      "source": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1] -> 3d-raytrace.js[3d-raytrace.js:181:1]"
+    },
+    {
+      "target": 23,
+      "source": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1] -> 3d-raytrace.js[3d-raytrace.js:261:1]"
+    },
+    {
+      "target": 24,
+      "source": 18,
+      "label": "3d-raytrace.js[3d-raytrace.js:313:1] -> 3d-raytrace.js[3d-raytrace.js:305:27]"
+    },
+    {
+      "target": 25,
+      "source": 21,
+      "label": "3d-raytrace.js[3d-raytrace.js:125:1] -> 3d-raytrace.js[3d-raytrace.js:71:1]"
+    },
+    {
+      "target": 26,
+      "source": 21,
+      "label": "3d-raytrace.js[3d-raytrace.js:125:1] -> 3d-raytrace.js[3d-raytrace.js:87:1]"
+    },
+    {
+      "target": 27,
+      "source": 21,
+      "label": "3d-raytrace.js[3d-raytrace.js:125:1] -> 3d-raytrace.js[3d-raytrace.js:94:1]"
+    },
+    {
+      "target": 28,
+      "source": 21,
+      "label": "3d-raytrace.js[3d-raytrace.js:125:1] -> 3d-raytrace.js[3d-raytrace.js:79:1]"
+    },
+    {
+      "target": 29,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:45:1]"
+    },
+    {
+      "target": 30,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:59:1]"
+    },
+    {
+      "target": 26,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:87:1]"
+    },
+    {
+      "target": 31,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:107:1]"
+    },
+    {
+      "target": 27,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:94:1]"
+    },
+    {
+      "target": 32,
+      "source": 23,
+      "label": "3d-raytrace.js[3d-raytrace.js:261:1] -> 3d-raytrace.js[3d-raytrace.js:99:1]"
+    },
+    {
+      "target": 33,
+      "source": 27,
+      "label": "3d-raytrace.js[3d-raytrace.js:94:1] -> 3d-raytrace.js[3d-raytrace.js:34:1]"
+    },
+    {
+      "target": 34,
+      "source": 24,
+      "label": "3d-raytrace.js[3d-raytrace.js:305:27] -> 3d-raytrace.js[3d-raytrace.js:292:1]"
+    },
+    {
+      "target": 35,
+      "source": 34,
+      "label": "3d-raytrace.js[3d-raytrace.js:292:1] -> 3d-raytrace.js[3d-raytrace.js:283:36]"
+    },
+    {
+      "target": 36,
+      "source": 35,
+      "label": "3d-raytrace.js[3d-raytrace.js:283:36] -> 3d-raytrace.js[3d-raytrace.js:83:1]"
+    },
+    {
+      "target": 37,
+      "source": 35,
+      "label": "3d-raytrace.js[3d-raytrace.js:283:36] -> 3d-raytrace.js[3d-raytrace.js:38:1]"
+    }
+  ]
+}

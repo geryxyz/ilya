@@ -1,0 +1,27 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 87,
+      "label": "date-format-tofte.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 88,
+      "label": "date-format-tofte.js[date-format-tofte.js:8:29]",
+      "entry": false,
+      "final": true,
+      "pos": "date-format-tofte.js:8:29"
+    }
+  ],
+  "links": [
+    {
+      "target": 88,
+      "source": 87,
+      "label": "date-format-tofte.js[toplevel:1:1] -> date-format-tofte.js[date-format-tofte.js:8:29]"
+    }
+  ]
+}

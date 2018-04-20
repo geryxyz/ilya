@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[access-fannkuch.js]fannkuch",
+      "pos": "access-fannkuch.js:5:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [access-fannkuch.js]fannkuch"
+    }
+  ]
+}

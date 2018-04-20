@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[access-nsieve.js]sieve",
+      "pos": "access-nsieve.js:30:1"
+    },
+    {
+      "id": 2,
+      "label": "[access-nsieve.js]nsieve",
+      "pos": "access-nsieve.js:15:1"
+    },
+    {
+      "id": 3,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[access-nsieve.js]sieve -> [access-nsieve.js]nsieve"
+    },
+    {
+      "target": 1,
+      "source": 3,
+      "label": "[toplevel] -> [access-nsieve.js]sieve"
+    }
+  ]
+}

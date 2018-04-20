@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[access-nbody.js]Neptune",
+      "pos": "access-nbody.js:62:1"
+    },
+    {
+      "id": 2,
+      "label": "[access-nbody.js]Body",
+      "pos": "access-nbody.js:9:1"
+    },
+    {
+      "id": 3,
+      "label": "[access-nbody.js]NBodySystem",
+      "pos": "access-nbody.js:79:1"
+    },
+    {
+      "id": 4,
+      "label": "[access-nbody.js]Body.prototype.offsetMomentum",
+      "pos": "access-nbody.js:19:33"
+    },
+    {
+      "id": 5,
+      "label": "[access-nbody.js]Jupiter",
+      "pos": "access-nbody.js:26:1"
+    },
+    {
+      "id": 6,
+      "label": "[access-nbody.js]Saturn",
+      "pos": "access-nbody.js:38:1"
+    },
+    {
+      "id": 7,
+      "label": "[access-nbody.js]Uranus",
+      "pos": "access-nbody.js:50:1"
+    },
+    {
+      "id": 8,
+      "label": "[access-nbody.js]Sun",
+      "pos": "access-nbody.js:74:1"
+    },
+    {
+      "id": 9,
+      "label": "[access-nbody.js]null",
+      "pos": "access-nbody.js:157:6"
+    },
+    {
+      "id": 10,
+      "label": "[access-nbody.js]NBodySystem.prototype.energy",
+      "pos": "access-nbody.js:128:32"
+    },
+    {
+      "id": 11,
+      "label": "[access-nbody.js]NBodySystem.prototype.advance",
+      "pos": "access-nbody.js:95:33"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[access-nbody.js]Neptune -> [access-nbody.js]Body"
+    },
+    {
+      "target": 4,
+      "source": 3,
+      "label": "[access-nbody.js]offsetMomentum -> [access-nbody.js]Body.prototype.offsetMomentum"
+    },
+    {
+      "target": 2,
+      "source": 5,
+      "label": "[access-nbody.js]Jupiter -> [access-nbody.js]Body"
+    },
+    {
+      "target": 2,
+      "source": 6,
+      "label": "[access-nbody.js]Saturn -> [access-nbody.js]Body"
+    },
+    {
+      "target": 2,
+      "source": 7,
+      "label": "[access-nbody.js]Uranus -> [access-nbody.js]Body"
+    },
+    {
+      "target": 2,
+      "source": 8,
+      "label": "[access-nbody.js]Sun -> [access-nbody.js]Body"
+    },
+    {
+      "target": 8,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]Sun"
+    },
+    {
+      "target": 5,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]Jupiter"
+    },
+    {
+      "target": 6,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]Saturn"
+    },
+    {
+      "target": 7,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]Uranus"
+    },
+    {
+      "target": 1,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]Neptune"
+    },
+    {
+      "target": 3,
+      "source": 9,
+      "label": "[access-nbody.js]null -> [access-nbody.js]NBodySystem"
+    },
+    {
+      "target": 10,
+      "source": 9,
+      "label": "[access-nbody.js]energy -> [access-nbody.js]NBodySystem.prototype.energy"
+    },
+    {
+      "target": 11,
+      "source": 9,
+      "label": "[access-nbody.js]advance -> [access-nbody.js]NBodySystem.prototype.advance"
+    }
+  ]
+}

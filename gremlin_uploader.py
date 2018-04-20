@@ -15,47 +15,48 @@ import hashlib
 class GremlinUploader(object):
 	def __init__(self, server_url, traversal_source):
 		super(GremlinUploader, self).__init__()
-		self.server_url = server_url
-		self.traversal_source = traversal_source
+		self._print("output Gremlin server: %s, %s" % (server_url, traversal_source))
+		self.output_graph = Graph().traversal().withRemote(DriverRemoteConnection(server_url, traversal_source))
+
+	def _print(self, obj="", verbose=True):
+		if verbose:
+			print(obj)
 		
+	def _drop_graph(self):
+		self.output_graph.V().drop().toList()
+		self.output_graph.E().drop().toList()
+
 	def upload(self, json_graph, source_name, verbose=True, drop_graph=True):
-		def printX(obj=""):
-			if clargs.verbose:
-				print(obj)
 		if isinstance(json_graph, str):
 			input_graph = nx.readwrite.json_graph.node_link_graph(json.loads(json_graph))
 		elif isinstance(json_graph, io.TextIOBase):
 			input_graph = nx.readwrite.json_graph.node_link_graph(json.load(json_graph))
 
-		printX("output Gremlin server: %s, %s" % (clargs.output_server, clargs.output_source))
-		output_graph = Graph().traversal().withRemote(DriverRemoteConnection(self.server_url, self.traversal_source))
-
 		if drop_graph:
-			printX("Clearing ouput graph...")
-			output_graph.V().drop().toList()
-			output_graph.E().drop().toList()
-			printX("done")
+			self._print("Clearing ouput graph...", verbose)
+			self._drop_graph()
+			self._print("done", verbose)
 
 		for id, props in input_graph.nodes(data=True):
-			printX("processing node: %s\nwith data: %s" % (id, props))
-			new_node = output_graph.addV('node_link_node').next()
-			output_graph.V(new_node).property('original_id', id).toList()
-			output_graph.V(new_node).property('source_name', source_name).toList()
+			self._print("processing node: %s\nwith data: %s" % (id, props), verbose)
+			new_node = self.output_graph.addV('node_link_node').next()
+			self.output_graph.V(new_node).property('original_id', id).toList()
+			self.output_graph.V(new_node).property('source_name', source_name).toList()
 			for prop, value in props.items():
-				output_graph.V(new_node).property(prop, value).toList()
-			printX("added properties: %s" % output_graph.V(new_node).properties().toList())
+				self.output_graph.V(new_node).property(prop, value).toList()
+			self._print("added properties: %s" % self.output_graph.V(new_node).properties().toList(), verbose)
 
 		for out_id, in_id, props in input_graph.edges(data=True):
-			printX("processing edge: %s --> %s" % (out_id, in_id))
-			out_node = output_graph.V().where(__.has('original_id', out_id)).next()
-			in_node = output_graph.V().where(__.has('original_id', in_id)).next()
-			new_edge = output_graph.addE('node_link_connection').from_(out_node).to(in_node).next()
+			self._print("processing edge: %s --> %s" % (out_id, in_id), verbose)
+			out_node = self.output_graph.V().where(__.has('original_id', out_id)).next()
+			in_node = self.output_graph.V().where(__.has('original_id', in_id)).next()
+			new_edge = self.output_graph.addE('node_link_connection').from_(out_node).to(in_node).next()
 			for prop, value in props.items():
-				output_graph.E(new_edge).property(prop, value).toList()
-			printX("added properties: %s" % output_graph.E(new_edge).properties().toList())
+				self.output_graph.E(new_edge).property(prop, value).toList()
+			self._print("added properties: %s" % self.output_graph.E(new_edge).properties().toList(), verbose)
 
-		printX("total nodes added: %d" % output_graph.V().count().next())
-		printX("total edges added: %d" % output_graph.E().count().next())
+		self._print("total nodes added: %d" % self.output_graph.V().count().next(), verbose)
+		self._print("total edges added: %d" % self.output_graph.E().count().next(), verbose)
 
 if __name__ == '__main__':
 	clap = ap.ArgumentParser(description = 'This script load JSON graph formats to Apache TinkerPop Gremlin server.');

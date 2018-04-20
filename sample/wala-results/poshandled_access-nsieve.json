@@ -1,0 +1,27 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 53,
+      "label": "access-nsieve.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 54,
+      "label": "access-nsieve.js[access-nsieve.js:30:1]",
+      "entry": false,
+      "final": true,
+      "pos": "access-nsieve.js:30:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 54,
+      "source": 53,
+      "label": "access-nsieve.js[toplevel:1:1] -> access-nsieve.js[access-nsieve.js:30:1]"
+    }
+  ]
+}

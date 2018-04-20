@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 145,
+      "label": "[math-partial-sums]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "math-partial-sums.js:5:1",
+      "id": 146,
+      "label": "[math-partial-sums]partial"
+    }
+  ],
+  "links": [
+    {
+      "source": 145,
+      "target": 146,
+      "label": "[math-partial-sums] -> [math-partial-sums]partial"
+    }
+  ]
+}

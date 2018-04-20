@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[bitops-bits-in-byte.js]TimeFunc",
+      "pos": "bitops-bits-in-byte.js:17:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [bitops-bits-in-byte.js]TimeFunc"
+    }
+  ]
+}

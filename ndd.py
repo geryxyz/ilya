@@ -9,6 +9,7 @@ import subprocess as sp #https://docs.python.org/3.4/library/subprocess.html
 import copy
 import os
 import re
+from deprection import deprecated
 
 from clustering import *
 from snowflake import *
@@ -133,6 +134,7 @@ class NDDDetector(object):
 		max_length = max([len(v) for k, v in _histograms.items()])
 		return {k: v + ([0] * (max_length - len(v))) for k, v in _histograms.items()}
 
+	@deprecated(details="will be replaced with TinkerPop versions")
 	def ndd_vector_of(self, cluster_id, graphs):
 		node = None
 		for node_id, node_data in graphs['inclusion'].nodes(data=True):
@@ -154,6 +156,7 @@ class NDDDetector(object):
 		
 		return [v for k, v in sorted(histogram.items(), key=lambda x: x[0])][1:], G_data
 
+	@deprecated(details="will be replaced with TinkerPop versions")
 	def detect_ndd_vector(self, clustering, graphs):
 		histograms = {}
 		curves = {}

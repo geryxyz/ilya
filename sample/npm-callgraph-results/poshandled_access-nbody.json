@@ -1,0 +1,117 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-nbody.js:26:1",
+      "id": 44,
+      "label": "[access-nbody]Jupiter"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "access-nbody.js:9:1",
+      "id": 45,
+      "label": "[access-nbody]Body"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-nbody.js:38:1",
+      "id": 46,
+      "label": "[access-nbody]Saturn"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-nbody.js:50:1",
+      "id": 47,
+      "label": "[access-nbody]Uranus"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-nbody.js:62:1",
+      "id": 48,
+      "label": "[access-nbody]Neptune"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-nbody.js:74:1",
+      "id": 49,
+      "label": "[access-nbody]Sun"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 50,
+      "label": "[access-nbody]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "access-nbody.js:79:1",
+      "id": 51,
+      "label": "[access-nbody]NBodySystem"
+    }
+  ],
+  "links": [
+    {
+      "source": 44,
+      "target": 45,
+      "label": "[access-nbody]Jupiter -> [access-nbody]Body"
+    },
+    {
+      "source": 46,
+      "target": 45,
+      "label": "[access-nbody]Saturn -> [access-nbody]Body"
+    },
+    {
+      "source": 47,
+      "target": 45,
+      "label": "[access-nbody]Uranus -> [access-nbody]Body"
+    },
+    {
+      "source": 48,
+      "target": 45,
+      "label": "[access-nbody]Neptune -> [access-nbody]Body"
+    },
+    {
+      "source": 49,
+      "target": 45,
+      "label": "[access-nbody]Sun -> [access-nbody]Body"
+    },
+    {
+      "source": 50,
+      "target": 51,
+      "label": "[access-nbody] -> [access-nbody]NBodySystem"
+    },
+    {
+      "source": 50,
+      "target": 49,
+      "label": "[access-nbody] -> [access-nbody]Sun"
+    },
+    {
+      "source": 50,
+      "target": 44,
+      "label": "[access-nbody] -> [access-nbody]Jupiter"
+    },
+    {
+      "source": 50,
+      "target": 46,
+      "label": "[access-nbody] -> [access-nbody]Saturn"
+    },
+    {
+      "source": 50,
+      "target": 47,
+      "label": "[access-nbody] -> [access-nbody]Uranus"
+    },
+    {
+      "source": 50,
+      "target": 48,
+      "label": "[access-nbody] -> [access-nbody]Neptune"
+    }
+  ]
+}

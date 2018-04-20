@@ -1,0 +1,222 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:121:5",
+      "id": 122,
+      "label": "[date-format-tofte]L"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:231:5",
+      "id": 123,
+      "label": "[date-format-tofte]Y"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:157:5",
+      "id": 124,
+      "label": "[date-format-tofte]r"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:75:5",
+      "id": 125,
+      "label": "[date-format-tofte]D"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:113:5",
+      "id": 126,
+      "label": "[date-format-tofte]j"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:140:5",
+      "id": 127,
+      "label": "[date-format-tofte]M"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:103:5",
+      "id": 128,
+      "label": "[date-format-tofte]H"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:108:5",
+      "id": 129,
+      "label": "[date-format-tofte]i"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:170:5",
+      "id": 130,
+      "label": "[date-format-tofte]s"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:148:5",
+      "id": 131,
+      "label": "[date-format-tofte]O"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:175:5",
+      "id": 132,
+      "label": "[date-format-tofte]t"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:144:5",
+      "id": 133,
+      "label": "[date-format-tofte]n"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:186:5",
+      "id": 134,
+      "label": "[date-format-tofte]W"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:258:5",
+      "id": 135,
+      "label": "[date-format-tofte]z"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:226:5",
+      "id": 136,
+      "label": "[date-format-tofte]w"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "date-format-tofte.js:253:5",
+      "id": 137,
+      "label": "[date-format-tofte]y"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 138,
+      "label": "[date-format-tofte]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "date-format-tofte.js:1:1",
+      "id": 139,
+      "label": "[date-format-tofte]arrayExists"
+    }
+  ],
+  "links": [
+    {
+      "source": 122,
+      "target": 123,
+      "label": "[date-format-tofte]L -> [date-format-tofte]Y"
+    },
+    {
+      "source": 124,
+      "target": 125,
+      "label": "[date-format-tofte]r -> [date-format-tofte]D"
+    },
+    {
+      "source": 124,
+      "target": 126,
+      "label": "[date-format-tofte]r -> [date-format-tofte]j"
+    },
+    {
+      "source": 124,
+      "target": 127,
+      "label": "[date-format-tofte]r -> [date-format-tofte]M"
+    },
+    {
+      "source": 124,
+      "target": 123,
+      "label": "[date-format-tofte]r -> [date-format-tofte]Y"
+    },
+    {
+      "source": 124,
+      "target": 128,
+      "label": "[date-format-tofte]r -> [date-format-tofte]H"
+    },
+    {
+      "source": 124,
+      "target": 129,
+      "label": "[date-format-tofte]r -> [date-format-tofte]i"
+    },
+    {
+      "source": 124,
+      "target": 130,
+      "label": "[date-format-tofte]r -> [date-format-tofte]s"
+    },
+    {
+      "source": 124,
+      "target": 131,
+      "label": "[date-format-tofte]r -> [date-format-tofte]O"
+    },
+    {
+      "source": 132,
+      "target": 122,
+      "label": "[date-format-tofte]t -> [date-format-tofte]L"
+    },
+    {
+      "source": 132,
+      "target": 133,
+      "label": "[date-format-tofte]t -> [date-format-tofte]n"
+    },
+    {
+      "source": 134,
+      "target": 122,
+      "label": "[date-format-tofte]W -> [date-format-tofte]L"
+    },
+    {
+      "source": 134,
+      "target": 135,
+      "label": "[date-format-tofte]W -> [date-format-tofte]z"
+    },
+    {
+      "source": 134,
+      "target": 136,
+      "label": "[date-format-tofte]W -> [date-format-tofte]w"
+    },
+    {
+      "source": 134,
+      "target": 123,
+      "label": "[date-format-tofte]W -> [date-format-tofte]Y"
+    },
+    {
+      "source": 137,
+      "target": 123,
+      "label": "[date-format-tofte]y -> [date-format-tofte]Y"
+    },
+    {
+      "source": 135,
+      "target": 123,
+      "label": "[date-format-tofte]z -> [date-format-tofte]Y"
+    },
+    {
+      "source": 138,
+      "target": 139,
+      "label": "[date-format-tofte] -> [date-format-tofte]arrayExists"
+    }
+  ]
+}

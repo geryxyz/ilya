@@ -1,0 +1,51 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 74, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "controlflow-recursive.js:5:1", 
+      "id": 75, 
+      "label": "controlflow-recursive.js@5"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "controlflow-recursive.js:11:1", 
+      "id": 76, 
+      "label": "controlflow-recursive.js@11"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "controlflow-recursive.js:16:1", 
+      "id": 77, 
+      "label": "controlflow-recursive.js@16"
+    }
+  ], 
+  "links": [
+    {
+      "source": 74, 
+      "target": 75, 
+      "label": "toplevel@[toplevel] -> controlflow-recursive.js@5"
+    }, 
+    {
+      "source": 74, 
+      "target": 76, 
+      "label": "toplevel@[toplevel] -> controlflow-recursive.js@11"
+    }, 
+    {
+      "source": 74, 
+      "target": 77, 
+      "label": "toplevel@[toplevel] -> controlflow-recursive.js@16"
+    }
+  ], 
+  "multigraph": false
+}

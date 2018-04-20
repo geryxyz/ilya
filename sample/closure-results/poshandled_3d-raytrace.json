@@ -1,0 +1,341 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[3d-raytrace.js]normalise",
+      "pos": "3d-raytrace.js:94:1"
+    },
+    {
+      "id": 2,
+      "label": "[3d-raytrace.js]lengthVector",
+      "pos": "3d-raytrace.js:34:1"
+    },
+    {
+      "id": 3,
+      "label": "[3d-raytrace.js]renderRows",
+      "pos": "3d-raytrace.js:292:1"
+    },
+    {
+      "id": 4,
+      "label": "[3d-raytrace.js]Camera.prototype.generateRayPair",
+      "pos": "3d-raytrace.js:283:36"
+    },
+    {
+      "id": 5,
+      "label": "[3d-raytrace.js]scale",
+      "pos": "3d-raytrace.js:83:1"
+    },
+    {
+      "id": 6,
+      "label": "[3d-raytrace.js]addVector",
+      "pos": "3d-raytrace.js:38:1"
+    },
+    {
+      "id": 7,
+      "label": "[3d-raytrace.js]normaliseVector",
+      "pos": "3d-raytrace.js:59:1"
+    },
+    {
+      "id": 8,
+      "label": "[3d-raytrace.js]Triangle.prototype.intersect",
+      "pos": "3d-raytrace.js:160:32"
+    },
+    {
+      "id": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect",
+      "pos": "3d-raytrace.js:189:29"
+    },
+    {
+      "id": 10,
+      "label": "[3d-raytrace.js]Scene.prototype.blocked",
+      "pos": "3d-raytrace.js:244:27"
+    },
+    {
+      "id": 11,
+      "label": "[3d-raytrace.js]raytraceScene",
+      "pos": "3d-raytrace.js:313:1"
+    },
+    {
+      "id": 12,
+      "label": "[3d-raytrace.js]createVector",
+      "pos": "3d-raytrace.js:26:1"
+    },
+    {
+      "id": 13,
+      "label": "[3d-raytrace.js]Triangle",
+      "pos": "3d-raytrace.js:125:1"
+    },
+    {
+      "id": 14,
+      "label": "[3d-raytrace.js]Scene",
+      "pos": "3d-raytrace.js:181:1"
+    },
+    {
+      "id": 15,
+      "label": "[3d-raytrace.js]Camera",
+      "pos": "3d-raytrace.js:261:1"
+    },
+    {
+      "id": 16,
+      "label": "[3d-raytrace.js]Camera.prototype.render",
+      "pos": "3d-raytrace.js:305:27"
+    },
+    {
+      "id": 17,
+      "label": "[3d-raytrace.js]subVector",
+      "pos": "3d-raytrace.js:45:1"
+    },
+    {
+      "id": 18,
+      "label": "[3d-raytrace.js]cross",
+      "pos": "3d-raytrace.js:87:1"
+    },
+    {
+      "id": 19,
+      "label": "[3d-raytrace.js]invertMatrix",
+      "pos": "3d-raytrace.js:107:1"
+    },
+    {
+      "id": 20,
+      "label": "[3d-raytrace.js]transformMatrix",
+      "pos": "3d-raytrace.js:99:1"
+    },
+    {
+      "id": 21,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 22,
+      "label": "[3d-raytrace.js]arrayToCanvasCommands",
+      "pos": "3d-raytrace.js:405:1"
+    },
+    {
+      "id": 23,
+      "label": "[3d-raytrace.js]sub",
+      "pos": "3d-raytrace.js:71:1"
+    },
+    {
+      "id": 24,
+      "label": "[3d-raytrace.js]dot",
+      "pos": "3d-raytrace.js:79:1"
+    },
+    {
+      "id": 25,
+      "label": "[3d-raytrace.js]add",
+      "pos": "3d-raytrace.js:67:1"
+    },
+    {
+      "id": 26,
+      "label": "[3d-raytrace.js]scaleVector",
+      "pos": "3d-raytrace.js:52:1"
+    },
+    {
+      "id": 27,
+      "label": "[3d-raytrace.js]scalev",
+      "pos": "3d-raytrace.js:75:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[3d-raytrace.js]normalise -> [3d-raytrace.js]lengthVector"
+    },
+    {
+      "target": 4,
+      "source": 3,
+      "label": "[3d-raytrace.js]generateRayPair -> [3d-raytrace.js]Camera.prototype.generateRayPair"
+    },
+    {
+      "target": 5,
+      "source": 3,
+      "label": "[3d-raytrace.js]renderRows -> [3d-raytrace.js]scale"
+    },
+    {
+      "target": 6,
+      "source": 3,
+      "label": "[3d-raytrace.js]renderRows -> [3d-raytrace.js]addVector"
+    },
+    {
+      "target": 7,
+      "source": 3,
+      "label": "[3d-raytrace.js]renderRows -> [3d-raytrace.js]normaliseVector"
+    },
+    {
+      "target": 8,
+      "source": 3,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Triangle.prototype.intersect"
+    },
+    {
+      "target": 9,
+      "source": 3,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Scene.prototype.intersect"
+    },
+    {
+      "target": 8,
+      "source": 10,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Triangle.prototype.intersect"
+    },
+    {
+      "target": 9,
+      "source": 10,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Scene.prototype.intersect"
+    },
+    {
+      "target": 12,
+      "source": 11,
+      "label": "[3d-raytrace.js]raytraceScene -> [3d-raytrace.js]createVector"
+    },
+    {
+      "target": 13,
+      "source": 11,
+      "label": "[3d-raytrace.js]raytraceScene -> [3d-raytrace.js]Triangle"
+    },
+    {
+      "target": 14,
+      "source": 11,
+      "label": "[3d-raytrace.js]raytraceScene -> [3d-raytrace.js]Scene"
+    },
+    {
+      "target": 15,
+      "source": 11,
+      "label": "[3d-raytrace.js]raytraceScene -> [3d-raytrace.js]Camera"
+    },
+    {
+      "target": 16,
+      "source": 11,
+      "label": "[3d-raytrace.js]render -> [3d-raytrace.js]Camera.prototype.render"
+    },
+    {
+      "target": 17,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]subVector"
+    },
+    {
+      "target": 7,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]normaliseVector"
+    },
+    {
+      "target": 18,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]cross"
+    },
+    {
+      "target": 19,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]invertMatrix"
+    },
+    {
+      "target": 1,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]normalise"
+    },
+    {
+      "target": 20,
+      "source": 15,
+      "label": "[3d-raytrace.js]Camera -> [3d-raytrace.js]transformMatrix"
+    },
+    {
+      "target": 3,
+      "source": 16,
+      "label": "[3d-raytrace.js]Camera.prototype.render -> [3d-raytrace.js]renderRows"
+    },
+    {
+      "target": 11,
+      "source": 21,
+      "label": "[toplevel] -> [3d-raytrace.js]raytraceScene"
+    },
+    {
+      "target": 22,
+      "source": 21,
+      "label": "[toplevel] -> [3d-raytrace.js]arrayToCanvasCommands"
+    },
+    {
+      "target": 23,
+      "source": 13,
+      "label": "[3d-raytrace.js]Triangle -> [3d-raytrace.js]sub"
+    },
+    {
+      "target": 18,
+      "source": 13,
+      "label": "[3d-raytrace.js]Triangle -> [3d-raytrace.js]cross"
+    },
+    {
+      "target": 1,
+      "source": 13,
+      "label": "[3d-raytrace.js]Triangle -> [3d-raytrace.js]normalise"
+    },
+    {
+      "target": 24,
+      "source": 13,
+      "label": "[3d-raytrace.js]Triangle -> [3d-raytrace.js]dot"
+    },
+    {
+      "target": 8,
+      "source": 9,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Triangle.prototype.intersect"
+    },
+    {
+      "target": 9,
+      "source": 9,
+      "label": "[3d-raytrace.js]intersect -> [3d-raytrace.js]Scene.prototype.intersect"
+    },
+    {
+      "target": 5,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]scale"
+    },
+    {
+      "target": 25,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]add"
+    },
+    {
+      "target": 24,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]dot"
+    },
+    {
+      "target": 6,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]addVector"
+    },
+    {
+      "target": 23,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]sub"
+    },
+    {
+      "target": 2,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]lengthVector"
+    },
+    {
+      "target": 26,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]scaleVector"
+    },
+    {
+      "target": 10,
+      "source": 9,
+      "label": "[3d-raytrace.js]blocked -> [3d-raytrace.js]Scene.prototype.blocked"
+    },
+    {
+      "target": 27,
+      "source": 9,
+      "label": "[3d-raytrace.js]Scene.prototype.intersect -> [3d-raytrace.js]scalev"
+    },
+    {
+      "target": 5,
+      "source": 4,
+      "label": "[3d-raytrace.js]Camera.prototype.generateRayPair -> [3d-raytrace.js]scale"
+    },
+    {
+      "target": 6,
+      "source": 4,
+      "label": "[3d-raytrace.js]Camera.prototype.generateRayPair -> [3d-raytrace.js]addVector"
+    }
+  ]
+}

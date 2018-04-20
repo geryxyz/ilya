@@ -1,0 +1,146 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[string-tagcloud.js]a.parseJSON",
+      "pos": "string-tagcloud.js:177:23"
+    },
+    {
+      "id": 2,
+      "label": "[string-tagcloud.js]b",
+      "pos": "string-tagcloud.js:180:13"
+    },
+    {
+      "id": 3,
+      "label": "[string-tagcloud.js]Array.prototype.toJSONString",
+      "pos": "string-tagcloud.js:40:36"
+    },
+    {
+      "id": 4,
+      "label": "[string-tagcloud.js]Boolean.prototype.toJSONString",
+      "pos": "string-tagcloud.js:72:38"
+    },
+    {
+      "id": 5,
+      "label": "[string-tagcloud.js]Date.prototype.toJSONString",
+      "pos": "string-tagcloud.js:77:35"
+    },
+    {
+      "id": 6,
+      "label": "[string-tagcloud.js]Number.prototype.toJSONString",
+      "pos": "string-tagcloud.js:93:37"
+    },
+    {
+      "id": 7,
+      "label": "[string-tagcloud.js]Object.prototype.toJSONString",
+      "pos": "string-tagcloud.js:99:37"
+    },
+    {
+      "id": 8,
+      "label": "[string-tagcloud.js]a.toJSONString",
+      "pos": "string-tagcloud.js:208:26"
+    },
+    {
+      "id": 9,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 10,
+      "label": "[string-tagcloud.js]makeTagCloud",
+      "pos": "string-tagcloud.js:231:1"
+    },
+    {
+      "id": 11,
+      "label": "[string-tagcloud.js]a",
+      "pos": "string-tagcloud.js:79:9"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[string-tagcloud.js]a.parseJSON -> [string-tagcloud.js]b"
+    },
+    {
+      "target": 2,
+      "source": 2,
+      "label": "[string-tagcloud.js]b -> [string-tagcloud.js]b"
+    },
+    {
+      "target": 3,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Array.prototype.toJSONString"
+    },
+    {
+      "target": 4,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Boolean.prototype.toJSONString"
+    },
+    {
+      "target": 5,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Date.prototype.toJSONString"
+    },
+    {
+      "target": 6,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Number.prototype.toJSONString"
+    },
+    {
+      "target": 7,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Object.prototype.toJSONString"
+    },
+    {
+      "target": 8,
+      "source": 3,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]a.toJSONString"
+    },
+    {
+      "target": 1,
+      "source": 9,
+      "label": "[null]parseJSON -> [string-tagcloud.js]a.parseJSON"
+    },
+    {
+      "target": 10,
+      "source": 9,
+      "label": "[toplevel] -> [string-tagcloud.js]makeTagCloud"
+    },
+    {
+      "target": 11,
+      "source": 5,
+      "label": "[string-tagcloud.js]Date.prototype.toJSONString -> [string-tagcloud.js]a"
+    },
+    {
+      "target": 3,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Array.prototype.toJSONString"
+    },
+    {
+      "target": 4,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Boolean.prototype.toJSONString"
+    },
+    {
+      "target": 5,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Date.prototype.toJSONString"
+    },
+    {
+      "target": 6,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Number.prototype.toJSONString"
+    },
+    {
+      "target": 7,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]Object.prototype.toJSONString"
+    },
+    {
+      "target": 8,
+      "source": 7,
+      "label": "[string-tagcloud.js]toJSONString -> [string-tagcloud.js]a.toJSONString"
+    }
+  ]
+}

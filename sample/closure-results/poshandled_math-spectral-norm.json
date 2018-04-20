@@ -1,0 +1,66 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[math-spectral-norm.js]Au",
+      "pos": "math-spectral-norm.js:10:1"
+    },
+    {
+      "id": 2,
+      "label": "[math-spectral-norm.js]A",
+      "pos": "math-spectral-norm.js:6:1"
+    },
+    {
+      "id": 3,
+      "label": "[math-spectral-norm.js]Atu",
+      "pos": "math-spectral-norm.js:19:1"
+    },
+    {
+      "id": 4,
+      "label": "[math-spectral-norm.js]spectralnorm",
+      "pos": "math-spectral-norm.js:33:1"
+    },
+    {
+      "id": 5,
+      "label": "[math-spectral-norm.js]AtAu",
+      "pos": "math-spectral-norm.js:28:1"
+    },
+    {
+      "id": 6,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[math-spectral-norm.js]Au -> [math-spectral-norm.js]A"
+    },
+    {
+      "target": 2,
+      "source": 3,
+      "label": "[math-spectral-norm.js]Atu -> [math-spectral-norm.js]A"
+    },
+    {
+      "target": 5,
+      "source": 4,
+      "label": "[math-spectral-norm.js]spectralnorm -> [math-spectral-norm.js]AtAu"
+    },
+    {
+      "target": 4,
+      "source": 6,
+      "label": "[toplevel] -> [math-spectral-norm.js]spectralnorm"
+    },
+    {
+      "target": 1,
+      "source": 5,
+      "label": "[math-spectral-norm.js]AtAu -> [math-spectral-norm.js]Au"
+    },
+    {
+      "target": 3,
+      "source": 5,
+      "label": "[math-spectral-norm.js]AtAu -> [math-spectral-norm.js]Atu"
+    }
+  ]
+}

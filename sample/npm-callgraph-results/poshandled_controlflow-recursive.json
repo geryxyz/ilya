@@ -1,0 +1,64 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "controlflow-recursive.js:5:1",
+      "id": 62,
+      "label": "[controlflow-recursive]ack"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "controlflow-recursive.js:11:1",
+      "id": 63,
+      "label": "[controlflow-recursive]fib"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "controlflow-recursive.js:16:1",
+      "id": 64,
+      "label": "[controlflow-recursive]tak"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 65,
+      "label": "[controlflow-recursive]"
+    }
+  ],
+  "links": [
+    {
+      "source": 62,
+      "target": 62,
+      "label": "[controlflow-recursive]ack -> [controlflow-recursive]ack"
+    },
+    {
+      "source": 63,
+      "target": 63,
+      "label": "[controlflow-recursive]fib -> [controlflow-recursive]fib"
+    },
+    {
+      "source": 64,
+      "target": 64,
+      "label": "[controlflow-recursive]tak -> [controlflow-recursive]tak"
+    },
+    {
+      "source": 65,
+      "target": 62,
+      "label": "[controlflow-recursive] -> [controlflow-recursive]ack"
+    },
+    {
+      "source": 65,
+      "target": 63,
+      "label": "[controlflow-recursive] -> [controlflow-recursive]fib"
+    },
+    {
+      "source": 65,
+      "target": 64,
+      "label": "[controlflow-recursive] -> [controlflow-recursive]tak"
+    }
+  ]
+}

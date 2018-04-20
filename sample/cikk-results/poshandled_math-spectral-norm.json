@@ -1,0 +1,80 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 174, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "math-spectral-norm.js:33:1", 
+      "id": 175, 
+      "label": "math-spectral-norm.js@33"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "math-spectral-norm.js:10:1", 
+      "id": 176, 
+      "label": "math-spectral-norm.js@10"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "math-spectral-norm.js:6:1", 
+      "id": 177, 
+      "label": "math-spectral-norm.js@6"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "math-spectral-norm.js:19:1", 
+      "id": 178, 
+      "label": "math-spectral-norm.js@19"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "math-spectral-norm.js:28:1", 
+      "id": 179, 
+      "label": "math-spectral-norm.js@28"
+    }
+  ], 
+  "links": [
+    {
+      "source": 174, 
+      "target": 175, 
+      "label": "toplevel@[toplevel] -> math-spectral-norm.js@33"
+    }, 
+    {
+      "source": 176, 
+      "target": 177, 
+      "label": "math-spectral-norm.js@10 -> math-spectral-norm.js@6"
+    }, 
+    {
+      "source": 178, 
+      "target": 177, 
+      "label": "math-spectral-norm.js@19 -> math-spectral-norm.js@6"
+    }, 
+    {
+      "source": 179, 
+      "target": 176, 
+      "label": "math-spectral-norm.js@28 -> math-spectral-norm.js@10"
+    }, 
+    {
+      "source": 179, 
+      "target": 178, 
+      "label": "math-spectral-norm.js@28 -> math-spectral-norm.js@19"
+    }, 
+    {
+      "source": 175, 
+      "target": 179, 
+      "label": "math-spectral-norm.js@33 -> math-spectral-norm.js@28"
+    }
+  ], 
+  "multigraph": false
+}

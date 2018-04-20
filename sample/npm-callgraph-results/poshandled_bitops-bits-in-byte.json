@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 57,
+      "label": "[bitops-bits-in-byte]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "bitops-bits-in-byte.js:17:1",
+      "id": 58,
+      "label": "[bitops-bits-in-byte]TimeFunc"
+    }
+  ],
+  "links": [
+    {
+      "source": 57,
+      "target": 58,
+      "label": "[bitops-bits-in-byte] -> [bitops-bits-in-byte]TimeFunc"
+    }
+  ]
+}

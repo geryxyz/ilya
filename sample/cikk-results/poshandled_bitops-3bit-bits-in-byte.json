@@ -1,0 +1,27 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 67, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "bitops-3bit-bits-in-byte.js:28:1", 
+      "id": 68, 
+      "label": "bitops-3bit-bits-in-byte.js@28"
+    }
+  ], 
+  "links": [
+    {
+      "source": 67, 
+      "target": 68, 
+      "label": "toplevel@[toplevel] -> bitops-3bit-bits-in-byte.js@28"
+    }
+  ], 
+  "multigraph": false
+}

@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 84,
+      "label": "crypto-sha1.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 85,
+      "label": "crypto-sha1.js[crypto-sha1.js:22:1]",
+      "entry": false,
+      "final": false,
+      "pos": "crypto-sha1.js:22:1"
+    },
+    {
+      "id": 86,
+      "label": "crypto-sha1.js[crypto-sha1.js:147:1]",
+      "entry": false,
+      "final": true,
+      "pos": "crypto-sha1.js:147:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 85,
+      "source": 84,
+      "label": "crypto-sha1.js[toplevel:1:1] -> crypto-sha1.js[crypto-sha1.js:22:1]"
+    },
+    {
+      "target": 86,
+      "source": 85,
+      "label": "crypto-sha1.js[crypto-sha1.js:22:1] -> crypto-sha1.js[crypto-sha1.js:147:1]"
+    }
+  ]
+}

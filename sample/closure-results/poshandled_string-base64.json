@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[string-base64.js]toBase64",
+      "pos": "string-base64.js:45:1"
+    },
+    {
+      "id": 3,
+      "label": "[string-base64.js]base64ToString",
+      "pos": "string-base64.js:86:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [string-base64.js]toBase64"
+    },
+    {
+      "target": 3,
+      "source": 1,
+      "label": "[toplevel] -> [string-base64.js]base64ToString"
+    }
+  ]
+}

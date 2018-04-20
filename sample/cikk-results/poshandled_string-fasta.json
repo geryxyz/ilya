@@ -1,0 +1,63 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 183, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "string-fasta.js:44:1", 
+      "id": 184, 
+      "label": "string-fasta.js@44"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "string-fasta.js:60:1", 
+      "id": 185, 
+      "label": "string-fasta.js@60"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "string-fasta.js:8:1", 
+      "id": 186, 
+      "label": "string-fasta.js@8"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "string-fasta.js:36:1", 
+      "id": 187, 
+      "label": "string-fasta.js@36"
+    }
+  ], 
+  "links": [
+    {
+      "source": 183, 
+      "target": 184, 
+      "label": "toplevel@[toplevel] -> string-fasta.js@44"
+    }, 
+    {
+      "source": 183, 
+      "target": 185, 
+      "label": "toplevel@[toplevel] -> string-fasta.js@60"
+    }, 
+    {
+      "source": 185, 
+      "target": 186, 
+      "label": "string-fasta.js@60 -> string-fasta.js@8"
+    }, 
+    {
+      "source": 185, 
+      "target": 187, 
+      "label": "string-fasta.js@60 -> string-fasta.js@36"
+    }
+  ], 
+  "multigraph": false
+}

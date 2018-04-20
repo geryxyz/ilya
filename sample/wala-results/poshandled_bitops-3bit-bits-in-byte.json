@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 55,
+      "label": "bitops-3bit-bits-in-byte.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 56,
+      "label": "bitops-3bit-bits-in-byte.js[bitops-3bit-bits-in-byte.js:28:1]",
+      "entry": false,
+      "final": false,
+      "pos": "bitops-3bit-bits-in-byte.js:28:1"
+    },
+    {
+      "id": 57,
+      "label": "bitops-3bit-bits-in-byte.js[bitops-3bit-bits-in-byte.js:7:1]",
+      "entry": false,
+      "final": true,
+      "pos": "bitops-3bit-bits-in-byte.js:7:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 56,
+      "source": 55,
+      "label": "bitops-3bit-bits-in-byte.js[toplevel:1:1] -> bitops-3bit-bits-in-byte.js[bitops-3bit-bits-in-byte.js:28:1]"
+    },
+    {
+      "target": 57,
+      "source": 56,
+      "label": "bitops-3bit-bits-in-byte.js[bitops-3bit-bits-in-byte.js:28:1] -> bitops-3bit-bits-in-byte.js[bitops-3bit-bits-in-byte.js:7:1]"
+    }
+  ]
+}

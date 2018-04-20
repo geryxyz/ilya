@@ -1,0 +1,211 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[crypto-sha1.js]b64_hmac_sha1",
+      "pos": "crypto-sha1.js:26:1"
+    },
+    {
+      "id": 2,
+      "label": "[crypto-sha1.js]core_hmac_sha1",
+      "pos": "crypto-sha1.js:108:1"
+    },
+    {
+      "id": 3,
+      "label": "[crypto-sha1.js]binb2b64",
+      "pos": "crypto-sha1.js:186:1"
+    },
+    {
+      "id": 4,
+      "label": "[crypto-sha1.js]str_sha1",
+      "pos": "crypto-sha1.js:24:1"
+    },
+    {
+      "id": 5,
+      "label": "[crypto-sha1.js]str2binb",
+      "pos": "crypto-sha1.js:147:1"
+    },
+    {
+      "id": 6,
+      "label": "[crypto-sha1.js]core_sha1",
+      "pos": "crypto-sha1.js:40:1"
+    },
+    {
+      "id": 7,
+      "label": "[crypto-sha1.js]binb2str",
+      "pos": "crypto-sha1.js:159:1"
+    },
+    {
+      "id": 8,
+      "label": "[crypto-sha1.js]str_hmac_sha1",
+      "pos": "crypto-sha1.js:27:1"
+    },
+    {
+      "id": 9,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 10,
+      "label": "[crypto-sha1.js]hex_sha1",
+      "pos": "crypto-sha1.js:22:1"
+    },
+    {
+      "id": 11,
+      "label": "[crypto-sha1.js]binb2hex",
+      "pos": "crypto-sha1.js:171:1"
+    },
+    {
+      "id": 12,
+      "label": "[crypto-sha1.js]rol",
+      "pos": "crypto-sha1.js:138:1"
+    },
+    {
+      "id": 13,
+      "label": "[crypto-sha1.js]sha1_ft",
+      "pos": "crypto-sha1.js:88:1"
+    },
+    {
+      "id": 14,
+      "label": "[crypto-sha1.js]safe_add",
+      "pos": "crypto-sha1.js:128:1"
+    },
+    {
+      "id": 15,
+      "label": "[crypto-sha1.js]sha1_kt",
+      "pos": "crypto-sha1.js:99:1"
+    },
+    {
+      "id": 16,
+      "label": "[crypto-sha1.js]b64_sha1",
+      "pos": "crypto-sha1.js:23:1"
+    },
+    {
+      "id": 17,
+      "label": "[crypto-sha1.js]hex_hmac_sha1",
+      "pos": "crypto-sha1.js:25:1"
+    },
+    {
+      "id": 18,
+      "label": "[crypto-sha1.js]sha1_vm_test",
+      "pos": "crypto-sha1.js:32:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[crypto-sha1.js]b64_hmac_sha1 -> [crypto-sha1.js]core_hmac_sha1"
+    },
+    {
+      "target": 3,
+      "source": 1,
+      "label": "[crypto-sha1.js]b64_hmac_sha1 -> [crypto-sha1.js]binb2b64"
+    },
+    {
+      "target": 5,
+      "source": 4,
+      "label": "[crypto-sha1.js]str_sha1 -> [crypto-sha1.js]str2binb"
+    },
+    {
+      "target": 6,
+      "source": 4,
+      "label": "[crypto-sha1.js]str_sha1 -> [crypto-sha1.js]core_sha1"
+    },
+    {
+      "target": 7,
+      "source": 4,
+      "label": "[crypto-sha1.js]str_sha1 -> [crypto-sha1.js]binb2str"
+    },
+    {
+      "target": 2,
+      "source": 8,
+      "label": "[crypto-sha1.js]str_hmac_sha1 -> [crypto-sha1.js]core_hmac_sha1"
+    },
+    {
+      "target": 7,
+      "source": 8,
+      "label": "[crypto-sha1.js]str_hmac_sha1 -> [crypto-sha1.js]binb2str"
+    },
+    {
+      "target": 10,
+      "source": 9,
+      "label": "[toplevel] -> [crypto-sha1.js]hex_sha1"
+    },
+    {
+      "target": 5,
+      "source": 10,
+      "label": "[crypto-sha1.js]hex_sha1 -> [crypto-sha1.js]str2binb"
+    },
+    {
+      "target": 6,
+      "source": 10,
+      "label": "[crypto-sha1.js]hex_sha1 -> [crypto-sha1.js]core_sha1"
+    },
+    {
+      "target": 11,
+      "source": 10,
+      "label": "[crypto-sha1.js]hex_sha1 -> [crypto-sha1.js]binb2hex"
+    },
+    {
+      "target": 12,
+      "source": 6,
+      "label": "[crypto-sha1.js]core_sha1 -> [crypto-sha1.js]rol"
+    },
+    {
+      "target": 13,
+      "source": 6,
+      "label": "[crypto-sha1.js]core_sha1 -> [crypto-sha1.js]sha1_ft"
+    },
+    {
+      "target": 14,
+      "source": 6,
+      "label": "[crypto-sha1.js]core_sha1 -> [crypto-sha1.js]safe_add"
+    },
+    {
+      "target": 15,
+      "source": 6,
+      "label": "[crypto-sha1.js]core_sha1 -> [crypto-sha1.js]sha1_kt"
+    },
+    {
+      "target": 5,
+      "source": 16,
+      "label": "[crypto-sha1.js]b64_sha1 -> [crypto-sha1.js]str2binb"
+    },
+    {
+      "target": 6,
+      "source": 16,
+      "label": "[crypto-sha1.js]b64_sha1 -> [crypto-sha1.js]core_sha1"
+    },
+    {
+      "target": 3,
+      "source": 16,
+      "label": "[crypto-sha1.js]b64_sha1 -> [crypto-sha1.js]binb2b64"
+    },
+    {
+      "target": 2,
+      "source": 17,
+      "label": "[crypto-sha1.js]hex_hmac_sha1 -> [crypto-sha1.js]core_hmac_sha1"
+    },
+    {
+      "target": 11,
+      "source": 17,
+      "label": "[crypto-sha1.js]hex_hmac_sha1 -> [crypto-sha1.js]binb2hex"
+    },
+    {
+      "target": 10,
+      "source": 18,
+      "label": "[crypto-sha1.js]sha1_vm_test -> [crypto-sha1.js]hex_sha1"
+    },
+    {
+      "target": 5,
+      "source": 2,
+      "label": "[crypto-sha1.js]core_hmac_sha1 -> [crypto-sha1.js]str2binb"
+    },
+    {
+      "target": 6,
+      "source": 2,
+      "label": "[crypto-sha1.js]core_hmac_sha1 -> [crypto-sha1.js]core_sha1"
+    }
+  ]
+}

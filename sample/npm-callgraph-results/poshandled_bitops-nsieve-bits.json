@@ -1,0 +1,37 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "bitops-nsieve-bits.js:25:1",
+      "id": 59,
+      "label": "[bitops-nsieve-bits]sieve"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "bitops-nsieve-bits.js:12:1",
+      "id": 60,
+      "label": "[bitops-nsieve-bits]primes"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 61,
+      "label": "[bitops-nsieve-bits]"
+    }
+  ],
+  "links": [
+    {
+      "source": 59,
+      "target": 60,
+      "label": "[bitops-nsieve-bits]sieve -> [bitops-nsieve-bits]primes"
+    },
+    {
+      "source": 61,
+      "target": 59,
+      "label": "[bitops-nsieve-bits] -> [bitops-nsieve-bits]sieve"
+    }
+  ]
+}

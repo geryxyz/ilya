@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[string-validate-input.js]doTest",
+      "pos": "string-validate-input.js:7:1"
+    },
+    {
+      "id": 3,
+      "label": "[string-validate-input.js]makeName",
+      "pos": "string-validate-input.js:62:1"
+    },
+    {
+      "id": 4,
+      "label": "[string-validate-input.js]addResult",
+      "pos": "string-validate-input.js:84:1"
+    },
+    {
+      "id": 5,
+      "label": "[string-validate-input.js]makeNumber",
+      "pos": "string-validate-input.js:73:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [string-validate-input.js]doTest"
+    },
+    {
+      "target": 3,
+      "source": 2,
+      "label": "[string-validate-input.js]doTest -> [string-validate-input.js]makeName"
+    },
+    {
+      "target": 4,
+      "source": 2,
+      "label": "[string-validate-input.js]doTest -> [string-validate-input.js]addResult"
+    },
+    {
+      "target": 5,
+      "source": 2,
+      "label": "[string-validate-input.js]doTest -> [string-validate-input.js]makeNumber"
+    }
+  ]
+}

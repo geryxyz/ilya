@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[access-binary-trees.js]bottomUpTree",
+      "pos": "access-binary-trees.js:16:1"
+    },
+    {
+      "id": 2,
+      "label": "[access-binary-trees.js]TreeNode",
+      "pos": "access-binary-trees.js:5:1"
+    },
+    {
+      "id": 3,
+      "label": "[access-binary-trees.js]TreeNode.prototype.itemCheck",
+      "pos": "access-binary-trees.js:11:32"
+    },
+    {
+      "id": 4,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 1,
+      "source": 1,
+      "label": "[access-binary-trees.js]bottomUpTree -> [access-binary-trees.js]bottomUpTree"
+    },
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[access-binary-trees.js]bottomUpTree -> [access-binary-trees.js]TreeNode"
+    },
+    {
+      "target": 3,
+      "source": 3,
+      "label": "[access-binary-trees.js]itemCheck -> [access-binary-trees.js]TreeNode.prototype.itemCheck"
+    },
+    {
+      "target": 1,
+      "source": 4,
+      "label": "[toplevel] -> [access-binary-trees.js]bottomUpTree"
+    },
+    {
+      "target": 3,
+      "source": 4,
+      "label": "[null]itemCheck -> [access-binary-trees.js]TreeNode.prototype.itemCheck"
+    }
+  ]
+}

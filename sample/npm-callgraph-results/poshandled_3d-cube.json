@@ -1,0 +1,226 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:85:1",
+      "id": 0,
+      "label": "[3d-cube]CalcNormal"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:77:1",
+      "id": 1,
+      "label": "[3d-cube]CalcCross"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:141:1",
+      "id": 2,
+      "label": "[3d-cube]Translate"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:103:1",
+      "id": 3,
+      "label": "[3d-cube]MMulti"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:151:1",
+      "id": 4,
+      "label": "[3d-cube]RotateX"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:165:1",
+      "id": 5,
+      "label": "[3d-cube]RotateY"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:179:1",
+      "id": 6,
+      "label": "[3d-cube]RotateZ"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:193:1",
+      "id": 7,
+      "label": "[3d-cube]DrawQube"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:122:1",
+      "id": 8,
+      "label": "[3d-cube]VMulti2"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:24:1",
+      "id": 9,
+      "label": "[3d-cube]DrawLine"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:239:1",
+      "id": 10,
+      "label": "[3d-cube]Loop"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:115:1",
+      "id": 11,
+      "label": "[3d-cube]VMulti"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "3d-cube.js:258:1",
+      "id": 12,
+      "label": "[3d-cube]Init"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "3d-cube.js:98:1",
+      "id": 13,
+      "label": "[3d-cube]CreateP"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 14,
+      "label": "[3d-cube]"
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 1,
+      "label": "[3d-cube]CalcNormal -> [3d-cube]CalcCross"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "label": "[3d-cube]Translate -> [3d-cube]MMulti"
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "label": "[3d-cube]RotateX -> [3d-cube]MMulti"
+    },
+    {
+      "source": 5,
+      "target": 3,
+      "label": "[3d-cube]RotateY -> [3d-cube]MMulti"
+    },
+    {
+      "source": 6,
+      "target": 3,
+      "label": "[3d-cube]RotateZ -> [3d-cube]MMulti"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "label": "[3d-cube]DrawQube -> [3d-cube]VMulti2"
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "label": "[3d-cube]DrawQube -> [3d-cube]DrawLine"
+    },
+    {
+      "source": 10,
+      "target": 2,
+      "label": "[3d-cube]Loop -> [3d-cube]Translate"
+    },
+    {
+      "source": 10,
+      "target": 4,
+      "label": "[3d-cube]Loop -> [3d-cube]RotateX"
+    },
+    {
+      "source": 10,
+      "target": 5,
+      "label": "[3d-cube]Loop -> [3d-cube]RotateY"
+    },
+    {
+      "source": 10,
+      "target": 6,
+      "label": "[3d-cube]Loop -> [3d-cube]RotateZ"
+    },
+    {
+      "source": 10,
+      "target": 3,
+      "label": "[3d-cube]Loop -> [3d-cube]MMulti"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "label": "[3d-cube]Loop -> [3d-cube]VMulti"
+    },
+    {
+      "source": 10,
+      "target": 7,
+      "label": "[3d-cube]Loop -> [3d-cube]DrawQube"
+    },
+    {
+      "source": 10,
+      "target": 10,
+      "label": "[3d-cube]Loop -> [3d-cube]Loop"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "label": "[3d-cube]Init -> [3d-cube]CreateP"
+    },
+    {
+      "source": 12,
+      "target": 0,
+      "label": "[3d-cube]Init -> [3d-cube]CalcNormal"
+    },
+    {
+      "source": 12,
+      "target": 2,
+      "label": "[3d-cube]Init -> [3d-cube]Translate"
+    },
+    {
+      "source": 12,
+      "target": 3,
+      "label": "[3d-cube]Init -> [3d-cube]MMulti"
+    },
+    {
+      "source": 12,
+      "target": 11,
+      "label": "[3d-cube]Init -> [3d-cube]VMulti"
+    },
+    {
+      "source": 12,
+      "target": 7,
+      "label": "[3d-cube]Init -> [3d-cube]DrawQube"
+    },
+    {
+      "source": 12,
+      "target": 10,
+      "label": "[3d-cube]Init -> [3d-cube]Loop"
+    },
+    {
+      "source": 14,
+      "target": 12,
+      "label": "[3d-cube] -> [3d-cube]Init"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "access-binary-trees.js:16:1",
+      "id": 39,
+      "label": "[access-binary-trees]bottomUpTree"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "access-binary-trees.js:5:1",
+      "id": 40,
+      "label": "[access-binary-trees]TreeNode"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 41,
+      "label": "[access-binary-trees]"
+    }
+  ],
+  "links": [
+    {
+      "source": 39,
+      "target": 40,
+      "label": "[access-binary-trees]bottomUpTree -> [access-binary-trees]TreeNode"
+    },
+    {
+      "source": 39,
+      "target": 39,
+      "label": "[access-binary-trees]bottomUpTree -> [access-binary-trees]bottomUpTree"
+    },
+    {
+      "source": 41,
+      "target": 39,
+      "label": "[access-binary-trees] -> [access-binary-trees]bottomUpTree"
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 1, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:258:1", 
+      "id": 2, 
+      "label": "3d-cube.js@258"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:85:1", 
+      "id": 3, 
+      "label": "3d-cube.js@85"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:77:1", 
+      "id": 4, 
+      "label": "3d-cube.js@77"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:141:1", 
+      "id": 5, 
+      "label": "3d-cube.js@141"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:103:1", 
+      "id": 6, 
+      "label": "3d-cube.js@103"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:151:1", 
+      "id": 7, 
+      "label": "3d-cube.js@151"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:165:1", 
+      "id": 8, 
+      "label": "3d-cube.js@165"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:179:1", 
+      "id": 9, 
+      "label": "3d-cube.js@179"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:193:1", 
+      "id": 10, 
+      "label": "3d-cube.js@193"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:24:1", 
+      "id": 11, 
+      "label": "3d-cube.js@24"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:122:1", 
+      "id": 12, 
+      "label": "3d-cube.js@122"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "3d-cube.js:239:1", 
+      "id": 13, 
+      "label": "3d-cube.js@239"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:115:1", 
+      "id": 14, 
+      "label": "3d-cube.js@115"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "3d-cube.js:98:1", 
+      "id": 15, 
+      "label": "3d-cube.js@98"
+    }
+  ], 
+  "links": [
+    {
+      "source": 1, 
+      "target": 2, 
+      "label": "toplevel@[toplevel] -> 3d-cube.js@258"
+    }, 
+    {
+      "source": 3, 
+      "target": 4, 
+      "label": "3d-cube.js@85 -> 3d-cube.js@77"
+    }, 
+    {
+      "source": 5, 
+      "target": 6, 
+      "label": "3d-cube.js@141 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 7, 
+      "target": 6, 
+      "label": "3d-cube.js@151 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 8, 
+      "target": 6, 
+      "label": "3d-cube.js@165 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 9, 
+      "target": 6, 
+      "label": "3d-cube.js@179 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 10, 
+      "target": 11, 
+      "label": "3d-cube.js@193 -> 3d-cube.js@24"
+    }, 
+    {
+      "source": 10, 
+      "target": 12, 
+      "label": "3d-cube.js@193 -> 3d-cube.js@122"
+    }, 
+    {
+      "source": 13, 
+      "target": 6, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 13, 
+      "target": 14, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@115"
+    }, 
+    {
+      "source": 13, 
+      "target": 5, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@141"
+    }, 
+    {
+      "source": 13, 
+      "target": 7, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@151"
+    }, 
+    {
+      "source": 13, 
+      "target": 8, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@165"
+    }, 
+    {
+      "source": 13, 
+      "target": 9, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@179"
+    }, 
+    {
+      "source": 13, 
+      "target": 10, 
+      "label": "3d-cube.js@239 -> 3d-cube.js@193"
+    }, 
+    {
+      "source": 2, 
+      "target": 3, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@85"
+    }, 
+    {
+      "source": 2, 
+      "target": 15, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@98"
+    }, 
+    {
+      "source": 2, 
+      "target": 6, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@103"
+    }, 
+    {
+      "source": 2, 
+      "target": 14, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@115"
+    }, 
+    {
+      "source": 2, 
+      "target": 5, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@141"
+    }, 
+    {
+      "source": 2, 
+      "target": 10, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@193"
+    }, 
+    {
+      "source": 2, 
+      "target": 13, 
+      "label": "3d-cube.js@258 -> 3d-cube.js@239"
+    }
+  ], 
+  "multigraph": false
+}

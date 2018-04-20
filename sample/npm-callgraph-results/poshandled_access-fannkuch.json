@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 42,
+      "label": "[access-fannkuch]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "access-fannkuch.js:5:1",
+      "id": 43,
+      "label": "[access-fannkuch]fannkuch"
+    }
+  ],
+  "links": [
+    {
+      "source": 42,
+      "target": 43,
+      "label": "[access-fannkuch] -> [access-fannkuch]fannkuch"
+    }
+  ]
+}

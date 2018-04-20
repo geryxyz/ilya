@@ -1,0 +1,247 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "3d-cube.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:258:1"
+    },
+    {
+      "id": 2,
+      "label": "3d-cube.js[3d-cube.js:98:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:98:1"
+    },
+    {
+      "id": 3,
+      "label": "3d-cube.js[3d-cube.js:85:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:85:1"
+    },
+    {
+      "id": 4,
+      "label": "3d-cube.js[3d-cube.js:141:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:141:1"
+    },
+    {
+      "id": 5,
+      "label": "3d-cube.js[3d-cube.js:103:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:103:1"
+    },
+    {
+      "id": 6,
+      "label": "3d-cube.js[3d-cube.js:115:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:115:1"
+    },
+    {
+      "id": 7,
+      "label": "3d-cube.js[3d-cube.js:193:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:193:1"
+    },
+    {
+      "id": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:239:1"
+    },
+    {
+      "id": 9,
+      "label": "unknown.js[unknown:1:1]",
+      "entry": false,
+      "final": true,
+      "pos": "unknown:1:1"
+    },
+    {
+      "id": 10,
+      "label": "3d-cube.js[3d-cube.js:24:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:24:1"
+    },
+    {
+      "id": 11,
+      "label": "3d-cube.js[3d-cube.js:151:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:151:1"
+    },
+    {
+      "id": 12,
+      "label": "3d-cube.js[3d-cube.js:165:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:165:1"
+    },
+    {
+      "id": 13,
+      "label": "3d-cube.js[3d-cube.js:179:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:179:1"
+    },
+    {
+      "id": 14,
+      "label": "3d-cube.js[3d-cube.js:193:1]",
+      "entry": false,
+      "final": false,
+      "pos": "3d-cube.js:193:1"
+    },
+    {
+      "id": 15,
+      "label": "3d-cube.js[3d-cube.js:122:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:122:1"
+    },
+    {
+      "id": 16,
+      "label": "3d-cube.js[3d-cube.js:77:1]",
+      "entry": false,
+      "final": true,
+      "pos": "3d-cube.js:77:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 1,
+      "source": 0,
+      "label": "3d-cube.js[toplevel:1:1] -> 3d-cube.js[3d-cube.js:258:1]"
+    },
+    {
+      "target": 2,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:98:1]"
+    },
+    {
+      "target": 3,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:85:1]"
+    },
+    {
+      "target": 4,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:141:1]"
+    },
+    {
+      "target": 5,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 6,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:115:1]"
+    },
+    {
+      "target": 7,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:193:1]"
+    },
+    {
+      "target": 8,
+      "source": 1,
+      "label": "3d-cube.js[3d-cube.js:258:1] -> 3d-cube.js[3d-cube.js:239:1]"
+    },
+    {
+      "target": 9,
+      "source": 7,
+      "label": "3d-cube.js[3d-cube.js:193:1] -> unknown.js[unknown:1:1]"
+    },
+    {
+      "target": 10,
+      "source": 7,
+      "label": "3d-cube.js[3d-cube.js:193:1] -> 3d-cube.js[3d-cube.js:24:1]"
+    },
+    {
+      "target": 4,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:141:1]"
+    },
+    {
+      "target": 11,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:151:1]"
+    },
+    {
+      "target": 12,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:165:1]"
+    },
+    {
+      "target": 13,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:179:1]"
+    },
+    {
+      "target": 5,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 6,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:115:1]"
+    },
+    {
+      "target": 7,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:193:1]"
+    },
+    {
+      "target": 8,
+      "source": 8,
+      "label": "3d-cube.js[3d-cube.js:239:1] -> 3d-cube.js[3d-cube.js:239:1]"
+    },
+    {
+      "target": 5,
+      "source": 4,
+      "label": "3d-cube.js[3d-cube.js:141:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 5,
+      "source": 11,
+      "label": "3d-cube.js[3d-cube.js:151:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 5,
+      "source": 12,
+      "label": "3d-cube.js[3d-cube.js:165:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 5,
+      "source": 13,
+      "label": "3d-cube.js[3d-cube.js:179:1] -> 3d-cube.js[3d-cube.js:103:1]"
+    },
+    {
+      "target": 15,
+      "source": 14,
+      "label": "3d-cube.js[3d-cube.js:193:1] -> 3d-cube.js[3d-cube.js:122:1]"
+    },
+    {
+      "target": 16,
+      "source": 3,
+      "label": "3d-cube.js[3d-cube.js:85:1] -> 3d-cube.js[3d-cube.js:77:1]"
+    }
+  ]
+}

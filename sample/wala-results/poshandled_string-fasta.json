@@ -1,0 +1,63 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 118,
+      "label": "string-fasta.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 119,
+      "label": "string-fasta.js[string-fasta.js:44:1]",
+      "entry": false,
+      "final": true,
+      "pos": "string-fasta.js:44:1"
+    },
+    {
+      "id": 120,
+      "label": "string-fasta.js[string-fasta.js:60:1]",
+      "entry": false,
+      "final": false,
+      "pos": "string-fasta.js:60:1"
+    },
+    {
+      "id": 121,
+      "label": "string-fasta.js[string-fasta.js:36:1]",
+      "entry": false,
+      "final": true,
+      "pos": "string-fasta.js:36:1"
+    },
+    {
+      "id": 122,
+      "label": "string-fasta.js[string-fasta.js:8:1]",
+      "entry": false,
+      "final": true,
+      "pos": "string-fasta.js:8:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 119,
+      "source": 118,
+      "label": "string-fasta.js[toplevel:1:1] -> string-fasta.js[string-fasta.js:44:1]"
+    },
+    {
+      "target": 120,
+      "source": 118,
+      "label": "string-fasta.js[toplevel:1:1] -> string-fasta.js[string-fasta.js:60:1]"
+    },
+    {
+      "target": 121,
+      "source": 120,
+      "label": "string-fasta.js[string-fasta.js:60:1] -> string-fasta.js[string-fasta.js:36:1]"
+    },
+    {
+      "target": 122,
+      "source": 120,
+      "label": "string-fasta.js[string-fasta.js:60:1] -> string-fasta.js[string-fasta.js:8:1]"
+    }
+  ]
+}

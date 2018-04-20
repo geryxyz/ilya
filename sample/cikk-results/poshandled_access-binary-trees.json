@@ -1,0 +1,51 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 46, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "access-binary-trees.js:11:32", 
+      "id": 47, 
+      "label": "access-binary-trees.js@11"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "access-binary-trees.js:16:1", 
+      "id": 48, 
+      "label": "access-binary-trees.js@16"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "access-binary-trees.js:5:1", 
+      "id": 49, 
+      "label": "access-binary-trees.js@5"
+    }
+  ], 
+  "links": [
+    {
+      "source": 46, 
+      "target": 47, 
+      "label": "toplevel@[toplevel] -> access-binary-trees.js@11"
+    }, 
+    {
+      "source": 46, 
+      "target": 48, 
+      "label": "toplevel@[toplevel] -> access-binary-trees.js@16"
+    }, 
+    {
+      "source": 48, 
+      "target": 49, 
+      "label": "access-binary-trees.js@16 -> access-binary-trees.js@5"
+    }
+  ], 
+  "multigraph": false
+}

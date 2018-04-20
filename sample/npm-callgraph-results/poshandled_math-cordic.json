@@ -1,0 +1,66 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 140,
+      "label": "[math-cordic]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "math-cordic.js:30:1",
+      "id": 141,
+      "label": "[math-cordic]FIXED"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "math-cordic.js:54:1",
+      "id": 142,
+      "label": "[math-cordic]cordicsincos"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "math-cordic.js:35:1",
+      "id": 143,
+      "label": "[math-cordic]FLOAT"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "math-cordic.js:88:1",
+      "id": 144,
+      "label": "[math-cordic]cordic"
+    }
+  ],
+  "links": [
+    {
+      "source": 140,
+      "target": 141,
+      "label": "[math-cordic] -> [math-cordic]FIXED"
+    },
+    {
+      "source": 142,
+      "target": 141,
+      "label": "[math-cordic]cordicsincos -> [math-cordic]FIXED"
+    },
+    {
+      "source": 142,
+      "target": 143,
+      "label": "[math-cordic]cordicsincos -> [math-cordic]FLOAT"
+    },
+    {
+      "source": 144,
+      "target": 142,
+      "label": "[math-cordic]cordic -> [math-cordic]cordicsincos"
+    },
+    {
+      "source": 140,
+      "target": 144,
+      "label": "[math-cordic] -> [math-cordic]cordic"
+    }
+  ]
+}

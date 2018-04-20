@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 58,
+      "label": "bitops-bits-in-byte.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 59,
+      "label": "bitops-bits-in-byte.js[bitops-bits-in-byte.js:17:1]",
+      "entry": false,
+      "final": false,
+      "pos": "bitops-bits-in-byte.js:17:1"
+    },
+    {
+      "id": 60,
+      "label": "bitops-bits-in-byte.js[bitops-bits-in-byte.js:8:1]",
+      "entry": false,
+      "final": true,
+      "pos": "bitops-bits-in-byte.js:8:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 59,
+      "source": 58,
+      "label": "bitops-bits-in-byte.js[toplevel:1:1] -> bitops-bits-in-byte.js[bitops-bits-in-byte.js:17:1]"
+    },
+    {
+      "target": 60,
+      "source": 59,
+      "label": "bitops-bits-in-byte.js[bitops-bits-in-byte.js:17:1] -> bitops-bits-in-byte.js[bitops-bits-in-byte.js:8:1]"
+    }
+  ]
+}

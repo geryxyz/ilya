@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[3d-morph.js]morph",
+      "pos": "3d-morph.js:30:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [3d-morph.js]morph"
+    }
+  ]
+}

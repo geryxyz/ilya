@@ -1,0 +1,80 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 109,
+      "label": "math-spectral-norm.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 110,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:33:1]",
+      "entry": false,
+      "final": false,
+      "pos": "math-spectral-norm.js:33:1"
+    },
+    {
+      "id": 111,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:28:1]",
+      "entry": false,
+      "final": false,
+      "pos": "math-spectral-norm.js:28:1"
+    },
+    {
+      "id": 112,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:10:1]",
+      "entry": false,
+      "final": false,
+      "pos": "math-spectral-norm.js:10:1"
+    },
+    {
+      "id": 113,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:19:1]",
+      "entry": false,
+      "final": false,
+      "pos": "math-spectral-norm.js:19:1"
+    },
+    {
+      "id": 114,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:6:1]",
+      "entry": false,
+      "final": true,
+      "pos": "math-spectral-norm.js:6:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 110,
+      "source": 109,
+      "label": "math-spectral-norm.js[toplevel:1:1] -> math-spectral-norm.js[math-spectral-norm.js:33:1]"
+    },
+    {
+      "target": 111,
+      "source": 110,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:33:1] -> math-spectral-norm.js[math-spectral-norm.js:28:1]"
+    },
+    {
+      "target": 112,
+      "source": 111,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:28:1] -> math-spectral-norm.js[math-spectral-norm.js:10:1]"
+    },
+    {
+      "target": 113,
+      "source": 111,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:28:1] -> math-spectral-norm.js[math-spectral-norm.js:19:1]"
+    },
+    {
+      "target": 114,
+      "source": 112,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:10:1] -> math-spectral-norm.js[math-spectral-norm.js:6:1]"
+    },
+    {
+      "target": 114,
+      "source": 113,
+      "label": "math-spectral-norm.js[math-spectral-norm.js:19:1] -> math-spectral-norm.js[math-spectral-norm.js:6:1]"
+    }
+  ]
+}

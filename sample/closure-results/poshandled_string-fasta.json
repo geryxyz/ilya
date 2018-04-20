@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[string-fasta.js]fastaRepeat",
+      "pos": "string-fasta.js:44:1"
+    },
+    {
+      "id": 3,
+      "label": "[string-fasta.js]fastaRandom",
+      "pos": "string-fasta.js:60:1"
+    },
+    {
+      "id": 4,
+      "label": "[string-fasta.js]makeCumulative",
+      "pos": "string-fasta.js:36:1"
+    },
+    {
+      "id": 5,
+      "label": "[string-fasta.js]rand",
+      "pos": "string-fasta.js:8:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [string-fasta.js]fastaRepeat"
+    },
+    {
+      "target": 3,
+      "source": 1,
+      "label": "[toplevel] -> [string-fasta.js]fastaRandom"
+    },
+    {
+      "target": 4,
+      "source": 3,
+      "label": "[string-fasta.js]fastaRandom -> [string-fasta.js]makeCumulative"
+    },
+    {
+      "target": 5,
+      "source": 3,
+      "label": "[string-fasta.js]fastaRandom -> [string-fasta.js]rand"
+    }
+  ]
+}

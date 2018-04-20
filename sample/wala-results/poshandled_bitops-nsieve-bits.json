@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 61,
+      "label": "bitops-nsieve-bits.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 62,
+      "label": "bitops-nsieve-bits.js[bitops-nsieve-bits.js:25:1]",
+      "entry": false,
+      "final": false,
+      "pos": "bitops-nsieve-bits.js:25:1"
+    },
+    {
+      "id": 63,
+      "label": "bitops-nsieve-bits.js[bitops-nsieve-bits.js:12:1]",
+      "entry": false,
+      "final": true,
+      "pos": "bitops-nsieve-bits.js:12:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 62,
+      "source": 61,
+      "label": "bitops-nsieve-bits.js[toplevel:1:1] -> bitops-nsieve-bits.js[bitops-nsieve-bits.js:25:1]"
+    },
+    {
+      "target": 63,
+      "source": 62,
+      "label": "bitops-nsieve-bits.js[bitops-nsieve-bits.js:25:1] -> bitops-nsieve-bits.js[bitops-nsieve-bits.js:12:1]"
+    }
+  ]
+}

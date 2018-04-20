@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 2,
+      "label": "[bitops-nsieve-bits.js]sieve",
+      "pos": "bitops-nsieve-bits.js:25:1"
+    },
+    {
+      "id": 3,
+      "label": "[bitops-nsieve-bits.js]primes",
+      "pos": "bitops-nsieve-bits.js:12:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[toplevel] -> [bitops-nsieve-bits.js]sieve"
+    },
+    {
+      "target": 3,
+      "source": 2,
+      "label": "[bitops-nsieve-bits.js]sieve -> [bitops-nsieve-bits.js]primes"
+    }
+  ]
+}

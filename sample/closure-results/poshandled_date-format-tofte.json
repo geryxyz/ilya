@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[date-format-tofte.js]Date.prototype.formatDate",
+      "pos": "date-format-tofte.js:8:29"
+    },
+    {
+      "id": 2,
+      "label": "[date-format-tofte.js]arrayExists",
+      "pos": "date-format-tofte.js:1:1"
+    },
+    {
+      "id": 3,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[date-format-tofte.js]Date.prototype.formatDate -> [date-format-tofte.js]arrayExists"
+    },
+    {
+      "target": 1,
+      "source": 3,
+      "label": "[null]formatDate -> [date-format-tofte.js]Date.prototype.formatDate"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 172, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "math-partial-sums.js:5:1", 
+      "id": 173, 
+      "label": "math-partial-sums.js@5"
+    }
+  ], 
+  "links": [
+    {
+      "source": 172, 
+      "target": 173, 
+      "label": "toplevel@[toplevel] -> math-partial-sums.js@5"
+    }
+  ], 
+  "multigraph": false
+}

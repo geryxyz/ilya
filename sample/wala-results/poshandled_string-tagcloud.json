@@ -1,0 +1,27 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 123,
+      "label": "string-tagcloud.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 124,
+      "label": "string-tagcloud.js[string-tagcloud.js:164:6]",
+      "entry": false,
+      "final": true,
+      "pos": "string-tagcloud.js:164:6"
+    }
+  ],
+  "links": [
+    {
+      "target": 124,
+      "source": 123,
+      "label": "string-tagcloud.js[toplevel:1:1] -> string-tagcloud.js[string-tagcloud.js:164:6]"
+    }
+  ]
+}

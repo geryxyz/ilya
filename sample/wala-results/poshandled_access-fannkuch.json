@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 42,
+      "label": "access-fannkuch.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 43,
+      "label": "access-fannkuch.js[access-fannkuch.js:5:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-fannkuch.js:5:1"
+    },
+    {
+      "id": 44,
+      "label": "unknown.js[unknown:1:1]",
+      "entry": false,
+      "final": true,
+      "pos": "unknown:1:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 43,
+      "source": 42,
+      "label": "access-fannkuch.js[toplevel:1:1] -> access-fannkuch.js[access-fannkuch.js:5:1]"
+    },
+    {
+      "target": 44,
+      "source": 43,
+      "label": "access-fannkuch.js[access-fannkuch.js:5:1] -> unknown.js[unknown:1:1]"
+    }
+  ]
+}

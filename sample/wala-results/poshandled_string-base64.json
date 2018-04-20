@@ -1,0 +1,39 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 115,
+      "label": "string-base64.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 116,
+      "label": "string-base64.js[string-base64.js:45:1]",
+      "entry": false,
+      "final": true,
+      "pos": "string-base64.js:45:1"
+    },
+    {
+      "id": 117,
+      "label": "string-base64.js[string-base64.js:86:1]",
+      "entry": false,
+      "final": true,
+      "pos": "string-base64.js:86:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 116,
+      "source": 115,
+      "label": "string-base64.js[toplevel:1:1] -> string-base64.js[string-base64.js:45:1]"
+    },
+    {
+      "target": 117,
+      "source": 115,
+      "label": "string-base64.js[toplevel:1:1] -> string-base64.js[string-base64.js:86:1]"
+    }
+  ]
+}

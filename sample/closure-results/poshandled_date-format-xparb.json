@@ -1,0 +1,146 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "[date-format-xparb.js]Date.prototype.getDaysInMonth",
+      "pos": "date-format-xparb.js:325:33"
+    },
+    {
+      "id": 2,
+      "label": "[date-format-xparb.js]Date.prototype.isLeapYear",
+      "pos": "date-format-xparb.js:310:29"
+    },
+    {
+      "id": 3,
+      "label": "[toplevel]",
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 4,
+      "label": "[date-format-xparb.js]Date.prototype.dateFormat",
+      "pos": "date-format-xparb.js:18:29"
+    },
+    {
+      "id": 5,
+      "label": "[date-format-xparb.js]Date.createNewFormat",
+      "pos": "date-format-xparb.js:26:24"
+    },
+    {
+      "id": 6,
+      "label": "[date-format-xparb.js]String.escape",
+      "pos": "date-format-xparb.js:347:17"
+    },
+    {
+      "id": 7,
+      "label": "[date-format-xparb.js]Date.getFormatCode",
+      "pos": "date-format-xparb.js:48:22"
+    },
+    {
+      "id": 8,
+      "label": "[date-format-xparb.js]Date.formatCodeToRegex",
+      "pos": "date-format-xparb.js:172:26"
+    },
+    {
+      "id": 9,
+      "label": "[date-format-xparb.js]Date.parseDate",
+      "pos": "date-format-xparb.js:109:18"
+    },
+    {
+      "id": 10,
+      "label": "[date-format-xparb.js]Date.createParser",
+      "pos": "date-format-xparb.js:117:21"
+    },
+    {
+      "id": 11,
+      "label": "[date-format-xparb.js]Date.prototype.getGMTOffset",
+      "pos": "date-format-xparb.js:285:31"
+    },
+    {
+      "id": 12,
+      "label": "[date-format-xparb.js]String.leftPad",
+      "pos": "date-format-xparb.js:351:18"
+    },
+    {
+      "id": 13,
+      "label": "[date-format-xparb.js]Date.prototype.getDayOfYear",
+      "pos": "date-format-xparb.js:291:31"
+    },
+    {
+      "id": 14,
+      "label": "[date-format-xparb.js]Date.prototype.getWeekOfYear",
+      "pos": "date-format-xparb.js:300:32"
+    }
+  ],
+  "links": [
+    {
+      "target": 2,
+      "source": 1,
+      "label": "[date-format-xparb.js]isLeapYear -> [date-format-xparb.js]Date.prototype.isLeapYear"
+    },
+    {
+      "target": 4,
+      "source": 3,
+      "label": "[null]dateFormat -> [date-format-xparb.js]Date.prototype.dateFormat"
+    },
+    {
+      "target": 6,
+      "source": 5,
+      "label": "[date-format-xparb.js]escape -> [date-format-xparb.js]String.escape"
+    },
+    {
+      "target": 7,
+      "source": 5,
+      "label": "[date-format-xparb.js]getFormatCode -> [date-format-xparb.js]Date.getFormatCode"
+    },
+    {
+      "target": 6,
+      "source": 8,
+      "label": "[date-format-xparb.js]escape -> [date-format-xparb.js]String.escape"
+    },
+    {
+      "target": 6,
+      "source": 7,
+      "label": "[date-format-xparb.js]escape -> [date-format-xparb.js]String.escape"
+    },
+    {
+      "target": 10,
+      "source": 9,
+      "label": "[date-format-xparb.js]createParser -> [date-format-xparb.js]Date.createParser"
+    },
+    {
+      "target": 6,
+      "source": 10,
+      "label": "[date-format-xparb.js]escape -> [date-format-xparb.js]String.escape"
+    },
+    {
+      "target": 8,
+      "source": 10,
+      "label": "[date-format-xparb.js]formatCodeToRegex -> [date-format-xparb.js]Date.formatCodeToRegex"
+    },
+    {
+      "target": 12,
+      "source": 11,
+      "label": "[date-format-xparb.js]leftPad -> [date-format-xparb.js]String.leftPad"
+    },
+    {
+      "target": 2,
+      "source": 13,
+      "label": "[date-format-xparb.js]isLeapYear -> [date-format-xparb.js]Date.prototype.isLeapYear"
+    },
+    {
+      "target": 5,
+      "source": 4,
+      "label": "[date-format-xparb.js]createNewFormat -> [date-format-xparb.js]Date.createNewFormat"
+    },
+    {
+      "target": 13,
+      "source": 14,
+      "label": "[date-format-xparb.js]getDayOfYear -> [date-format-xparb.js]Date.prototype.getDayOfYear"
+    },
+    {
+      "target": 12,
+      "source": 14,
+      "label": "[date-format-xparb.js]leftPad -> [date-format-xparb.js]String.leftPad"
+    }
+  ]
+}

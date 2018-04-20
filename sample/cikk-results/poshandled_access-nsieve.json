@@ -1,0 +1,39 @@
+{
+  "directed": true, 
+  "nodes": [
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "toplevel:1:1", 
+      "id": 64, 
+      "label": "[toplevel]"
+    }, 
+    {
+      "final": false, 
+      "entry": false, 
+      "pos": "access-nsieve.js:30:1", 
+      "id": 65, 
+      "label": "access-nsieve.js@30"
+    }, 
+    {
+      "final": true, 
+      "entry": false, 
+      "pos": "access-nsieve.js:15:1", 
+      "id": 66, 
+      "label": "access-nsieve.js@15"
+    }
+  ], 
+  "links": [
+    {
+      "source": 64, 
+      "target": 65, 
+      "label": "toplevel@[toplevel] -> access-nsieve.js@30"
+    }, 
+    {
+      "source": 65, 
+      "target": 66, 
+      "label": "access-nsieve.js@30 -> access-nsieve.js@15"
+    }
+  ], 
+  "multigraph": false
+}

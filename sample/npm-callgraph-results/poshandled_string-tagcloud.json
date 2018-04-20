@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "final": false,
+      "entry": false,
+      "pos": "toplevel:1:1",
+      "id": 161,
+      "label": "[string-tagcloud]"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "string-tagcloud.js:79:9",
+      "id": 162,
+      "label": "[string-tagcloud]f"
+    },
+    {
+      "final": false,
+      "entry": false,
+      "pos": "string-tagcloud.js:180:13",
+      "id": 163,
+      "label": "[string-tagcloud]walk"
+    },
+    {
+      "final": true,
+      "entry": false,
+      "pos": "string-tagcloud.js:231:1",
+      "id": 164,
+      "label": "[string-tagcloud]makeTagCloud"
+    }
+  ],
+  "links": [
+    {
+      "source": 161,
+      "target": 162,
+      "label": "[string-tagcloud] -> [string-tagcloud]f"
+    },
+    {
+      "source": 163,
+      "target": 163,
+      "label": "[string-tagcloud]walk -> [string-tagcloud]walk"
+    },
+    {
+      "source": 161,
+      "target": 163,
+      "label": "[string-tagcloud] -> [string-tagcloud]walk"
+    },
+    {
+      "source": 161,
+      "target": 164,
+      "label": "[string-tagcloud] -> [string-tagcloud]makeTagCloud"
+    }
+  ]
+}

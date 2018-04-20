@@ -1,0 +1,119 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 45,
+      "label": "access-nbody.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:157:6"
+    },
+    {
+      "id": 47,
+      "label": "access-nbody.js[access-nbody.js:74:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:74:1"
+    },
+    {
+      "id": 48,
+      "label": "access-nbody.js[access-nbody.js:26:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:26:1"
+    },
+    {
+      "id": 49,
+      "label": "access-nbody.js[access-nbody.js:38:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:38:1"
+    },
+    {
+      "id": 50,
+      "label": "access-nbody.js[access-nbody.js:50:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:50:1"
+    },
+    {
+      "id": 51,
+      "label": "access-nbody.js[access-nbody.js:62:1]",
+      "entry": false,
+      "final": false,
+      "pos": "access-nbody.js:62:1"
+    },
+    {
+      "id": 52,
+      "label": "access-nbody.js[access-nbody.js:9:1]",
+      "entry": false,
+      "final": true,
+      "pos": "access-nbody.js:9:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 46,
+      "source": 45,
+      "label": "access-nbody.js[toplevel:1:1] -> access-nbody.js[access-nbody.js:157:6]"
+    },
+    {
+      "target": 47,
+      "source": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6] -> access-nbody.js[access-nbody.js:74:1]"
+    },
+    {
+      "target": 48,
+      "source": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6] -> access-nbody.js[access-nbody.js:26:1]"
+    },
+    {
+      "target": 49,
+      "source": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6] -> access-nbody.js[access-nbody.js:38:1]"
+    },
+    {
+      "target": 50,
+      "source": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6] -> access-nbody.js[access-nbody.js:50:1]"
+    },
+    {
+      "target": 51,
+      "source": 46,
+      "label": "access-nbody.js[access-nbody.js:157:6] -> access-nbody.js[access-nbody.js:62:1]"
+    },
+    {
+      "target": 52,
+      "source": 47,
+      "label": "access-nbody.js[access-nbody.js:74:1] -> access-nbody.js[access-nbody.js:9:1]"
+    },
+    {
+      "target": 52,
+      "source": 48,
+      "label": "access-nbody.js[access-nbody.js:26:1] -> access-nbody.js[access-nbody.js:9:1]"
+    },
+    {
+      "target": 52,
+      "source": 49,
+      "label": "access-nbody.js[access-nbody.js:38:1] -> access-nbody.js[access-nbody.js:9:1]"
+    },
+    {
+      "target": 52,
+      "source": 50,
+      "label": "access-nbody.js[access-nbody.js:50:1] -> access-nbody.js[access-nbody.js:9:1]"
+    },
+    {
+      "target": 52,
+      "source": 51,
+      "label": "access-nbody.js[access-nbody.js:62:1] -> access-nbody.js[access-nbody.js:9:1]"
+    }
+  ]
+}

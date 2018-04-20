@@ -1,0 +1,66 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "nodes": [
+    {
+      "id": 64,
+      "label": "controlflow-recursive.js[toplevel:1:1]",
+      "entry": false,
+      "final": false,
+      "pos": "toplevel:1:1"
+    },
+    {
+      "id": 65,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:5:1]",
+      "entry": false,
+      "final": false,
+      "pos": "controlflow-recursive.js:5:1"
+    },
+    {
+      "id": 66,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:11:1]",
+      "entry": false,
+      "final": false,
+      "pos": "controlflow-recursive.js:11:1"
+    },
+    {
+      "id": 67,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:16:1]",
+      "entry": false,
+      "final": false,
+      "pos": "controlflow-recursive.js:16:1"
+    }
+  ],
+  "links": [
+    {
+      "target": 65,
+      "source": 64,
+      "label": "controlflow-recursive.js[toplevel:1:1] -> controlflow-recursive.js[controlflow-recursive.js:5:1]"
+    },
+    {
+      "target": 66,
+      "source": 64,
+      "label": "controlflow-recursive.js[toplevel:1:1] -> controlflow-recursive.js[controlflow-recursive.js:11:1]"
+    },
+    {
+      "target": 67,
+      "source": 64,
+      "label": "controlflow-recursive.js[toplevel:1:1] -> controlflow-recursive.js[controlflow-recursive.js:16:1]"
+    },
+    {
+      "target": 67,
+      "source": 67,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:16:1] -> controlflow-recursive.js[controlflow-recursive.js:16:1]"
+    },
+    {
+      "target": 66,
+      "source": 66,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:11:1] -> controlflow-recursive.js[controlflow-recursive.js:11:1]"
+    },
+    {
+      "target": 65,
+      "source": 65,
+      "label": "controlflow-recursive.js[controlflow-recursive.js:5:1] -> controlflow-recursive.js[controlflow-recursive.js:5:1]"
+    }
+  ]
+}
