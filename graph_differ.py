@@ -8,7 +8,10 @@ from gremlin_python.process.traversal import P
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 import pdb
 import argparse as ap
-import numpy
+from heatstrip import *
+from snowflake import *
+import re
+import os
 
 def equals(a, b, g):
 	if a == b:
@@ -18,6 +21,9 @@ def equals(a, b, g):
 
 def get_pos(x, g):
 	return g.V(x).properties('pos').value().next()
+
+def get_source(x, g):
+	return g.V(x).properties('source_name').value().next()
 
 def pos_equals(a, b, g):
 	pos_a = get_pos(a, g)
@@ -76,9 +82,9 @@ class GremlinGraphDiffer(GremlinUploader):
 					print('%s ~ %s ...' % (name_a, name_b))
 					nodes_a = self.output_graph.V().where(__.has('source_name', name_a)).toList()
 					nodes_b = self.output_graph.V().where(__.has('source_name', name_b)).toList()
-					self._diff(nodes_a, nodes_b, edge_similarity=edge_similarity, vertex_similarity=vertex_similarity)
+					self._diff(nodes_a, nodes_b, edge_similarity=edge_similarity, vertex_similarity=vertex_similarity, get_id=get_id)
 
-		return GraphDiff(self._detect_ndd_vector('vertex'), self._detect_ndd_vector('edge'))
+		return GraphDiff(self._detect_ndd_vector('vertex', get_id=get_id), self._detect_ndd_vector('edge', get_id=get_id))
 
 	def _diff(self, nodes_a, nodes_b, edge_similarity=equals, vertex_similarity=equals, get_id=get_pos):
 		for a in nodes_a:
@@ -94,7 +100,7 @@ class GremlinGraphDiffer(GremlinUploader):
 				else:
 					print('.', end='')
 
-	def _ndd_vector_of(self, node, property_name):
+	def _ndd_vector_of(self, node, property_name, get_id=get_pos):
 		self.curve_props = ['alpha', 'count', 'mean_bethas', 'stddev_bethas']
 		G_data = []
 		histogram = {}
@@ -107,15 +113,22 @@ class GremlinGraphDiffer(GremlinUploader):
 		if histogram.keys():
 			for i in range(max(histogram.keys())):
 				histogram[i] = histogram.get(i, 0)
-		
-		return [v for k, v in sorted(histogram.items(), key=lambda x: x[0])][1:], G_data
 
-	def _detect_ndd_vector(self, property_name):
+		dNDD = [v for k, v in sorted(histogram.items(), key=lambda x: x[0])][1:]
+		cNDD = G_data
+
+		#self.output_graph.V(node).property('similarity', *dNDD).toList()
+		#if len(dNDD) > 1:
+			#pdb.set_trace()
+
+		return dNDD, cNDD
+
+	def _detect_ndd_vector(self, property_name, get_id=get_pos):
 		histograms = {}
 		curves = {}
 		for node in self.output_graph.V().toList():
-			histograms[node], curves[node] = self._ndd_vector_of(node, property_name)
-		return GraphDiff(histograms, curves)
+			histograms[node], curves[node] = self._ndd_vector_of(node, property_name, get_id=get_id)
+		return PatternCollection(histograms, curves)
 
 if __name__ == '__main__':
 	inputs = {}
@@ -135,4 +148,69 @@ if __name__ == '__main__':
 
 	differ = GremlinGraphDiffer(clargs.output_server, clargs.output_source)	
 	patterns = differ.diff(clargs.verbose, edge_similarity=edge_pos_jaccard, vertex_similarity=line_info_similarity, **{name: open(input_file, 'r') for name, input_file in inputs.items()})
-	pdb.set_trace()
+	x_max_edge = max([max(values_strip(g)[0]) for g in patterns.edge.c_ndd.values()])
+	x_max_vertex = max([max(values_strip(g)[0]) for g in patterns.vertex.c_ndd.values()])
+	with open('diff.html', 'w') as ouput_file:
+		ouput_file.write(
+'''<html><head>
+<style>
+table.data td {
+    border: 1px solid black;
+    padding: 5px; 
+}
+table.data th {
+    border: 1px solid black;
+    padding: 5px; 
+}
+th.head {
+	border: 1px solid black; 
+	padding: 10px;
+}
+</style>
+</head><body>''')
+		for name in inputs:
+			ouput_file.write('<h1>%s</h1>' % name)
+			print('saving %s...' % name)
+			for node in differ.output_graph.V().where(__.has('source_name', name)).toList():
+				human_readable = '%s.%s' % (re.sub('\W', '_', get_source(node, differ.output_graph)), re.sub('\W', '_', get_pos(node, differ.output_graph)))
+				print("saving %s..." % human_readable)
+				ribbon_edge_name = 'ribbon_%s.edge.png' % human_readable
+				ribbon_vertex_name = 'ribbon_%s.vertex.png' % human_readable
+				snowflake_edge_name = 'snowflake_%s.edge.png' % human_readable
+				snowflake_vertex_name = 'snowflake_%s.vertex.png' % human_readable
+				draw_strip(patterns.edge.c_ndd[node], ribbon_edge_name, x_max=x_max_edge)
+				draw_strip(patterns.vertex.c_ndd[node], ribbon_vertex_name, x_max=x_max_vertex)
+				draw_circle(patterns.edge.d_ndd[node], scale=1000).save(snowflake_edge_name)
+				draw_circle(patterns.vertex.d_ndd[node], scale=1000).save(snowflake_vertex_name)
+				ouput_file.write('<h2>%s</h2>\n' % get_pos(node, differ.output_graph))
+				ouput_file.write('<table>\n')
+				ouput_file.write('<tr><th class="head" colspan="2">Edge similarity</th><th class="head" colspan="2">Vertex similarity</th></tr>\n')
+				ouput_file.write('<tr><th>discrete</th><th>continuous</th><th>discrete</th><th>continuous</th></tr>\n')
+				ouput_file.write('<tr>\n')
+				ouput_file.write('<td><img src="%s" style="height: 200px"/></td>' % snowflake_edge_name)
+				ouput_file.write('<td><img src="%s" style="height: 200px"/></td>' % ribbon_edge_name)
+				ouput_file.write('<td><img src="%s" style="height: 200px"/></td>' % snowflake_vertex_name)
+				ouput_file.write('<td><img src="%s" style="height: 200px"/></td>' % ribbon_vertex_name)
+				ouput_file.write('</tr>\n')
+				ouput_file.write('<tr>\n')
+				ouput_file.write('<td style="vertical-align: top; text-align: center">%s</td>' % patterns.edge.d_ndd[node])
+				ouput_file.write('<td style="vertical-align: top; text-align: center"><table class="data">\n')
+				ouput_file.write('<tr><th style="border: none">graph</th><th>alpha</th><th>count</th><th>avg. of bethas</th><th>std. of bethas</th></tr>\n')
+				ouput_file.write('<tr><th style="border: none">gaussian</th><th>height</th><th>offset</th><th>offset</th><th>width</th></tr>\n')
+				for G_data in patterns.edge.c_ndd[node]:
+					ouput_file.write('<tr>')
+					ouput_file.write('<td style="border: none"></td><td>%(alpha).4f</td><td>%(count)d</td><td>%(mean_bethas).4f</td><td>%(stddev_bethas).4f</td>' % G_data)
+					ouput_file.write('</tr>\n')
+				ouput_file.write('</table></td>\n')
+				ouput_file.write('<td style="vertical-align: top; text-align: center">%s</td>' % patterns.vertex.d_ndd[node])
+				ouput_file.write('<td style="vertical-align: top; text-align: center"><table class="data">\n')
+				ouput_file.write('<tr><th>graph</th><th>alpha</th><th>count</th><th>avg. of bethas</th><th>std. of bethas</th></tr>\n')
+				ouput_file.write('<tr><th>gaussian</th><th>height</th><th>offset</th><th>offset</th><th>width</th></tr>\n')
+				for G_data in patterns.vertex.c_ndd[node]:
+					ouput_file.write('<tr>')
+					ouput_file.write('<td style="border: none"></td><td>%(alpha).4f</td><td>%(count)d</td><td>%(mean_bethas).4f</td><td>%(stddev_bethas).4f</td>' % G_data)
+					ouput_file.write('</tr>\n')
+				ouput_file.write('</table></td>\n')
+				ouput_file.write('</tr>\n')				
+				ouput_file.write('</table>\n')
+		ouput_file.write('</body></html>\n')

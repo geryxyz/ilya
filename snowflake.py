@@ -53,16 +53,17 @@ def draw_circle(vector, total_count=None, move_to=None, scale=1):
 	stars = []
 	for i, count in enumerate(vector):
 		stars += [i + 1] * int(count)
-	angles = frange(math.radians(0), math.radians(360), math.radians(360 / total_count))
-	if len(angles) < len(stars):
-		raise Exception('missing star or angle')
-	for i, angle in enumerate(angles):
-		if i < len(stars):
-			draw_star(
-				draw, stars[i],
-				move_to=list(map(lambda a, b: a + b, cartesian(scale, angle - math.radians(90)), move_to)),
-				scale=min(.4 * (2 * math.pi) / total_count, .7) * scale,
-				rotate_by=math.degrees(angle) + 90)
+	if total_count > 0:
+		angles = frange(math.radians(0), math.radians(360), math.radians(360 / total_count))
+		if len(angles) < len(stars):
+			raise Exception('missing star or angle')
+		for i, angle in enumerate(angles):
+			if i < len(stars):
+				draw_star(
+					draw, stars[i],
+					move_to=list(map(lambda a, b: a + b, cartesian(scale, angle - math.radians(90)), move_to)),
+					scale=min(.4 * (2 * math.pi) / total_count, .7) * scale,
+					rotate_by=math.degrees(angle) + 90)
 	del draw
 	return image
 
