@@ -7,7 +7,7 @@ def gaussian(a, b, c, x):
 	if c == 0:
 		return a
 	else:
-		return a * numpy.e ** (-( (x-b) ** 2 / 2*c*c ))
+		return a * numpy.e ** (-( (x-b) ** 2 / (2*c**2) ))
 
 def values_strip(G_data, width=900, lim=50):
 	ys = []
@@ -17,7 +17,7 @@ def values_strip(G_data, width=900, lim=50):
 		y = 0
 		for g in G_data:
 			current_y = gaussian(g['alpha'], g['count'] + g['mean_bethas'], g['stddev_bethas'], real_x)
-			y += current_y * current_y
+			y += current_y ** 2
 		ys.append(y)
 		unit_ys.append(gaussian(1, 1+1, 1, real_x) ** 2)
 	return ys, unit_ys

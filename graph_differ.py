@@ -149,7 +149,9 @@ if __name__ == '__main__':
 	differ = GremlinGraphDiffer(clargs.output_server, clargs.output_source)	
 	patterns = differ.diff(clargs.verbose, edge_similarity=edge_pos_jaccard, vertex_similarity=line_info_similarity, **{name: open(input_file, 'r') for name, input_file in inputs.items()})
 	x_max_edge = max([max(values_strip(g)[0]) for g in patterns.edge.c_ndd.values()])
+	lim_edge = max([len(v) for v in patterns.edge.d_ndd.values()])
 	x_max_vertex = max([max(values_strip(g)[0]) for g in patterns.vertex.c_ndd.values()])
+	lim_vertex = max([len(v) for v in patterns.vertex.d_ndd.values()])
 	with open('diff.html', 'w') as ouput_file:
 		ouput_file.write(
 '''<html><head>
@@ -178,8 +180,8 @@ th.head {
 				ribbon_vertex_name = 'ribbon_%s.vertex.png' % human_readable
 				snowflake_edge_name = 'snowflake_%s.edge.png' % human_readable
 				snowflake_vertex_name = 'snowflake_%s.vertex.png' % human_readable
-				draw_strip(patterns.edge.c_ndd[node], ribbon_edge_name, x_max=x_max_edge)
-				draw_strip(patterns.vertex.c_ndd[node], ribbon_vertex_name, x_max=x_max_vertex)
+				draw_strip(patterns.edge.c_ndd[node], ribbon_edge_name, x_max=x_max_edge, lim=lim_edge+1)
+				draw_strip(patterns.vertex.c_ndd[node], ribbon_vertex_name, x_max=x_max_vertex, lim=lim_vertex+1)
 				draw_circle(patterns.edge.d_ndd[node], scale=1000).save(snowflake_edge_name)
 				draw_circle(patterns.vertex.d_ndd[node], scale=1000).save(snowflake_vertex_name)
 				ouput_file.write('<h2>%s</h2>\n' % get_pos(node, differ.output_graph))
