@@ -117,10 +117,6 @@ class GremlinGraphDiffer(GremlinUploader):
 		dNDD = [v for k, v in sorted(histogram.items(), key=lambda x: x[0])][1:]
 		cNDD = G_data
 
-		#self.output_graph.V(node).property('similarity', *dNDD).toList()
-		#if len(dNDD) > 1:
-			#pdb.set_trace()
-
 		return dNDD, cNDD
 
 	def _detect_ndd_vector(self, property_name, get_id=get_pos):
